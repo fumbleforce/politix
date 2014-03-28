@@ -8,30 +8,69 @@ body
     
     
 template(name="createCompany")
-    .create-company
-        input.name
-        input.save(type="submit", value="Found Company")
-    
+    p= error
+    .form-horizontal
+        .form-group
+            label.control-label.col-sm-2(for="name") Company Name
+            .col-sm-10
+                input#name.form-control.name
+        .form-group
+            .col-sm-offset-2.col-sm-10
+                input.btn.btn-primary.save(type="submit", value="Found Company")
+
+
+template(name="nameForm")
+    p= error
+    .form-horizontal
+        .form-group
+            label.control-label.col-sm-2(for="ceo") CEO
+            .col-sm-10
+                input#ceo.form-control.ceo
+        .form-group
+            .col-sm-offset-2.col-sm-10
+                input.btn.btn-primary.save(type="submit", value="Set CEO name")
+
+
 
 template(name="main")
     .top-bar
-        +loginButtons
+        if currentUser
+            +loginButtons
+            .user-info
+                span Company: #{currentUser.company}
+                span CEO: #{currentUser.profile.name}
     .main
-        +createCompany
         +companyList
-        +companyStatus
+        if currentUser
+            if hasCompany
+                
+                +companyStatus
+            else
+                if hasName
+                    .focus-container
+                        +createCompany
+                else
+                    .focus-container
+                        +nameForm
+        else
+            .focus-container
+                +loginButtons
 
 template(name="companyStatus")
     with company
         .companyStatus
             h1= name
             
-            p
+            p= cash
+            p= currentUser.username
+
     
     
 template(name="companyList")
     .company-list
         each companies
             .company-entry
-                h2 #{name}
+                h2= name
+                p= _id
+
         

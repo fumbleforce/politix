@@ -1,14 +1,14 @@
 /* CSS declarations go here */
 
 .top-bar
-    position:absolute
+    position:relative
     top: 0
-    right: 0
+    left: 0
     
     #login-dropdown-list
         position: absolute;
         top: -1px;
-        right: 0;
+        right: 200px;
         
     .accounts-dialog
         margin: 0
@@ -21,9 +21,13 @@
     
     .company-entry
         float: left
-        width: 200px
-        height 200px
+        margin:10px
         
         
-.companyStatus
+.company-status
     @include 'well'
+
+.focus-container
+    width:50%
+    margin: 0 auto
+    padding: 300px 0

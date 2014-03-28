@@ -1,9 +1,18 @@
 
+Template.main.hasName = function () {
+    if (Meteor.user().profile)
+        return Meteor.user().profile.name;
+    return
+}
 
+Template.main.hasCompany = function () {
+    return Meteor.user().company;
+}
 
 Template.companyStatus.company = function () {
-    return Companies.findOne(Session.get('companyId'));
+    return Companies.findOne(Meteor.user().company);
 }
+
 
 Template.companyList.companies = function () {
     return Companies.find();
@@ -30,18 +39,34 @@ Template.createCompany.events({
                 name: name,
             });
             
-            Session.set('companyId', id);
 
         } else {
             Session.set("createError", "The company needs a name");
         }
-    },
-
-    'click .cancel': function () {
-
     }
+
+});
+
+Template.nameForm.events({
+    'click .save': function (event, template) {
+        var ceo = template.find(".ceo").value;
+
+        if (ceo.length) {
+            
+            setCeoName({
+                ceo: ceo
+            });
+            
+
+        } else {
+            Session.set("createError", "You need to specify a name");
+        }
+    }
+
 });
 
 Template.createCompany.error = function () {
     return Session.get("createError");
 };
+
+Template.nameForm.error = Template.createCompany.error;
