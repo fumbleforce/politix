@@ -1,0 +1,15 @@
+{
+  "meteor": {},
+  "dependencies": {
+    "basePackages": {
+      "jade": {}
+    },
+    "packages": {
+      "jade": {
+        "git": "https://github.com/mquandalle/meteor-jade.git",
+        "tag": "v0.1.5",
+        "commit": "bbb23ff955d94066b74c4aa9ea760418483b3ddf"
+      }
+    }
+  }
+}

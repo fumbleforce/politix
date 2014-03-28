@@ -1,0 +1,37 @@
+head
+    title politix
+
+body
+    +main
+    
+    
+    
+    
+template(name="createCompany")
+    .create-company
+        input.name
+        input.save(type="submit", value="Found Company")
+    
+
+template(name="main")
+    .top-bar
+        +loginButtons
+    .main
+        +createCompany
+        +companyList
+        +companyStatus
+
+template(name="companyStatus")
+    with company
+        .companyStatus
+            h1= name
+            
+            p
+    
+    
+template(name="companyList")
+    .company-list
+        each companies
+            .company-entry
+                h2 #{name}
+        
