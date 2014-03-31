@@ -41,28 +41,80 @@ template(name="main")
                 span CEO: #{currentUser.profile.name}
     .main
         +companyList
-        if currentUser
-            if hasCompany
-                
-                +companyStatus
-            else
+        unless currentUser
+            .focus-container
+                +loginButtons
+        else 
+            unless hasCompany
                 if hasName
                     .focus-container
                         +createCompany
                 else
                     .focus-container
                         +nameForm
-        else
-            .focus-container
-                +loginButtons
+            else
+                +layout
+            
+
+template(name="layout")
+    // Places the components in their proper place
+
+    .row
+        // Company status row
+        +companyStatus
+
+    .row
+        .col-md-3
+            // Nav, other things?
+            +navList
+
+        .col-md-6
+            // Content of different pages
+            +pages
+
+        .col-md-3
+            // Chat, status updates
+
+    
+
+
+template(name="pages")
+    // The big window in the center
+    - var page = "front"
+    case page
+        when "front"
+            +frontPage
+        default
+            +frontPage
+
+
+template(name="frontPage")
+    .front-page
+        h1 front page
+
+template(name="navList")
+    .nav-list
+        h1 nav list
+
+
+
+template(name="frontPage")
+    h1 front page
+
+
 
 template(name="companyStatus")
     with company
-        .companyStatus
-            h1= name
-            
-            p= cash
-            p= currentUser.username
+        .companyStatus.container
+
+            .col-md-4
+                h1= name
+
+            .col-md-4
+                p= cash
+
+            .col-md-4
+                p= currentUser.username
 
     
     
