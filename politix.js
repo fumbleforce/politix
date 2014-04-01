@@ -31,7 +31,6 @@ Companies = new Meteor.Collection('companies');
 
 
 
-
 if (Meteor.isServer) {
     Meteor.startup(function () {
         // code to run on server at startup
@@ -85,8 +84,6 @@ Meteor.methods({
                 }
             )
         }
-        
-
         return id;
     },
 
@@ -118,10 +115,12 @@ Meteor.methods({
 
 
 
-
-
-
-
+UI.registerHelper('objToArray', function(obj) {
+    var result = [];
+    for (var key in obj)
+        result.push({ key:key, value:obj[key] });
+    return result;
+});
 
 
 

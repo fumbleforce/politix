@@ -14,11 +14,11 @@ Template.companyStatus.company = function () {
 }
 
 
-Template.companyList.companies = function () {
+Template.relations.companies = function () {
     return Companies.find();
 };
 
-Template.companyList.events({
+Template.relations.events({
     'click input': function () {
         // template data, if any, is available in 'this'
         if (typeof console !== 'undefined')
@@ -53,10 +53,7 @@ Template.nameForm.events({
 
         if (ceo.length) {
             
-            setCeoName({
-                ceo: ceo
-            });
-            
+            setCeoName({ ceo: ceo });
 
         } else {
             Session.set("createError", "You need to specify a name");
@@ -70,3 +67,20 @@ Template.createCompany.error = function () {
 };
 
 Template.nameForm.error = Template.createCompany.error;
+
+
+
+Template.navList.page = function () {
+    return Session.get("currentPage");
+}
+
+Template.pages.onPage = function (p) {
+    return p === Session.get("currentPage");
+}
+    
+
+Template.navList.events({
+    'click a': function (event) {
+        Session.set("currentPage", event.target.hash.split("#")[1]);
+    }
+})

@@ -5,34 +5,13 @@ body
     +main
     
     
-    
-    
-template(name="createCompany")
-    p= error
-    .form-horizontal
-        .form-group
-            label.control-label.col-sm-2(for="name") Company Name
-            .col-sm-10
-                input#name.form-control.name
-        .form-group
-            .col-sm-offset-2.col-sm-10
-                input.btn.btn-primary.save(type="submit", value="Found Company")
-
-
-template(name="nameForm")
-    p= error
-    .form-horizontal
-        .form-group
-            label.control-label.col-sm-2(for="ceo") CEO
-            .col-sm-10
-                input#ceo.form-control.ceo
-        .form-group
-            .col-sm-offset-2.col-sm-10
-                input.btn.btn-primary.save(type="submit", value="Set CEO name")
-
 
 
 template(name="main")
+    //- 
+        Top level template.
+        The container for all templates.
+
     .top-bar
         if currentUser
             +loginButtons
@@ -40,7 +19,6 @@ template(name="main")
                 span Company: #{currentUser.company}
                 span CEO: #{currentUser.profile.name}
     .main
-        +companyList
         unless currentUser
             .focus-container
                 +loginButtons
@@ -54,58 +32,159 @@ template(name="main")
                         +nameForm
             else
                 +layout
-            
+
+
+
+
+    
+template(name="createCompany")
+    //-
+        Form for setting setting company name
+
+    p= error
+
+    .form-horizontal
+
+        .form-group
+            label.control-label.col-sm-2(for="name") Company Name
+            .col-sm-10
+                input#name.form-control.name
+
+        .form-group
+            .col-sm-offset-2.col-sm-10
+                input.btn.btn-primary.save(type="submit", value="Found Company")
+
+
+
+
+template(name="nameForm")
+    //-
+        Form for setting CEO Name
+
+    p= error
+
+    .form-horizontal
+
+        .form-group
+            label.control-label.col-sm-2(for="ceo") CEO
+            .col-sm-10
+                input#ceo.form-control.ceo
+
+        .form-group
+            .col-sm-offset-2.col-sm-10
+                input.btn.btn-primary.save(type="submit", value="Set CEO name")
+
+
+
 
 template(name="layout")
-    // Places the components in their proper place
+    //- 
+        Places the components in their proper place.
+        Displayed if company and ceo is set
 
     .row
         // Company status row
         +companyStatus
 
     .row
-        .col-md-3
+        .col-md-1
             // Nav, other things?
             +navList
 
-        .col-md-6
+        .col-md-10
             // Content of different pages
             +pages
 
-        .col-md-3
+        .col-md-1
             // Chat, status updates
+            //+events
+            +chat
 
-    
 
 
 template(name="pages")
-    // The big window in the center
-    - var page = "front"
-    case page
-        when "front"
-            +frontPage
-        default
-            +frontPage
+    //-
+        The big window in the center.
+        Displays the page selected in the nav
+
+    .center-container
+        if onPage "home"
+            +home
+        else if onPage "market"
+            +market
+        else if onPage "employees"
+            +employees
+        else if onPage "economy"
+            +economy
+        else if onPage "production"
+            +production
+        else if onPage "relations"
+            +relations
+        else if onPage "politics"
+            +politics
+        else
+            +home
 
 
-template(name="frontPage")
-    .front-page
-        h1 front page
 
 template(name="navList")
+    //-
+        Vertical navigation list
+
     .nav-list
-        h1 nav list
+        nav
+            ul.nav.nav-pills.nav-stacked
+                li: a(href="#home") Home
+                li: a(href="#market") Market
+                li: a(href="#employees") Employees
+                li: a(href="#economy") Economy
+                li: a(href="#production") Production
+                li: a(href="#relations") Relations
+                li: a(href="#politics") Politics
 
 
 
-template(name="frontPage")
-    h1 front page
+template(name="home")
+    //-
+        Home page.
+        Displays news maybe
 
+    .home
+        h1 Home
+
+
+template(name="loading")
+    //-
+        Loading page, might be useful
+
+    .loading
+        h1 Loading...
+
+
+template(name="chat")
+    //-
+        Chat module
+        Can join different channels
+
+    .chat
+        h1 Chat window
+
+
+template(name="events")
+    //-
+        Chat module
+        Can join different channels
+
+    .events
+        h1 Events
 
 
 template(name="companyStatus")
+    //-
+        Brief overview of company info.
+
     with company
-        .companyStatus.container
+        .company-status.row
 
             .col-md-4
                 h1= name
@@ -118,11 +197,66 @@ template(name="companyStatus")
 
     
     
-template(name="companyList")
+template(name="relations")
+    //-
+        The relation of your company to other companies
+        Friends list, rival list etc
+
     .company-list
         each companies
             .company-entry
                 h2= name
                 p= _id
 
-        
+
+
+    
+    
+template(name="employees")
+    //-
+        The company's workforce
+        Hire new employees, fire, manage them
+
+    .employees
+        h1 Employees
+
+
+     
+
+template(name="market")
+    //-
+        The grand market
+        Buy and sell products of all kinds
+        Get statistics of transactions
+        View company orders
+
+    .market
+        h1 Market
+
+
+template(name="economy")
+    //-
+        Internal economy status
+        Cashflow over time
+        Ownershipm, Results, Income, expences
+
+    .economy
+        h1 Economy
+
+
+template(name="production")
+    //-
+        Manufacture products from raw materials
+        Overview of factories and their machines
+
+    .production
+        h1 Production
+
+
+template(name="politics")
+    //-
+        Overview over the political landscape
+        Bribe politicians, enact laws
+
+    .politics
+        h1 Politics
