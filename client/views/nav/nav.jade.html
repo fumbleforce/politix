@@ -1,0 +1,16 @@
+
+template(name="navList")
+    //-
+        Vertical navigation list
+
+    .nav-list
+        nav
+            ul.nav.nav-pills.nav-stacked
+                li: a(href="{{pathFor 'home'}}") Home
+                li: a(href="{{pathFor 'market'}}") Market
+                li: a(href="{{pathFor 'employees'}}") Employees
+                li: a(href="{{pathFor 'economy'}}") Economy
+                li: a(href="{{pathFor 'production'}}") Production
+                li: a(href="{{pathFor 'relations'}}") Relations
+                li: a(href="{{pathFor 'politics'}}") Politics
+

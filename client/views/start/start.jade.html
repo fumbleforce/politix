@@ -1,0 +1,26 @@
+
+
+
+    
+template(name="startGame")
+    //-
+        Form for setting setting company name and owner name
+
+    p= error
+
+    .form-horizontal
+
+        .form-group
+            label.control-label.col-sm-2(for="owner") Owner
+            .col-sm-10
+                input#owner.form-control.owner
+
+        .form-group
+            label.control-label.col-sm-2(for="name") Company Name
+            .col-sm-10
+                input#name.form-control.companyName
+
+        .form-group
+            .col-sm-offset-2.col-sm-10
+                input.btn.btn-primary.save(type="submit", value="Found Company")
+

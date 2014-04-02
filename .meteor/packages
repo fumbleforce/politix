@@ -13,3 +13,5 @@ accounts-ui
 accounts-password
 jade
 bootstrap-3
+iron-router
+accounts-entry

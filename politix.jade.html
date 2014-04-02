@@ -1,9 +1,6 @@
 head
     title politix
 
-body
-    +main
-    
     
 
 
@@ -12,67 +9,16 @@ template(name="main")
         Top level template.
         The container for all templates.
 
-    .top-bar
-        if currentUser
-            +loginButtons
-            .user-info
-                span Company: #{currentUser.company}
-                span CEO: #{currentUser.profile.name}
     .main
-        unless currentUser
-            .focus-container
-                +loginButtons
-        else 
-            unless hasCompany
-                if hasName
-                    .focus-container
-                        +createCompany
-                else
-                    .focus-container
-                        +nameForm
-            else
-                +layout
-
-
-
-
-    
-template(name="createCompany")
-    //-
-        Form for setting setting company name
-
-    p= error
-
-    .form-horizontal
-
-        .form-group
-            label.control-label.col-sm-2(for="name") Company Name
-            .col-sm-10
-                input#name.form-control.name
-
-        .form-group
-            .col-sm-offset-2.col-sm-10
-                input.btn.btn-primary.save(type="submit", value="Found Company")
-
-
-
-
-template(name="nameForm")
-    //-
-        Form for setting CEO Name
-
-    p= error
-
-    .form-horizontal
-
-        .form-group
-            label.control-label.col-sm-2(for="ceo") CEO
-            .col-sm-10
-                input#ceo.form-control.ceo
-
-        .form-group
-            .col-sm-offset-2.col-sm-10
-                input.btn.btn-primary.save(type="submit", value="Set CEO name")
+        if noUser
+            +entrySignIn
+        else if noCompany
+            +startGame
+        else if noName
+            +startGame
+        else
+            +home
+                
 
 
 
@@ -80,67 +26,38 @@ template(name="nameForm")
 template(name="layout")
     //- 
         Places the components in their proper place.
-        Displayed if company and ceo is set
+        Displayed if company and owner is set
+    
+    unless currentUser
+        +yield
+    else
+        .top-bar
+            if currentUser
+                +loginButtons
+                .user-info
+                    span Company: #{currentUser.company}
+                    span Name: #{currentUser.profile.name}
 
-    .row
-        // Company status row
-        +companyStatus
+        .main
+            .row.page
+                // Company status row
+                +companyStatus
 
-    .row
-        .col-md-1
-            // Nav, other things?
-            +navList
+            .row
+                .col-md-1.page
+                    // Nav, other things?
+                    +navList
 
-        .col-md-10
-            // Content of different pages
-            +pages
+                .col-md-9.page
+                    // Content of different pages
+                    +yield
 
-        .col-md-1
-            // Chat, status updates
-            //+events
-            +chat
-
-
-
-template(name="pages")
-    //-
-        The big window in the center.
-        Displays the page selected in the nav
-
-    .center-container
-        if onPage "home"
-            +home
-        else if onPage "market"
-            +market
-        else if onPage "employees"
-            +employees
-        else if onPage "economy"
-            +economy
-        else if onPage "production"
-            +production
-        else if onPage "relations"
-            +relations
-        else if onPage "politics"
-            +politics
-        else
-            +home
+                .col-md-2.page
+                    // Chat, status updates
+                    +eventList
+                    +chat
 
 
-
-template(name="navList")
-    //-
-        Vertical navigation list
-
-    .nav-list
-        nav
-            ul.nav.nav-pills.nav-stacked
-                li: a(href="#home") Home
-                li: a(href="#market") Market
-                li: a(href="#employees") Employees
-                li: a(href="#economy") Economy
-                li: a(href="#production") Production
-                li: a(href="#relations") Relations
-                li: a(href="#politics") Politics
 
 
 
@@ -161,22 +78,8 @@ template(name="loading")
         h1 Loading...
 
 
-template(name="chat")
-    //-
-        Chat module
-        Can join different channels
-
-    .chat
-        h1 Chat window
 
 
-template(name="events")
-    //-
-        Chat module
-        Can join different channels
-
-    .events
-        h1 Events
 
 
 template(name="companyStatus")
@@ -196,19 +99,6 @@ template(name="companyStatus")
                 p= currentUser.username
 
     
-    
-template(name="relations")
-    //-
-        The relation of your company to other companies
-        Friends list, rival list etc
-
-    .company-list
-        each companies
-            .company-entry
-                h2= name
-                p= _id
-
-
 
     
     
