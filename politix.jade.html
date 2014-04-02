@@ -17,7 +17,7 @@ template(name="main")
         else if noName
             +startGame
         else
-            +home
+            +dashboard
                 
 
 
@@ -38,27 +38,38 @@ template(name="layout")
                     span Company: #{currentUser.company}
                     span Name: #{currentUser.profile.name}
 
-        .main
-            .row.page
-                // Company status row
-                +companyStatus
+        +yield
 
-            .row
-                .col-md-1.page
-                    // Nav, other things?
-                    +navList
+            //-
+                .row.page
+                    // Company status row
+                    +companyStatus
 
-                .col-md-9.page
-                    // Content of different pages
-                    +yield
+                .row
+                    .col-md-1.page
+                        // Nav, other things?
+                        +navList
 
-                .col-md-2.page
-                    // Chat, status updates
-                    +eventList
-                    +chat
+                    .col-md-9.page
+                        // Content of different pages
+                        +yield
+
+                    .col-md-2.page
+                        // Chat, status updates
+                        +eventList
+                        +chat
 
 
 
+
+template(name="dashboard")
+    //- 
+        Contains the view where all components are available
+    
+    +companyStatus
+    +navList
+    +eventList
+    +chat
 
 
 template(name="home")
@@ -66,8 +77,12 @@ template(name="home")
         Home page.
         Displays news maybe
 
-    .home
-        h1 Home
+    .home.panel.panel-primary.drag-component.resizable
+            .panel-heading
+                | Hello
+            .panel-body
+                | Such a sexy boody
+
 
 
 template(name="loading")
@@ -85,20 +100,25 @@ template(name="loading")
 template(name="companyStatus")
     //-
         Brief overview of company info.
-
-    with company
-        .company-status.row
-
-            .col-md-4
-                h1= name
-
-            .col-md-4
-                p= cash
-
-            .col-md-4
-                p= currentUser.username
-
     
+    .company-status.panel.panel-primary.drag-component.resizable
+        .panel-heading
+            | Company
+
+        .panel-body
+            with company
+                .row
+
+                    .col-md-4
+                        h1= name
+
+                    .col-md-4
+                        p= cash
+
+                    .col-md-4
+                        p= currentUser.username
+
+        
 
     
     

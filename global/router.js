@@ -6,12 +6,14 @@ Router.map(function() {
 			AccountsEntry.signInRequired(this);
 		}
 	});
-	this.route('home', {
-		path: '/home',
+	this.route('dashboad', {
+		path: '/dashboad',
 		onBeforeAction: function () {
 			AccountsEntry.signInRequired(this);
 		}
 	});
+
+	/*
 	this.route('employees', {
 		path: '/employees',
 		onBeforeAction: function () {
@@ -48,7 +50,7 @@ Router.map(function() {
 			AccountsEntry.signInRequired(this);
 		}
 	});
-	
+	*/
 });
 
 

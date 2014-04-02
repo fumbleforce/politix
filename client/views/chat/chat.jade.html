@@ -4,20 +4,25 @@ template(name="chat")
         Chat module
         Can join different channels
 
-    .chat
-        .channels
-            button.btn.btn-sm.col-md-6 Global
-            button.btn.btn-sm.col-md-6 Local
-        ul
-            li
-                b Bob
-                p Hello
-            li
-                b Mark
-                p Hello bob
-            li
-                b Bob
-                p Hello Mark
-            li
-                b Izzy
-                p Hello both  
+    .chat.panel.panel-primary.drag-component.resizable
+
+        .panel-heading
+            | Chat
+
+        .panel-body
+            .channels
+                button.btn.btn-sm.col-md-6 Global
+                button.btn.btn-sm.col-md-6 Local
+            ul
+                li
+                    b Bob
+                    p Hello
+                li
+                    b Mark
+                    p Hello bob
+                li
+                    b Bob
+                    p Hello Mark
+                li
+                    b Izzy
+                    p Hello both  

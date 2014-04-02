@@ -4,17 +4,23 @@ template(name="eventList")
         Can join different channels
 
 
-    .events
-        .filters.clearfix
-            button.btn.btn-sm.col-md-3 Bankruptcy
-            button.btn.btn-sm.col-md-3 Weather
-            button.btn.btn-sm.col-md-3 Workers
-            button.btn.btn-sm.col-md-3 Market
-            button.btn.btn-sm.col-md-3 Messages
-        
-        .event-list
-            .event-entry Event 1 happened!
-            .event-entry Event 2 happened!
-            .event-entry Event 3 happened!
-            .event-entry Event 4 happened!
-            .event-entry Event 5 happened!
+    .events.panel.panel-primary.drag-component.resizable
+
+        .panel-heading
+            | Events
+
+        .panel-body
+
+            .filters.clearfix
+                button.btn.btn-sm.col-md-3 Bankruptcy
+                button.btn.btn-sm.col-md-3 Weather
+                button.btn.btn-sm.col-md-3 Workers
+                button.btn.btn-sm.col-md-3 Market
+                button.btn.btn-sm.col-md-3 Messages
+            
+            .event-list
+                .event-entry Event 1 happened!
+                .event-entry Event 2 happened!
+                .event-entry Event 3 happened!
+                .event-entry Event 4 happened!
+                .event-entry Event 5 happened!

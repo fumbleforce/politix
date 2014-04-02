@@ -5,7 +5,7 @@ Meteor.startup(function () {
 
 	AccountsEntry.config({
 		homeRoute: '/',
-		dashboardRoute: '/home',
+		dashboardRoute: '/dashboard',
 		language: 'en',
 		showSignupCode: false
 	});
