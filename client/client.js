@@ -15,11 +15,7 @@ Template.main.hasCompany = function () {
 };
 Template.main.noCompany = !Template.main.hasCompany();
 
-Template.companyStatus.company = function () {
-    if (Meteor.user())
-        return Companies.findOne(Meteor.user().company);
-    return false;
-};
+
 
 Template.main.rendered = function () {
 

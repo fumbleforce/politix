@@ -1,13 +1,14 @@
-
-    
 template(name="relations")
     //-
         The relation of your company to other companies
         Friends list, rival list etc
 
-    .company-list
-        each companies
-            .company-entry
-                h2= name
-                p= _id
+    .relations.panel.panel-primary.drag-component.resizable(style="display:none")
+        .panel-heading Production
+        .panel-body
+            .company-list
+                each companies
+                    .company-entry
+                        h2= name
+                        p= _id
 

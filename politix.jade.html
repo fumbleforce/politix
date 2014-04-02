@@ -66,10 +66,19 @@ template(name="dashboard")
     //- 
         Contains the view where all components are available
     
-    +companyStatus
+    //- Standard on
+    +company
     +navList
     +eventList
     +chat
+
+    //- Togglable
+    +employees
+    +finance
+    +market
+    +politics
+    +production
+    +relations
 
 
 template(name="home")
@@ -92,81 +101,3 @@ template(name="loading")
     .loading
         h1 Loading...
 
-
-
-
-
-
-template(name="companyStatus")
-    //-
-        Brief overview of company info.
-    
-    .company-status.panel.panel-primary.drag-component.resizable
-        .panel-heading
-            | Company
-
-        .panel-body
-            with company
-                .row
-
-                    .col-md-4
-                        h1= name
-
-                    .col-md-4
-                        p= cash
-
-                    .col-md-4
-                        p= currentUser.username
-
-        
-
-    
-    
-template(name="employees")
-    //-
-        The company's workforce
-        Hire new employees, fire, manage them
-
-    .employees
-        h1 Employees
-
-
-     
-
-template(name="market")
-    //-
-        The grand market
-        Buy and sell products of all kinds
-        Get statistics of transactions
-        View company orders
-
-    .market
-        h1 Market
-
-
-template(name="economy")
-    //-
-        Internal economy status
-        Cashflow over time
-        Ownershipm, Results, Income, expences
-
-    .economy
-        h1 Economy
-
-
-template(name="production")
-    //-
-        Manufacture products from raw materials
-        Overview of factories and their machines
-
-    .production
-        h1 Production
-
-
-template(name="politics")
-    //-
-        Overview over the political landscape
-        Bribe politicians, enact laws
-
-    .politics
-        h1 Politics

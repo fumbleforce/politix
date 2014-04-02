@@ -6,6 +6,11 @@ Template.navList.page = function () {
 
 Template.navList.events({
     'click a': function (event) {
-        Session.set("currentPage", event.target.hash.split("#")[1]);
+        var $el = $("."+event.target.hash.split("#")[1]);
+        console.log($el.css('left'))
+        if ($el.css('left') == 'auto')
+            $el.css('left', Math.floor(Math.random()*$(window).width()) + "px")
+        
+        $el.toggle(100);
     }
 });
