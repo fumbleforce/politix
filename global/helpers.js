@@ -1,6 +1,6 @@
 
 
-UI.registerHelper('objToArray', function(obj) {
+UI.registerHelper('asSortedArray', function(obj) {
     var result = [];
     for (var key in obj)
         result.push({ key:key, value:obj[key] });
