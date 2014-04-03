@@ -1,0 +1,24 @@
+
+
+template(name="company")
+    //-
+        Brief overview of company info.
+    
+    .company.panel.panel-primary.drag-component.resizable
+        .panel-heading
+            | Company
+
+        .panel-body
+            with company
+                .row
+
+                    .col-md-4
+                        h1= name
+
+                    .col-md-4
+                        p= cash
+
+                    .col-md-4
+                        p= currentUser.username
+
+        
