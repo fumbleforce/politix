@@ -1,16 +1,18 @@
+var requireLogin = function() {
+	if (!Meteor.user() && !Meteor.loggingIn()) {
+		Router.go('signIn');
+		return;
+	}
+};
+
+Router.onBeforeAction(requireLogin, {only: ['dashboard'] });
 
 Router.map(function() {
 	this.route('main', {
 		path: '/',
-		onBeforeAction: function () {
-			AccountsEntry.signInRequired(this);
-		}
 	});
-	this.route('dashboad', {
-		path: '/dashboad',
-		onBeforeAction: function () {
-			AccountsEntry.signInRequired(this);
-		}
+	this.route('dashboard', {
+		path: '/dashboard',
 	});
 
 	/*

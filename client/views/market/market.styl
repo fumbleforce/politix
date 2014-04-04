@@ -1,14 +1,49 @@
+@import '../../stylesheets/base'
+
 .market
-    min-width: 500px !important
-    min-height: 300px !important
+    min-width: 800px !important
+    min-height: 600px !important
+
+    .row
+        display:table
+    
+    .orders
+        h3
+            margin: 0
+            
+        .item-info
+            p
+                margin: 0
+
+    [class*="col-"]
+        display: table-cell
+        float: none
 
     .market-filter
-        
+        background: darkgray
 
-        li
-            padding: 0 5px
-            margin: 0 0 5px 0
-            background: wheat
+        li:hover
+            cursor: pointer
+            opacity: 0.8
+
+        .filter-list
+	        li
+	            padding: 0 5px
+	            border-bottom: 5px solid transparent
+	            background: secondary
+	            color:white
+
+		.sub-filter-list
+            li
+            	padding: 0 5px
+	            background: cadetblue !important
+	            color:white !important
+    
+    
 
     table
         width: 100%
+
+        caption
+        	background: gray
+        	color: white

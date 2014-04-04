@@ -1,10 +1,15 @@
+@import 'nib'
 
+text-sm = 10px
 
-text-sm = 10px;
+/* Color palette */
 
+primary = lightgray
+secondary = darkslategrey
 
-
-
+panel-background = lightgray
+panel-header-background = darkslategrey
+panel-header-color = white
 
 
 /* Bootstrap and default overrides */
@@ -19,20 +24,24 @@ text-sm = 10px;
 
 .panel
     border-radius: 0
+    user-select: none
+    margin: 0
 
     .panel-heading
         padding: 0
         border-radius: 0
+        user-select: none
 
     .panel-body
         padding: 5px
+        user-select: none
 
 ul
     padding: 0
     margin: 0
 
     li
-        list-style-type: none;
+        list-style-type: none
 
 /* Layout */
 
@@ -40,6 +49,20 @@ ul
 	padding: 5px
     position: relative
     overflow: hidden
+
+.panel
+    background: panel-background
+    
+    .panel-heading
+        background: panel-header-background
+        color: panel-header-color
+
+
+
+/* common classes */
+
+.full-width
+    width: 100% !important
 
 
 /* Framework */

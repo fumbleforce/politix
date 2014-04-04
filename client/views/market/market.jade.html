@@ -8,58 +8,76 @@ template(name="market")
     .market.panel.panel-primary.drag-component.resizable(style="display:none")
         .panel-heading Market
         .panel-body
-            ul.market-filter.col-sm-3
-                each items
-                    li= key
+            .row
+                .market-filter.col-sm-3
 
-            .orders.col-sm-9
-                table.buy.orders
-                    caption Buy Orders
-                    thead
-                        tr
-                            th Corporation
-                            th Price
-                            th Amount
-                    tbody
-                        tr
-                            td Corpimus Maximus
-                            td 158.00
-                            td 100
-                        tr
-                            td Corpimus Maximus
-                            td 258.00
-                            td 300
-                        tr
-                            td Corpimus Maximus
-                            td 138.00
-                            td 11020
-                        tr
-                            td Corpimus Maximus
-                            td 158.00
-                            td 1040
+                    p Volantis District
 
-                table.sell.orders
-                    caption Sell Orders
-                    thead
-                        tr
-                            th Corporation
-                            th Price
-                            th Amount
-                    tbody
-                        tr
-                            td Corpimus Maximus
-                            td 158.00
-                            td 100
-                        tr
-                            td Corpimus Maximus
-                            td 258.00
-                            td 300
-                        tr
-                            td Corpimus Maximus
-                            td 138.00
-                            td 11020
-                        tr
-                            td Corpimus Maximus
-                            td 158.00
-                            td 1040
+                    ul.filter-list
+                        each items
+                            li= key
+
+                            ul.sub-filter-list(style="display:none")
+                                each asSortedArray subitems
+                                    li(item="#{subkey}")= subkey
+
+                .orders.col-sm-9
+                    .row.full-width
+                        with item
+                            .col-xs-6
+                                h3= subkey
+                            .col-xs-6
+                                .item-info
+                                    p Weight: 1.0
+                                    p Type: Metal
+
+                    table.buy.orders
+                        caption Buy Orders
+                        thead
+                            tr
+                                th Corporation
+                                th Price
+                                th Amount
+                        tbody
+                            tr
+                                td Corpimus Maximus
+                                td 158.00
+                                td 100
+                            tr
+                                td Corpimus Maximus
+                                td 258.00
+                                td 300
+                            tr
+                                td Corpimus Maximus
+                                td 138.00
+                                td 11020
+                            tr
+                                td Corpimus Maximus
+                                td 158.00
+                                td 1040
+
+                    table.sell.orders
+                        caption Sell Orders
+                        thead
+                            tr
+                                th Corporation
+                                th Price
+                                th Amount
+                        tbody
+                            tr
+                                td Corpimus Maximus
+                                td 158.00
+                                td 100
+                            tr
+                                td Corpimus Maximus
+                                td 258.00
+                                td 300
+                            tr
+                                td Corpimus Maximus
+                                td 138.00
+                                td 11020
+                            tr
+                                td Corpimus Maximus
+                                td 158.00
+                                td 1040
 

@@ -6,7 +6,6 @@
 standard-app-packages
 autopublish
 insecure
-stylus
 underscore
 accounts-base
 accounts-ui
@@ -15,3 +14,4 @@ jade
 bootstrap-3
 iron-router
 accounts-entry
+stylus-multi

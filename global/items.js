@@ -5,9 +5,9 @@ items = {
     // Raw metals used for producing things
     metals: {
         key: "metals",
-        items: {
+        subitems: {
             steel: {
-                key: "steel",
+                subkey: "steel",
                 props: {
                     weight: 1.0
                 }
@@ -20,9 +20,9 @@ items = {
     // Raw materials made from wood. Used in construction
     wood: {
         key: "wood",
-        items: {
+        subitems: {
             planks: {
-                key: "planks",
+                subkey: "planks",
                 props: {
                     weight: 1.0
                 }
@@ -33,7 +33,7 @@ items = {
     // Machines used in factories
     machines: {
         key: "machines",
-        items: {
+        subitems: {
 
         }
     },
@@ -41,7 +41,7 @@ items = {
     // Research equipment
     research: {
         key: "reseach",
-        items: {
+        subitems: {
 
         }
     }
@@ -51,3 +51,16 @@ items = {
 sortedItems = _.sortBy(items, function(item) {
     return item.key;
 });
+
+getItem = function (name) {
+    console.log("finding " + name);
+    var result;
+    _.each(items, function (type) {
+        console.log(type.subitems[name]);
+        if (_.has(type.subitems, name)) {
+            result = type.subitems[name];
+        }
+    });
+    console.log(result);
+    return result;
+};

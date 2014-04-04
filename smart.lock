@@ -5,7 +5,8 @@
       "jade": {},
       "bootstrap-3": {},
       "iron-router": {},
-      "accounts-entry": {}
+      "accounts-entry": {},
+      "stylus-multi": {}
     },
     "packages": {
       "jade": {
@@ -27,6 +28,11 @@
         "git": "https://github.com/Differential/accounts-entry.git",
         "tag": "v0.7.2",
         "commit": "cda8617139b5edd79a52023986bfecb48e4b9dc4"
+      },
+      "stylus-multi": {
+        "git": "https://github.com/furrio/meteor-stylus-multi.git",
+        "tag": "v0.0.2",
+        "commit": "f9a3e832f43edfda74d845fce6007725f5e05a5f"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",
