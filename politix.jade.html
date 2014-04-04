@@ -12,7 +12,7 @@ template(name="main")
     .main
         if noUser
             +entrySignIn
-        else if noCompany
+        else if noCorporation
             +startGame
         else if noName
             +startGame
@@ -35,7 +35,7 @@ template(name="layout")
             if currentUser
                 +loginButtons
                 .user-info
-                    span Company: #{currentUser.company}
+                    span Corporation: #{currentUser.corporation}
                     span Name: #{currentUser.profile.name}
 
         +yield
@@ -65,23 +65,30 @@ template(name="layout")
 template(name="dashboard")
     //- 
         Contains the view where all components are available
+
+    if noCorporation
+        +startGame
+    else if noName
+        +startGame
+    else
     
-    // Standard on
-    +company
-    +navList
-    +eventList
-    +chat
+        // Standard on
+        +corporation
+        +navList
+        +eventList
+        +chat
 
-    // Togglable
-    +employees
-    +finance
-    +market
-    +politics
-    +production
-    +relations
+        // Togglable
+        +employees
+        +finance
+        +market
+        +politics
+        +production
+        +relations
+        +storage
 
-    // Dialogs
-    +marketDialog
+        // Dialogs
+        +marketDialog
 
 
 template(name="home")

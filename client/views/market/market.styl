@@ -4,7 +4,8 @@
 
 .market
     min-width: 800px !important
-    min-height: 600px !important
+    min-height: 300px !important
+    height: auto !important
 
     .row
         display:table
@@ -23,6 +24,7 @@
 
     .market-filter
         background: darkgray
+        height: auto
 
         li:hover
             cursor: pointer
@@ -47,6 +49,8 @@
 
     table
         width: 100%
+        max-height: 300px
+        overflow-y: auto
 
         caption
         	background: gray
@@ -65,4 +69,3 @@
 
 .market-order-dialog
     width: 300px
-    height: 500px

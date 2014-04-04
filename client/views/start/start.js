@@ -3,15 +3,15 @@
 
 Template.startGame.events({
     'click .save': function (event, template) {
-        var companyName = template.find(".companyName").value,
+        var corporationName = template.find(".corporationName").value,
             owner = template.find(".owner").value;
 
-        if (!companyName.length)
-            Session.set("createError", "The company needs a name");
+        if (!corporationName.length)
+            Session.set("createError", "The corporation needs a name");
         else if (!owner.length)
             Session.set("createError", "You need to specify a name");
         else {
-            var id = createCompany({ name: companyName });
+            var id = createCorporation({ name: corporationName });
             setOwnerName({ owner: owner });
         }
     }

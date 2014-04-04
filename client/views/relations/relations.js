@@ -1,5 +1,5 @@
-Template.relations.companies = function () {
-    return Companies.find();
+Template.relations.Corporation = function () {
+    return Corporation.find();
 };
 
 Template.relations.events({

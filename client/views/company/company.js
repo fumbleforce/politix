@@ -1,5 +1,5 @@
-Template.company.company = function () {
+Template.corporation.corporation = function () {
     if (Meteor.user())
-        return Companies.findOne(Meteor.user().company);
+        return Corporation.findOne(Meteor.user().corporation);
     return false;
 };

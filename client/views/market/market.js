@@ -12,13 +12,21 @@ Template.market.item = function () {
 Template.market.buyOrders = function () {
 	// TODO Sort by location
 	console.log("buy orders");
-	return MarketOrder.find({ itemId: +Session.get("activeMarketItem"), buyOrder: true });
+	return MarketOrder.find({
+		itemId: +Session.get("activeMarketItem"),
+		buyOrder: true,
+		status: 1
+	});
 };
 
 Template.market.sellOrders = function () {
 	// TODO Sort by location
 	console.log("sell orders");
-	return MarketOrder.find({ itemId: +Session.get("activeMarketItem"), buyOrder: false });
+	return MarketOrder.find({
+		itemId: +Session.get("activeMarketItem"),
+		buyOrder: false,
+		status: 1
+	});
 };
 
 
@@ -50,8 +58,19 @@ Template.marketDialog.order = function () {
 
 Template.marketDialog.totalPrice = function () {
 	var o = MarketOrder.findOne(Session.get("selectedMarketOrder"));
-	console.log(o);
 	// Todo add tax and transaction cost
-
 	return o.amount * o.price;
 };
+
+Template.marketDialog.events({
+	"click .cancel": function(event) {
+		$('.market-order-dialog').hide();
+	},
+	"click .accept": function(event) {
+		$('.market-order-dialog').hide();
+		var orderId = Session.get("selectedMarketOrder"),
+			amount = $('.market-order-dialog').find("input .orderAmount").val();
+		
+		acceptOrder({ orderId: orderId, amount: amount });
+	},
+});

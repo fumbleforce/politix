@@ -3,14 +3,16 @@ setOwnerName = function (options) {
     Meteor.call('setOwnerName', _.extend({}, options));
 };
 
-createCompany = function (options) {
+createCorporation = function (options) {
     var id = Random.id();
-    Meteor.call('createCompany', _.extend({ _id: id }, options));
+    Meteor.call('createCorporation', _.extend({ _id: id }, options));
     return id;
 };
 
+acceptOrder = function (options) { Meteor.call('acceptOrder', options); };
+
 Meteor.methods({
-    createCompany: function (options) {
+    createCorporation: function (options) {
         check(options, {
             name: NonEmptyString,
             _id: Match.Optional(NonEmptyString)
@@ -22,24 +24,24 @@ Meteor.methods({
         if (!this.userId)
             throw new Meteor.Error(401, "Must be logged in");
 
-        if (Companies.find({ name: options.name }).count())
-            throw new Meteor.Error(400, "Company name exists");
+        if (Corporation.find({ name: options.name }).count())
+            throw new Meteor.Error(400, "Corporation name exists");
 
         var id = options._id || Random.id();
         
-        Companies.insert({
+        Corporation.insert({
             _id: id,
             owner: this.userId,
             name: options.name,
             cash: 10000.0,
             employees: [],
-            inventory: {}
+            storage: {}
         });
 
         if (Meteor.isServer) {
-            console.log("adding company to user");
+            console.log("adding corporation to user");
             Meteor.users.update(Meteor.user()._id,
-                { $set: { "company": id } }
+                { $set: { "corporation": id } }
             );
         }
         return id;
@@ -61,5 +63,44 @@ Meteor.methods({
         );
         
         return options.owner;
+    },
+
+    // Market
+    acceptOrder: function (opts) {
+        var orderId = opts.orderId,
+            amount = opts.amount,
+            storage = getCorp().storage,
+            order = MarketOrder.findOne(orderId);
+
+        if (!_.has(storage, 1))
+            storage[1] = {};
+
+        if (!_.has(storage[1], order.itemId))
+            storage[1][order.itemId] = { itemKey: order.itemId, amount: 0 };
+
+        if (order.buyOrder) {
+            if (storage[1][order.itemId].amount < order.amount)
+                throw new Meteor.Error(413, "Not enough items");
+
+            storage[1][order.itemId].amount -= order.amount;
+
+            // TODO Remove money from owner, add to corp
+        } else {
+
+            // TODO check if have money, pay
+
+            storage[1][order.itemId].amount += order.amount;
+        }
+
+        
+        MarketOrder.update(order._id,
+            { $set: {
+                "status": 2,
+                "acceptedBy": getCorp().name,
+                "acceptedTime": new Date()
+            }});
+
+        Corporation.update(Meteor.user().corporation,
+            { $set: { "storage": storage } });
     },
 });

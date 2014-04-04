@@ -1,0 +1,15 @@
+template(name="storage")
+    //-
+        Overview of items corporation own
+
+    .storage.panel.panel-primary.drag-component.resizable(style="display:none")
+        .panel-heading Storage
+        .panel-body
+            select
+                option(value="1") Volantis
+                option(value="2") Westeros
+            .storage-window
+                each storageList
+                    .storage-item
+                        .placeholder-icon.pull-left
+                        .pull-left #{name} x#{amount}

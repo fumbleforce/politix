@@ -4,7 +4,7 @@
     
 template(name="startGame")
     //-
-        Form for setting setting company name and owner name
+        Form for setting setting corporation name and owner name
 
     p= error
 
@@ -16,11 +16,11 @@ template(name="startGame")
                 input#owner.form-control.owner
 
         .form-group
-            label.control-label.col-sm-2(for="name") Company Name
+            label.control-label.col-sm-2(for="name") Corporation Name
             .col-sm-10
-                input#name.form-control.companyName
+                input#name.form-control.corporationName
 
         .form-group
             .col-sm-offset-2.col-sm-10
-                input.btn.btn-primary.save(type="submit", value="Found Company")
+                input.btn.btn-primary.save(type="submit", value="Found corporation")
 

@@ -1,19 +1,19 @@
-Template.main.noUser = !Meteor.user();
+Template.dashboard.noUser = !Meteor.user();
 
 
-Template.main.hasName = function () {
+Template.dashboard.hasName = function () {
     if (Meteor.user() && Meteor.user().profile)
         return Meteor.user().profile.name;
     return false;
 };
-Template.main.noName = !Template.main.hasName();
+Template.dashboard.noName = !Template.dashboard.hasName();
 
-Template.main.hasCompany = function () {
+Template.dashboard.hasCorporation = function () {
     if (Meteor.user())
-        return Meteor.user().company;
+        return Meteor.user().corporation;
     return false;
 };
-Template.main.noCompany = !Template.main.hasCompany();
+Template.dashboard.noCorporation = !Template.dashboard.hasCorporation;
 
 
 
