@@ -7,9 +7,11 @@ UI.registerHelper('asSortedArray', function(obj) {
     return result;
 });
 
-UI.registerHelper('capitalize', function(str) {
+
+capitalize = function(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
-});
+};
+UI.registerHelper('capitalize', capitalize);
 
 NonEmptyString = Match.Where(function (x) {
     check(x, String);

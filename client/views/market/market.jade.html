@@ -15,69 +15,79 @@ template(name="market")
 
                     ul.filter-list
                         each items
-                            li= key
+                            li= name
 
                             ul.sub-filter-list(style="display:none")
-                                each asSortedArray subitems
-                                    li(item="#{subkey}")= subkey
+                                each itemList
+                                    li(item="#{itemKey}")= itemName
 
                 .orders.col-sm-9
-                    .row.full-width
-                        with item
-                            .col-xs-6
-                                h3= subkey
-                            .col-xs-6
-                                .item-info
-                                    p Weight: 1.0
-                                    p Type: Metal
+                    if item
+                        .row.full-width
+                            with item
+                                .col-xs-6
+                                    h3= name
+                                .col-xs-6
+                                    .item-info
+                                        p Weight: #{props.weight}
+                                        p Type: #{type}
 
-                    table.buy.orders
-                        caption Buy Orders
-                        thead
-                            tr
-                                th Corporation
-                                th Price
-                                th Amount
-                        tbody
-                            tr
-                                td Corpimus Maximus
-                                td 158.00
-                                td 100
-                            tr
-                                td Corpimus Maximus
-                                td 258.00
-                                td 300
-                            tr
-                                td Corpimus Maximus
-                                td 138.00
-                                td 11020
-                            tr
-                                td Corpimus Maximus
-                                td 158.00
-                                td 1040
+                        table.buy.orders
+                            caption Buy Orders
+                            thead
+                                tr
+                                    th Corporation
+                                    th Price
+                                    th Amount
+                            tbody
+                                each buyOrders
+                                    tr.order(order="#{_id}")
+                                        td= owner
+                                        td= price
+                                        td= amount
 
-                    table.sell.orders
-                        caption Sell Orders
-                        thead
-                            tr
-                                th Corporation
-                                th Price
-                                th Amount
-                        tbody
-                            tr
-                                td Corpimus Maximus
-                                td 158.00
-                                td 100
-                            tr
-                                td Corpimus Maximus
-                                td 258.00
-                                td 300
-                            tr
-                                td Corpimus Maximus
-                                td 138.00
-                                td 11020
-                            tr
-                                td Corpimus Maximus
-                                td 158.00
-                                td 1040
+                        table.sell.orders
+                            caption Sell Orders
+                            thead
+                                tr
+                                    th Corporation
+                                    th Price
+                                    th Amount
+                            tbody
+                                each sellOrders
+                                    tr.order(order="#{_id}")
+                                        td= owner
+                                        td= price
+                                        td= amount
+
+
+
+
+template(name="marketDialog")
+    //-
+        Dialog for accepting trades in the market
+
+    .market-order-dialog.panel.panel-primary.drag-component(style="display:none")
+        .panel-heading Order
+        .panel-body
+            with order
+                if buyOrder
+                    h3 Buy Order
+                else
+                    h3 Sell Order
+
+                p Contract issuer: #{owner}
+                p Price each: #{price}
+                p Amount: #{amount}
+
+                h4 Total: #{totalPrice}
+
+                .row
+                    button.accept.btn.btn-success.pull-left
+                        | Accept Trade
+
+                    button.cancel.btn.btn-warning.pull-left
+                        | Cancel
+
+            
 

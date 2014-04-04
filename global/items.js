@@ -1,66 +1,74 @@
 
 
-items = {
-
+items = [
     // Raw metals used for producing things
-    metals: {
-        key: "metals",
-        subitems: {
-            steel: {
-                subkey: "steel",
-                props: {
-                    weight: 1.0
-                }
-                
-            }
+    {
+        type:"metal",
+        key: 1,
+        name: "Steel",
+        props: {
+            weight: 1.0
         }
-        
     },
 
     // Raw materials made from wood. Used in construction
-    wood: {
-        key: "wood",
-        subitems: {
-            planks: {
-                subkey: "planks",
-                props: {
-                    weight: 1.0
-                }
-            }
+    {
+        type:"wood",
+        key: 2,
+        name: "Plank",
+        props: {
+            weight: 1.0
         }
     },
 
     // Machines used in factories
-    machines: {
-        key: "machines",
-        subitems: {
-
+    {
+        type:"machine",
+        key: 3,
+        name: "Metal Cutter",
+        props: {
+            weight: 1000.0
         }
     },
 
     // Research equipment
-    research: {
-        key: "reseach",
-        subitems: {
-
+    {
+        type:"research",
+        key: 4,
+        name: "Glassware",
+        props: {
+            weight: 50.0
         }
+    },
+];
+
+itemDict = {};
+itemHierarchy = [];
+
+_.each(items, function (i, index) {
+    var typeIndex = _.find(itemHierarchy, function (el) { return i.type == el; });
+
+    if (!typeIndex) {
+        itemHierarchy.push({
+            key: i.type,
+            name: capitalize(i.type),
+            itemList: [{ itemKey: i.key, itemName: i.name }]
+        });
+    } else {
+        itemHierarchy[typeIndex].itemList.push({ itemKey: i.key, itemName: i.name });
     }
 
-};
+
+    itemDict[i.key] = index;
+});
+
+console.log(itemHierarchy);
+
 
 sortedItems = _.sortBy(items, function(item) {
     return item.key;
 });
 
-getItem = function (name) {
-    console.log("finding " + name);
-    var result;
-    _.each(items, function (type) {
-        console.log(type.subitems[name]);
-        if (_.has(type.subitems, name)) {
-            result = type.subitems[name];
-        }
-    });
-    console.log(result);
-    return result;
+getItem = function (id) {
+    return items[itemDict[id]];
 };

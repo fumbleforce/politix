@@ -1,5 +1,7 @@
 @import '../../stylesheets/base'
 
+
+
 .market
     min-width: 800px !important
     min-height: 600px !important
@@ -10,7 +12,7 @@
     .orders
         h3
             margin: 0
-            
+
         .item-info
             p
                 margin: 0
@@ -27,15 +29,17 @@
             opacity: 0.8
 
         .filter-list
-	        li
+	        > li
 	            padding: 0 5px
 	            border-bottom: 5px solid transparent
 	            background: secondary
 	            color:white
 
 		.sub-filter-list
-            li
-            	padding: 0 5px
+            padding: 0 0 0 5px
+
+            > li
+            	padding: 0 0 0 15px !important
 	            background: cadetblue !important
 	            color:white !important
     
@@ -47,3 +51,18 @@
         caption
         	background: gray
         	color: white
+
+        tbody
+            tr:hover
+                @extend .hover
+                background: gray !important
+                color: white
+            
+            tr:nth-child(2n)
+                background: lavender
+
+
+
+.market-order-dialog
+    width: 300px
+    height: 500px
