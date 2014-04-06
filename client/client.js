@@ -6,14 +6,14 @@ Template.dashboard.hasName = function () {
         return Meteor.user().profile.name;
     return false;
 };
-Template.dashboard.noName = !Template.dashboard.hasName();
+Template.dashboard.noName = function() { return !Template.dashboard.hasName(); };
 
 Template.dashboard.hasCorporation = function () {
     if (Meteor.user())
         return Meteor.user().corporation;
     return false;
 };
-Template.dashboard.noCorporation = !Template.dashboard.hasCorporation;
+Template.dashboard.noCorporation = function() { return !Template.dashboard.hasCorporation(); };
 
 
 

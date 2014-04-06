@@ -12,14 +12,17 @@ template(name="main")
     .main
         if noUser
             +entrySignIn
-        else if noCorporation
-            +startGame
-        else if noName
-            +startGame
-        else
-            +dashboard
-                
+        
 
+        h1 My amazing homepage
+        h1 My amazing homepage
+        h1 My amazing homepage
+        h1 My amazing homepage
+        h1 My amazing homepage
+        h1 My amazing homepage
+                
+        a(href="/dashboard")
+            .btn.btn-primary.btn-lg Game
 
 
 
@@ -28,17 +31,15 @@ template(name="layout")
         Places the components in their proper place.
         Displayed if company and owner is set
     
-    unless currentUser
-        +yield
-    else
-        .top-bar
-            if currentUser
-                +loginButtons
-                .user-info
-                    span Corporation: #{currentUser.corporation}
-                    span Name: #{currentUser.profile.name}
 
-        +yield
+    .top-bar
+        if currentUser
+            +loginButtons
+            .user-info
+                span Corporation: #{currentUser.corporation}
+                span Name: #{currentUser.profile.name}
+
+    +yield
 
             //-
                 .row.page

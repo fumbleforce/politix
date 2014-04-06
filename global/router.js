@@ -1,6 +1,6 @@
 var requireLogin = function() {
 	if (!Meteor.user() && !Meteor.loggingIn()) {
-		Router.go('signIn');
+		Router.go('/sign-in');
 		return;
 	}
 };
