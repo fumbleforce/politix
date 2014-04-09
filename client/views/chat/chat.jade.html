@@ -13,16 +13,12 @@ template(name="chat")
             .channels
                 button.btn.btn-sm.col-md-6 Global
                 button.btn.btn-sm.col-md-6 Local
-            ul
-                li
-                    b Bob
-                    p Hello
-                li
-                    b Mark
-                    p Hello bob
-                li
-                    b Bob
-                    p Hello Mark
-                li
-                    b Izzy
-                    p Hello both  
+
+            .chat-message-list
+                ul
+                    each messages
+                        li
+                            b= sender.name
+                            p= message
+
+            input.chat-input(type="text")

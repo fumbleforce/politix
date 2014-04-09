@@ -70,5 +70,17 @@ if (Meteor.isServer) {
     _.each(orders, function (o) {
         MarketOrder.insert(o);
     });
-
 }
+
+
+
+/* Chat Message
+
+string channel [global, <city>]
+string message
+sender: {
+    name
+    id
+}
+*/
+ChatMessage = new Meteor.Collection('chatMessage');

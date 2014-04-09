@@ -49,7 +49,7 @@ Template.dashboard.rendered = function () {
             w_height = $(window).height();
             pos_y = $drag.offset().top + drg_h - e.pageY;
             pos_x = $drag.offset().left + drg_w - e.pageX;
-
+            console.log("dragging down");
             $drag.css('z-index', 1000).parents().on("mousemove", function(e) {
                 targetX = e.pageX + pos_x - drg_w;
                 targetY = e.pageY + pos_y - drg_h;
@@ -57,12 +57,12 @@ Template.dashboard.rendered = function () {
                 targetY = targetY < 0 ? 0 : targetY;
                 targetX = targetX > w_width - drg_w ? w_width - drg_w : targetX;
                 targetY = targetY > w_height - drg_h ? w_height - drg_h : targetY;
-
+                console.log("dragging");
                 $('.draggable').offset({
                     top: targetY,
                     left: targetX
                 }).on("mouseup", function() {
-                    $(this).removeClass('draggable').css('z-index', z_idx);
+                    $(this).removeClass('draggable').css('z-index', 500);
                 });
             });
             e.preventDefault(); // disable selection
@@ -75,7 +75,7 @@ Template.dashboard.rendered = function () {
             }
         });
     };
-
+    console.log("Adding dragging listener");
     $(".drag-component").drags({ handle: ".panel-heading" });
 };
 

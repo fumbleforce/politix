@@ -11,6 +11,8 @@ createCorporation = function (options) {
 
 acceptOrder = function (options) { Meteor.call('acceptOrder', options); };
 
+sendChatMessage = function (options) { Meteor.call('sendChatMessage', options); };
+
 Meteor.methods({
     createCorporation: function (options) {
         check(options, {
@@ -102,5 +104,15 @@ Meteor.methods({
 
         Corporation.update(Meteor.user().corporation,
             { $set: { "storage": storage } });
+    },
+
+    sendChatMessage: function (opts) {
+        console.log("Sending message");
+        console.log(opts);
+        ChatMessage.insert({
+            message: opts.message,
+            sender: { name: getCorp().name, id: getCorp().id },
+            channel: opts.channel
+        });
     },
 });
