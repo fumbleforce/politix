@@ -7,7 +7,9 @@ template(name="production")
         .panel-heading Production
         .panel-body
             .construction
-
+                each constructable
+                    button.btn.btn-primary.btn-sm Construct #{name}
+                    
             .factory-container
                 each factories
                     .factory
