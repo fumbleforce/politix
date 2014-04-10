@@ -40,6 +40,16 @@ items = [
             weight: 50.0
         }
     },
+
+    // Buildings
+    {
+        type: "buildings",
+        key: 5,
+        name: "Toy Factory",
+        props: {
+            weight: 10000000
+        }
+    }
 ];
 
 itemDict = {};

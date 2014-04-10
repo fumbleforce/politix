@@ -6,4 +6,30 @@ template(name="production")
     .production.panel.panel-primary.drag-component.resizable(style="display:none")
         .panel-heading Production
         .panel-body
-            h1 Production
+            .construction
+
+            .factory-container
+                each factories
+                    .factory
+                        p Machine count: #{machines.length} / #{capacity}
+                        p Rent: $ #{cost}
+                        p Durability: #{durability} / 100
+
+                        .machine-container
+                            each machines
+                                .machine
+                                    p #{type} Machine
+                                    p State: #{state}
+                                    p Producing #{config}
+                                    p Rate: #{rate} toy / hour
+                                    p Active employees: #{workers} / #{maxWorkers}
+                                    p Durability: #{durability} / 100
+                                    p Efficiency: #{efficiency} % (hover for more info)
+                                    p Costs: $ #{cost} / hour
+
+                                    button.btn.btn-primary.btn-sm Reconfigure
+                                    button.btn.btn-primary.btn-sm Add employee
+                                    button.btn.btn-primary.btn-sm Remove Employee
+                                    button.btn.btn-primary.btn-sm Shut down
+                                    button.btn.btn-primary.btn-sm Repair
+                                    button.btn.btn-primary.btn-sm Demolish

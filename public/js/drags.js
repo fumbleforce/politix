@@ -1,44 +1,5 @@
-Template.dashboard.noUser = !Meteor.user();
+$(function() {
 
-
-Template.dashboard.hasName = function () {
-    if (Meteor.user() && Meteor.user().profile)
-        return Meteor.user().profile.name;
-    return false;
-};
-Template.dashboard.noName = function() { return !Template.dashboard.hasName(); };
-
-Template.dashboard.hasCorporation = function () {
-    if (Meteor.user())
-        return Meteor.user().corporation;
-    return false;
-};
-Template.dashboard.noCorporation = function() { return !Template.dashboard.hasCorporation(); };
-
-
-
-Template.dashboard.rendered = function () {
-
-    $(".main").height($(window).height());
-};
-    
-Template.navList.rendered = function () {
-
-    if (!this.rendered) {
-        console.log("Adding dragging listener");
-        $(".drag-component").drags({ handle: ".panel-heading" });
-
-        this.rendered = true;
-    }
-};
-
-
-
-Meteor.startup(addDragsFunc);
-
-
-function addDragsFunc () {
-    Session.set("panelOrder", 10);
 
     $.fn.drags = function(opt) {
         var $el, $drag,
@@ -53,11 +14,7 @@ function addDragsFunc () {
             $el = this.find(opt.handle);
         }
 
-        console.log(opt.handle + " should now be draggable");
-
         return $el.css('cursor', opt.cursor).on("mousedown", function(e) {
-
-            Session.set("panelOrder", Session.get("panelOrder")+1);
 
             if(opt.handle === "") {
                 $drag = $(this).addClass('draggable');
@@ -72,6 +29,7 @@ function addDragsFunc () {
             w_height = $(window).height();
             pos_y = $drag.offset().top + drg_h - e.pageY;
             pos_x = $drag.offset().left + drg_w - e.pageX;
+            console.log("dragging down");
             $drag.css('z-index', 1000).parents().on("mousemove", function(e) {
                 targetX = e.pageX + pos_x - drg_w;
                 targetY = e.pageY + pos_y - drg_h;
@@ -79,11 +37,12 @@ function addDragsFunc () {
                 targetY = targetY < 0 ? 0 : targetY;
                 targetX = targetX > w_width - drg_w ? w_width - drg_w : targetX;
                 targetY = targetY > w_height - drg_h ? w_height - drg_h : targetY;
+                console.log("dragging");
                 $('.draggable').offset({
                     top: targetY,
                     left: targetX
                 }).on("mouseup", function() {
-                    $(this).removeClass('draggable').css('z-index', Session.get("panelOrder"));
+                    $(this).removeClass('draggable').css('z-index', 500);
                 });
             });
             e.preventDefault(); // disable selection
@@ -96,4 +55,6 @@ function addDragsFunc () {
             }
         });
     };
-}
+    console.log("Adding dragging listener");
+    $(".drag-component").drags({ handle: ".panel-heading" });
+});
