@@ -28,6 +28,12 @@ Template.navList.rendered = function () {
         console.log("Adding dragging listener");
         $(".drag-component").drags({ handle: ".panel-heading" });
 
+        $(".panel").click(function () {
+            Session.set("panelOrder", Session.get("panelOrder")+1);
+            $(this).css("z-index", Session.get("panelOrder"));
+        });
+
+
         this.rendered = true;
     }
 };
@@ -35,6 +41,7 @@ Template.navList.rendered = function () {
 
 
 Meteor.startup(addDragsFunc);
+
 
 
 function addDragsFunc () {

@@ -20,7 +20,11 @@ Template.chat.rendered = function () {
     if (!this.rendered) {
 
         $(".chat").resize(function () {
-            $(".chat-message-list").css("max-height", ($(".chat panel-body").height()-50) + "px");
+            console.log("Resizing chat");
+            $(".chat-message-list").css({
+                "max-height": ($(".chat panel-body").height()-50) + "px",
+                "height": ($(".chat panel-body").height()-50) + "px"
+            });
         });
         
         this.rendered = true;

@@ -12,3 +12,13 @@ Template.corporation.rendered = function () {
     });
 */
 };
+
+Template.corporation.events({
+    "click .save-corp-info": function (e) {
+        Corporation.update(getCorp()._id,
+            { $set: { 
+                description: $("textarea.description-edit").val(),
+                motto: $("input.motto-edit").val()
+        }});
+    }
+});

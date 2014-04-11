@@ -4,7 +4,7 @@ template(name="corporation")
     //-
         Brief overview of corporation info.
     
-    .corporation.panel.panel-primary.drag-component.resizable
+    .corporation.panel.drag-component.resizable
         
         .panel-heading
             | Corporation
@@ -39,7 +39,12 @@ template(name="corporation")
                                     span.sr-only 45%
                 
                 #corp-public.tab-pane
-                    h1 public
+                    h3= corporation.motto
+                    p= corporation.description
 
                 #corp-edit.tab-pane
-                    h1 edit
+                    h3 Motto
+                    input(type="text" value="#{corporation.motto}").motto-edit
+                    h3 Description
+                    textarea.description-edit= corporation.description
+                    button.btn.btn-warning.save-corp-info Save Changes

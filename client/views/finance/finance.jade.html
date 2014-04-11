@@ -4,7 +4,75 @@ template(name="finance")
         Cashflow over time
         Ownershipm, Results, Income, expences
 
-    .finance.panel.panel-primary.drag-component.resizable(style="display:none")
+    .finance.panel.drag-component.resizable(style="display:none")
         .panel-heading Finance
         .panel-body
-            h1 Finance
+            ul.nav.nav-tabs
+                li.active: a(href="#finance-overview" data-toggle="tab") Overview
+                li: a(href="#finance-transactions" data-toggle="tab") Transactions
+                li: a(href="#finance-breakdown" data-toggle="tab") Breakdown
+                li: a(href="#finance-graphs" data-toggle="tab") Graphs
+
+            .tab-content
+                #finance-overview.tab-pane.active
+                    .time-filter
+                        button.btnx.btnx-1.btnx-1f Hour
+                        button.btnx.btnx-1.btnx-1f Day
+                        button.btnx.btnx-1.btnx-1f Week
+                        button.btnx.btnx-1.btnx-1f Month
+                        button.btnx.btnx-1.btnx-1f Year
+
+                    .row
+                        .income.col-xs-6
+                            h2 Income
+                            p Sales: $ 0
+                            p Interest: $ 0
+                            p Loans: $ 0
+                            p Services: $ 0
+                            
+                        .expences.col-xs-6
+                            h2 Expences
+                            p Salaries: $ 0
+                            p Loan Interest: $ 0
+                            p Rent: $ 0
+                            p Politics: $ 0
+                    hr
+
+                    .row
+                        h3 Result: +$ 99857.58
+
+
+                #finance-transactions.tab-pane.active
+                    p
+                        span Search:
+                        input
+
+                    ul.transaction-list
+                        li.transaction.row
+                            .col-xs-3 Market order
+                            .col-xs-3 NPC Corp inc.
+                            .col-xs-3 $ 8556.78
+                            .col-xs-3 23:24 Mar 15 2014
+                        li.transaction.row
+                            .col-xs-3 Market order
+                            .col-xs-3 NPC Corp inc.
+                            .col-xs-3 $ 8556.78
+                            .col-xs-3 23:24 Mar 15 2014
+                        li.transaction.row
+                            .col-xs-3 Market order
+                            .col-xs-3 NPC Corp inc.
+                            .col-xs-3 $ 8556.78
+                            .col-xs-3 23:24 Mar 15 2014
+                        li.transaction.row
+                            .col-xs-3 Market order
+                            .col-xs-3 NPC Corp inc.
+                            .col-xs-3 $ 8556.78
+                            .col-xs-3 23:24 Mar 15 2014
+                        
+
+                #finance-breakdown.tab-pane.active
+                    p breakdown
+
+
+                #finance-graphs.tab-pane.active
+                    p graphs

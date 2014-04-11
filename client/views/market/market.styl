@@ -7,7 +7,6 @@
     height: 300px
     min-width: 800px !important
     min-height: 300px !important
-    height: auto !important
 
     .row
         display:table
@@ -15,10 +14,14 @@
     .orders
         h3
             margin: 0
+        
+        .item-detail
+            border: 2px solid white
+            margin-bottom: 5px
 
-        .item-info
-            p
-                margin: 0
+            .item-info
+                p
+                    margin: 0
 
     [class*="col-"]
         display: table-cell
@@ -54,6 +57,12 @@
         max-height: 300px
         overflow-y: auto
 
+        thead
+            background:gray
+            
+            th
+                text-align:center
+
         caption
             background: gray
             color: white
@@ -64,8 +73,6 @@
                 background: gray !important
                 color: white
             
-            tr:nth-child(2n)
-                background: lavender
 
 
 

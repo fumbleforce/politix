@@ -4,16 +4,22 @@ text-sm = 10px
 
 /* Color palette */
 
-primary = lightgray
-secondary = darkslategrey
+primary = darkslategray
+primaryColor = white
+secondary = darkcyan
+secondaryColor = white
 
-panel-background = lightgray
-panel-header-background = darkslategrey
-panel-header-color = white
+panel-background = primary
+panel-color = primaryColor
+panel-header-background = primary
+panel-header-color = primaryColor
 
 
 /* Bootstrap and default overrides */
 
+html, body
+    height:100%
+    background: navajowhite
 
 .row
     margin:0
@@ -23,21 +29,23 @@ panel-header-color = white
     border-radius: 0
 
 .panel
-    border-radius: 0
+    border-radius: 3px
     user-select: none
     margin: 0
-    overflow-y: auto;
+    overflow-y: hidden;
     overflow-x: hidden;
 
     .panel-heading
-        padding: 0
-        border-radius: 0
+        padding: 1px 5px
+        border-radius: 0px
         user-select: none
 
     .panel-body
         padding: 5px
         user-select: none
         resize: none
+        overflow-y: auto;
+        overflow-x: hidden;
 
 ul
     padding: 0
@@ -51,6 +59,15 @@ ul
     a
         padding: 2px 5px !important
 
+    > li
+        > a
+            border-radius: 1px 1px 0 0
+
+
+
+a
+    color: linen
+
 
 
 /* Layout */
@@ -62,9 +79,11 @@ ul
 
 .panel
     background: panel-background
+    border: 3px solid secondary
+    color: panel-color
     
     .panel-heading
-        background: panel-header-background
+        background: secondary
         color: panel-header-color
     
 
