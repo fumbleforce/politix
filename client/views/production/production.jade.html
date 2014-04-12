@@ -8,7 +8,7 @@ template(name="production")
         .panel-body
             .construction
                 each constructable
-                    button.btn.btn-primary.btn-sm Construct #{name}
+                    button.btn.btn-primary.btn-sm.construct(building="#{itemKey}") Construct #{name}
                     
             .factory-container
                 each factories

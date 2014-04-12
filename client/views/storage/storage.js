@@ -18,3 +18,10 @@ getStorage = function () {
     }
     return [];
 };
+
+getFromStorage = function (id) {
+    if (getCorp() && getCorp().storage) {
+        return getCorp().storage[1][id];
+    }
+    return false;
+}

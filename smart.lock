@@ -6,7 +6,9 @@
       "bootstrap-3": {},
       "iron-router": {},
       "accounts-entry": {},
-      "stylus-multi": {}
+      "stylus-multi": {},
+      "sparklines": {},
+      "flot": {}
     },
     "packages": {
       "jade": {
@@ -33,6 +35,16 @@
         "git": "https://github.com/furrio/meteor-stylus-multi.git",
         "tag": "v0.0.2",
         "commit": "f9a3e832f43edfda74d845fce6007725f5e05a5f"
+      },
+      "sparklines": {
+        "git": "https://github.com/austinrivas/meteor-sparklines.git",
+        "tag": "v1.0.0",
+        "commit": "cf86cd43401699509efa75f79719c553d97f6916"
+      },
+      "flot": {
+        "git": "https://github.com/austinrivas/meteor-flot.git",
+        "tag": "v1.0.6",
+        "commit": "b1561652ac7a73a99397a9922d39a5e19a75d26e"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",

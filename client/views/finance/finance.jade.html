@@ -11,7 +11,7 @@ template(name="finance")
                 li.active: a(href="#finance-overview" data-toggle="tab") Overview
                 li: a(href="#finance-transactions" data-toggle="tab") Transactions
                 li: a(href="#finance-breakdown" data-toggle="tab") Breakdown
-                li: a(href="#finance-graphs" data-toggle="tab") Graphs
+                li: a#finance-graphs-btn(href="#finance-graphs" data-toggle="tab") Graphs
 
             .tab-content
                 #finance-overview.tab-pane.active
@@ -25,10 +25,26 @@ template(name="finance")
                     .row
                         .income.col-xs-6
                             h2 Income
-                            p Sales: $ 0
-                            p Interest: $ 0
-                            p Loans: $ 0
-                            p Services: $ 0
+                            h4: a(data-toggle="collapse" data-target="#sales") Sales +$ 789.46
+                            #sales.collapse.pad-left
+                                p Wool: $ 300.35
+                                p Steel: $ 879.3
+                                p Toys: $ 33333.33
+                            h4: a(data-toggle="collapse" data-target="#interest") Interest +$ 6547
+                            #interest.collapse.pad-left
+                                p Bank: $ 300.35
+                                p Loans: $ 879.3
+                                p Property: $7566.3
+                            h4: a(data-toggle="collapse" data-target="#grants") Grants +$ 6547
+                            #grants.collapse.pad-left
+                                p Bank: $ 300.35
+                                p Loans: $ 879.3
+                                p Property: $7566.3
+                            h4: a(data-toggle="collapse" data-target="#services") Services +$ 6547
+                            #services.collapse.pad-left
+                                p Bank: $ 300.35
+                                p Loans: $ 879.3
+                                p Property: $7566.3
                             
                         .expences.col-xs-6
                             h2 Expences
@@ -42,7 +58,7 @@ template(name="finance")
                         h3 Result: +$ 99857.58
 
 
-                #finance-transactions.tab-pane.active
+                #finance-transactions.tab-pane
                     p
                         span Search:
                         input
@@ -70,9 +86,30 @@ template(name="finance")
                             .col-xs-3 23:24 Mar 15 2014
                         
 
-                #finance-breakdown.tab-pane.active
-                    p breakdown
+                #finance-breakdown.tab-pane
+                    #accordion.panel-group
+                        .panel.panel-default
+                            .panel-heading
+                                h4.panel-title
+                                    a(data-toggle="collapse" data-parent="#accordion" href="#collapseOne")
+                                        | Sales
+                            #collapseOne.panel-collapse.collapse
+                                .panel-body
+                                    p Wool: $ 300.35
+                                    p Steel: $ 879.3
+                                    p Toys: $ 33333.33
+                        .panel.panel-default
+                            .panel-heading
+                                h4.panel-title
+                                    a(data-toggle="collapse" data-parent="#accordion" href="#collapseTwo")
+                                        | Interest
+                            #collapseTwo.panel-collapse.collapse
+                                .panel-body
+                                    p Loans: $ 300.35
+                                    p Bank: $ 879.3
 
 
-                #finance-graphs.tab-pane.active
-                    p graphs
+
+
+                #finance-graphs.tab-pane
+                    span.result-spark

@@ -4,6 +4,8 @@
     "bootstrap-3": {},
     "iron-router": {},
     "accounts-entry": {},
-    "stylus-multi": {}
+    "stylus-multi": {},
+    "sparklines": {},
+    "flot": {}
   }
 }

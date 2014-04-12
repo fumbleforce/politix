@@ -31,34 +31,35 @@ template(name="market")
                                     .item-info
                                         p Weight: #{props.weight}
                                         p Type: #{type}
-
-                        table.buy.orders
-                            caption Buy Orders
-                            thead
-                                tr
-                                    th Corporation
-                                    th Price
-                                    th Amount
-                            tbody
-                                each buyOrders
-                                    tr.order(order="#{_id}")
-                                        td= owner
-                                        td= price
-                                        td= amount
-
-                        table.sell.orders
-                            caption Sell Orders
-                            thead
-                                tr
-                                    th Corporation
-                                    th Price
-                                    th Amount
-                            tbody
-                                each sellOrders
-                                    tr.order(order="#{_id}")
-                                        td= owner
-                                        td= price
-                                        td= amount
+                        .row.full-width
+                            .col-xs-6
+                                table.buy.orders
+                                    caption Buy Orders
+                                    thead
+                                        tr
+                                            th Corporation
+                                            th Price
+                                            th Amount
+                                    tbody
+                                        each buyOrders
+                                            tr.order(order="#{_id}")
+                                                td= owner
+                                                td= price
+                                                td= amount
+                            .col-xs-6
+                                table.sell.orders
+                                    caption Sell Orders
+                                    thead
+                                        tr
+                                            th Corporation
+                                            th Price
+                                            th Amount
+                                    tbody
+                                        each sellOrders
+                                            tr.order(order="#{_id}")
+                                                td= owner
+                                                td= price
+                                                td= amount
 
 
 

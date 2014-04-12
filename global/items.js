@@ -47,7 +47,8 @@ items = [
         key: 5,
         name: "Toy Factory",
         props: {
-            weight: 10000000
+            weight: 10000000,
+            capacity: 10
         }
     }
 ];
