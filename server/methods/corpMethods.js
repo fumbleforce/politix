@@ -1,5 +1,6 @@
 Meteor.methods({
     createCorporation: function (options) {
+        
         check(options, {
             name: NonEmptyString,
             _id: Match.Optional(NonEmptyString)
@@ -22,15 +23,16 @@ Meteor.methods({
             name: options.name,
             cash: 10000.0,
             employees: [],
-            storage: {}
         });
 
-        if (Meteor.isServer) {
-            console.log("adding corporation to user");
-            Meteor.users.update(Meteor.user()._id,
-                { $set: { "corporation": id } }
-            );
-        }
+        Storage.insert({
+            corporation: id
+        });
+
+        Meteor.users.update(Meteor.user()._id,
+            { $set: { "corporation": id } }
+        );
+
         return id;
     }
 });

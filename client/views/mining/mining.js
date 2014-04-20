@@ -1,4 +1,4 @@
 
 Template.mining.miners = function () {
-    return [];
+    return [{},{},{},{}];
 };

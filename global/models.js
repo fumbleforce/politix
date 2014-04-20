@@ -21,12 +21,18 @@ dict employees
     string role
     float base_motivation
     float salary
-dict inventory
-    item
-        amount
-        value
 */
 Corporation = new Meteor.Collection('corporation');
+
+
+/* Storage
+
+string corporation
+
+*/
+Storage = new Meteor.Collection('storage');
+
+
 
 
 /* Market order
@@ -113,3 +119,12 @@ machines: [
 ]
 */
 Factory = new Meteor.Collection("factory");
+
+/* Miner
+
+double rate (/hour)
+string corporation
+int item (id)
+
+*/
+Miner = new Meteor.Collection("miner");

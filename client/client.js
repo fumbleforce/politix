@@ -6,6 +6,7 @@ Template.dashboard.hasName = function () {
         return Meteor.user().profile.name;
     return false;
 };
+
 Template.dashboard.noName = function() { return !Template.dashboard.hasName(); };
 
 Template.dashboard.hasCorporation = function () {
@@ -13,9 +14,8 @@ Template.dashboard.hasCorporation = function () {
         return Meteor.user().corporation;
     return false;
 };
+
 Template.dashboard.noCorporation = function() { return !Template.dashboard.hasCorporation(); };
-
-
 
 Template.dashboard.rendered = function () {
 
@@ -33,7 +33,6 @@ Template.navList.rendered = function () {
             $(this).css("z-index", Session.get("panelOrder"));
         });
 
-
         this.rendered = true;
     }
 };
@@ -41,8 +40,91 @@ Template.navList.rendered = function () {
 
 
 Meteor.startup(addDragsFunc);
+Meteor.startup(contextMenu);
 
+function contextMenu () {
+    var $menu = $("#context-menu"),
+        currentContext,
 
+        contexts = {
+            item: {
+                actions: [
+                    {
+                        name: "Discard",
+                        func: null
+                    },
+                    {
+                        name: "Sell",
+                        func: null
+                    }
+                ]
+            },
+            miner: {
+                actions: [
+                    {
+                        name: "Dismantle",
+                        func: null
+                    },
+                    {
+                        name: "Repair",
+                        func: null
+                    }
+                ]
+            },
+        };
+        
+
+    var populateMenu = function (context) {
+        $("#context-menu").find("ul").empty();
+
+        for (var c = 0; c < context.length; c++) {
+            
+            var name = context[c];
+            console.log("Populating the " + name + " context");
+            console.log(contexts[name]);
+
+            for (var i = 0; i < contexts[name].actions.length; i++) {
+                $("#context-menu").find("ul").append($("<li data-action='"+contexts[name].actions[i].name+"'>"+contexts[name].actions[i].name+"</li>"));
+            }
+        }
+    };
+
+    var executeMenuAction = function (a, opts) {
+        contexts[currentContext][a](opts);
+    };
+
+    $(document).bind("contextmenu", function (event) {
+        event.preventDefault();
+
+        currentContext = $(event.target).closest("[data-context]").attr("data-context");
+
+        console.log($(event.target).closest("[data-context]"));
+        console.log("Contexts:");
+        console.log(currentContext);
+
+        if (currentContext) {
+
+            currentContext.split(" ");
+
+            if (!Array.isArray(currentContext)) {
+                currentContext = [currentContext];
+            }
+
+            if (currentContext.length) {
+                populateMenu(currentContext);
+            }
+        }
+        $("#context-menu").css({ top: event.pageY + "px", left: event.pageX + "px" }).show(50);
+    });
+
+    $(document).bind("click", function (event) {
+        $("#context-menu").hide();
+    });
+
+    $("#context-menu li").click(function () {
+        executeMenuAction($(this).attr("data-action"));
+    });
+}
 
 function addDragsFunc () {
     Session.set("panelOrder", 10);
