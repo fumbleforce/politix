@@ -71,7 +71,6 @@ if (Meteor.isServer) {
         { itemId: 1, owner:"NPC Corp", buyOrder: false, price: 0.43, amount: 100, location: 1, status: 1 },
         { itemId: 3, owner:"NPC Corp", buyOrder: false, price: 0.43, amount: 300, location: 1, status: 1 },
         { itemId: 3, owner:"NPC Corp", buyOrder: false, price: 0.43, amount: 100, location: 1, status: 1 },
-
         { itemId: 5, owner:"NPC Corp", buyOrder: false, price: 0.43, amount: 1, location: 1, status: 1 },
         { itemId: 5, owner:"NPC Corp", buyOrder: false, price: 0.43, amount: 1, location: 1, status: 1 },
     ];

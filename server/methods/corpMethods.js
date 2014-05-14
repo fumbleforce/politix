@@ -26,7 +26,8 @@ Meteor.methods({
         });
 
         Storage.insert({
-            corporation: id
+            corporation: id,
+            "Volantis": {}
         });
 
         Meteor.users.update(Meteor.user()._id,

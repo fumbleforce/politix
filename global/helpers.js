@@ -1,10 +1,14 @@
 
 asArray = function(obj) {
     var result = [];
+    console.log("From");
+    console.log(obj);
     for (var key in obj) {
         obj[key].key = key;
         result.push(obj[key]);
     }
+    console.log("To:");
+    console.log(result);
     return result;
 };
 UI.registerHelper('asArray', asArray);

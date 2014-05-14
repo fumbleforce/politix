@@ -37,6 +37,28 @@ Template.navList.rendered = function () {
     }
 };
 
+Template.dashboard.events({
+    "click .close-btn": function (e) {
+        var frame = $(e.target).attr("view");
+        $("."+frame).hide();
+    },
+    "click .min-btn": function (e) {
+        var $btn = $(e.target),
+            view = $btn.attr("view"),
+            minimized = $btn.attr("min") === "true",
+            $view = $("."+view);
+
+        if (minimized) {
+            $view.css("height", $view)
+            .find(".panel-body").show();
+            $btn.attr("min", "false");
+        } else {
+            $view.find(".panel-body").hide();
+            $btn.attr("min", "true");
+        }
+    }
+});
+
 
 
 Meteor.startup(addDragsFunc);
@@ -113,8 +135,13 @@ function contextMenu () {
             if (currentContext.length) {
                 populateMenu(currentContext);
             }
+
+            $("#context-menu").css({ top: event.pageY + "px", left: event.pageX + "px" }).show(50);
+        } else {
+            $("#context-menu").hide();
         }
-        $("#context-menu").css({ top: event.pageY + "px", left: event.pageX + "px" }).show(50);
+        
+        
     });
 
     $(document).bind("click", function (event) {

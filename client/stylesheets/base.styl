@@ -19,10 +19,10 @@ panel-header-color = primaryColor
 
 html, body
     height:100%
-    background: navajowhite
+    background: white
 
 body
-    background: url(http://2.bp.blogspot.com/-WVHrVifuR9Y/TbEEn_KgSyI/AAAAAAAAAIc/xDQpp7VyZT4/s1600/night-sky-stars.jpg)
+    // background: url(http://2.bp.blogspot.com/-WVHrVifuR9Y/TbEEn_KgSyI/AAAAAAAAAIc/xDQpp7VyZT4/s1600/night-sky-stars.jpg)
     packground-position: center
     packground-repeat: no-repeat
     background-size: cover
@@ -74,7 +74,7 @@ ul
 a
     color: linen
 
-input, textarea
+input, textarea, option, select
     color:black
 
 
@@ -94,7 +94,27 @@ input, textarea
     .panel-heading
         background: secondary
         color: panel-header-color
-    
+        overflow: hidden
+        resize: none
+        
+        .close-btn, .min-btn
+
+            font-weight: bolder
+            background: primary
+            color: white
+            width: 20px
+            height: 20px
+            border-radius: 2px
+            text-align: center
+            font-size: 15px
+
+            &:hover
+                cursor: pointer !important
+                background: white
+                color: primary
+
+
+
 
 
 /* common classes */
@@ -112,7 +132,10 @@ input, textarea
 
 .drag-component
     position: absolute;
-    
+   
+.text-center
+    width: 100% !important
+    text-align: center 
 
 
 .resizable

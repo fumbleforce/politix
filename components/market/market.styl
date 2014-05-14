@@ -1,0 +1,87 @@
+@import '../../client/stylesheets/base'
+
+
+
+.market
+    width: 800px
+    height: 300px
+    min-width: 800px !important
+    min-height: 300px !important
+
+    .row
+        display:table
+    
+    .orders
+        h3
+            margin: 0
+        
+        .item-detail
+            border: 2px solid white
+            margin-bottom: 5px
+
+            .item-info
+                p
+                    margin: 0
+
+    [class*="col-"]
+        display: table-cell
+        float: none
+
+    .market-filter
+        //background: darkgray
+        height: auto
+
+        li:hover
+            cursor: pointer
+            opacity: 0.8
+
+        .filter-list
+            > li
+                padding: 0 5px
+                border-bottom: 5px solid transparent
+                background: secondary
+                color:white
+
+        .sub-filter-list
+            padding: 0 0 0 5px
+
+            > li
+                padding: 0 0 0 15px !important
+                background: cadetblue !important
+                color:white !important
+    
+    
+
+    table
+        width: 100%
+        max-height: 300px
+        overflow-y: auto
+
+        thead
+            background:gray
+            
+            th
+                text-align:center
+
+        caption
+            background: gray
+            color: white
+
+        tbody
+            tr
+                border: 1px solid transparent
+
+            tr:hover
+                @extend .hover
+                border: 1px solid !important
+                color: white
+            
+            td
+                border-left: 1px dashed
+                border-right: 1px dashed
+                padding-left: 5px
+
+
+
+.market-order-dialog
+    width: 300px

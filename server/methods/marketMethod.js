@@ -1,40 +1,57 @@
 Meteor.methods({
-     // Market
+
     acceptOrder: function (opts) {
         var orderId = opts.orderId,
             amount = opts.amount,
-            storage = getCorp().storage,
+            storage = getStorage(),
+            corp = getCorp(),
             order = MarketOrder.findOne(orderId);
 
-        if (!_.has(storage, 1))
-            storage[1] = {};
+        if (!_.has(storage, "Volantis"))
+            storage["Volantis"] = {};
 
-        if (!_.has(storage[1], order.itemId))
-            storage[1][order.itemId] = { itemKey: order.itemId, amount: 0 };
+        storage = storage["Volantis"];
+
+        if (!_.has(storage, order.itemId))
+            storage[order.itemId] = { itemKey: order.itemId, amount: 0 };
 
         if (order.buyOrder) {
-            if (storage[1][order.itemId].amount < order.amount)
+            if (storage[order.itemId].amount < order.amount)
                 throw new Meteor.Error(413, "Not enough items");
 
-            storage[1][order.itemId].amount -= order.amount;
+            storage[order.itemId].amount -= order.amount;
+            corp.cash += order.amount * order.price;
 
             // TODO Remove money from owner, add to corp
         } else {
 
             // TODO check if have money, pay
 
-            storage[1][order.itemId].amount += order.amount;
+            if (corp.cash >= order.amount * order.price) {
+                storage[order.itemId].amount += order.amount;
+                corp.cash -= order.amount * order.price;
+
+            } else {
+                console.log("Have "+corp.cash+" need "+order.amount * order.price);
+                throw new Meteor.Error(413, "Not enough cash");
+            }
+
+            
         }
 
-        
+        Corporation.update(Meteor.user().corporation,
+            { $set: { "cash": corp.cash } });
+
         MarketOrder.update(order._id,
             { $set: {
                 "status": 2,
-                "acceptedBy": getCorp().name,
+                "acceptedBy": corp.name,
                 "acceptedTime": new Date()
             }});
 
-        Corporation.update(Meteor.user().corporation,
-            { $set: { "storage": storage } });
+        Storage.update({ corporation: Meteor.user().corporation },
+            { $set: { "Volantis": storage } });
+
+        Deps.flush();
     },
 });
