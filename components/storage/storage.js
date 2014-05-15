@@ -16,9 +16,9 @@ getStorageList = function (loc) {
         storage = storage["Volantis"];
 
         var arr = asArray(storage);
-
         _.each(arr, function (item) {
             item.name = getItem(item.itemKey).name;
+            item.hide = item.amount === 0;
         });
 
         return arr;
@@ -36,6 +36,8 @@ getFromStorage = function (id) {
 
 
 
+
+
 if (Meteor.isClient) {
 
     Template.storage.storageList = function () {
@@ -44,9 +46,37 @@ if (Meteor.isClient) {
         return getStorageList();
     };
 
+    discardItem = function ($el) {
+        var itemId = $el.attr("itemId"),
+            quantity = $el.attr("quantity");
+
+        var question = "Are you sure you want to discard " +
+            quantity + " of " + getItem(itemId).name + "?";
+
+        getConfirmation(question, function (res) {
+            if (res) {
+                console.log(res);
+                Meteor.call("discardItem", { itemId: itemId, quantity: quantity });
+            }
+        });
+
+    };
+
 } else {
 
+    Meteor.methods({
 
+        discardItem: function (opts) {
+
+            var storage = getStorage()["Volantis"];
+
+            storage[opts.itemId].amount = 0;
+
+            Storage.update({ corporation: Meteor.user().corporation },
+                { $set: { "Volantis": storage } });
+        }
+
+    });
 }
 
 

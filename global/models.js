@@ -24,6 +24,20 @@ dict employees
 */
 Corporation = new Meteor.Collection('corporation');
 
+if (Meteor.isServer) {
+
+    var npc;
+
+    if (Corporation.find({ name: "NPC corp" }).count() === 0) {
+        Corporation.insert({
+            name: "NPC corp",
+            cash: 999999999999999999,
+        });
+    }
+
+    npc = Corporation.findOne({ name: "NPC corp" });
+}
+
 
 /* Storage
 
@@ -53,26 +67,28 @@ MarketOrder = new Meteor.Collection('marketOrder');
 if (Meteor.isServer) {
     //MarketOrder.find().count() === 0
 
+    npc.id = npc._id
+
     MarketOrder.remove({});
     var orders = [
-        { itemId: 1, owner:"NPC Corp", buyOrder: true, price: 0.43, amount: 100, location: 1, status: 1 },
-        { itemId: 1, owner:"NPC Corp", buyOrder: true, price: 0.43, amount: 100, location: 1, status: 1 },
-        { itemId: 1, owner:"NPC Corp", buyOrder: true, price: 0.03, amount: 100, location: 1, status: 1 },
-        { itemId: 1, owner:"NPC Corp", buyOrder: true, price: 0.43, amount: 500, location: 1, status: 1 },
-        { itemId: 1, owner:"NPC Corp", buyOrder: true, price: 0.33, amount: 1900, location: 1, status: 1 },
-        { itemId: 2, owner:"NPC Corp", buyOrder: true, price: 0.43, amount: 100, location: 1, status: 1 },
-        { itemId: 2, owner:"NPC Corp", buyOrder: true, price: 33.43, amount: 100, location: 1, status: 1 },
-        { itemId: 2, owner:"NPC Corp", buyOrder: true, price: 0.43, amount: 100, location: 1, status: 1 },
-        { itemId: 2, owner:"NPC Corp", buyOrder: false, price: 10.43, amount: 100, location: 1, status: 1 },
-        { itemId: 2, owner:"NPC Corp", buyOrder: false, price: 6.93, amount: 1300, location: 1, status: 1 },
-        { itemId: 2, owner:"NPC Corp", buyOrder: false, price: 0.43, amount: 1040, location: 1, status: 1 },
-        { itemId: 1, owner:"NPC Corp", buyOrder: false, price: 0.43333, amount: 1500, location: 1, status: 1 },
-        { itemId: 1, owner:"NPC Corp", buyOrder: false, price: 0.403, amount: 200, location: 1, status: 1 },
-        { itemId: 1, owner:"NPC Corp", buyOrder: false, price: 0.43, amount: 100, location: 1, status: 1 },
-        { itemId: 3, owner:"NPC Corp", buyOrder: false, price: 0.43, amount: 300, location: 1, status: 1 },
-        { itemId: 3, owner:"NPC Corp", buyOrder: false, price: 0.43, amount: 100, location: 1, status: 1 },
-        { itemId: 5, owner:"NPC Corp", buyOrder: false, price: 0.43, amount: 1, location: 1, status: 1 },
-        { itemId: 5, owner:"NPC Corp", buyOrder: false, price: 0.43, amount: 1, location: 1, status: 1 },
+        { itemId: 1, owner: npc, buyOrder: true, price: 0.43, quantity: 100, location: 1, status: 1 },
+        { itemId: 1, owner: npc, buyOrder: true, price: 0.43, quantity: 100, location: 1, status: 1 },
+        { itemId: 1, owner: npc, buyOrder: true, price: 0.03, quantity: 100, location: 1, status: 1 },
+        { itemId: 1, owner: npc, buyOrder: true, price: 0.43, quantity: 500, location: 1, status: 1 },
+        { itemId: 1, owner: npc, buyOrder: true, price: 0.33, quantity: 1900, location: 1, status: 1 },
+        { itemId: 2, owner: npc, buyOrder: true, price: 0.43, quantity: 100, location: 1, status: 1 },
+        { itemId: 2, owner: npc, buyOrder: true, price: 33.43, quantity: 100, location: 1, status: 1 },
+        { itemId: 2, owner: npc, buyOrder: true, price: 0.43, quantity: 100, location: 1, status: 1 },
+        { itemId: 2, owner: npc, buyOrder: false, price: 10.43, quantity: 100, location: 1, status: 1 },
+        { itemId: 2, owner: npc, buyOrder: false, price: 6.93, quantity: 1300, location: 1, status: 1 },
+        { itemId: 2, owner: npc, buyOrder: false, price: 0.43, quantity: 1040, location: 1, status: 1 },
+        { itemId: 1, owner: npc, buyOrder: false, price: 0.43333, quantity: 1500, location: 1, status: 1 },
+        { itemId: 1, owner: npc, buyOrder: false, price: 0.403, quantity: 200, location: 1, status: 1 },
+        { itemId: 1, owner: npc, buyOrder: false, price: 0.43, quantity: 100, location: 1, status: 1 },
+        { itemId: 3, owner: npc, buyOrder: false, price: 0.43, quantity: 300, location: 1, status: 1 },
+        { itemId: 3, owner: npc, buyOrder: false, price: 0.43, quantity: 100, location: 1, status: 1 },
+        { itemId: 5, owner: npc, buyOrder: false, price: 0.43, quantity: 1, location: 1, status: 1 },
+        { itemId: 5, owner: npc, buyOrder: false, price: 0.43, quantity: 1, location: 1, status: 1 },
     ];
 
     _.each(orders, function (o) {
@@ -93,6 +109,19 @@ sender: {
 */
 ChatMessage = new Meteor.Collection('chatMessage');
 
+
+
+/* Transaction
+
+    time
+    description
+    amount
+    sender
+    receiver
+    type
+
+*/
+Transaction = new Meteor.Collection("transaction")
 
 
 

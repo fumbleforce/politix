@@ -1,4 +1,6 @@
 
+if (Meteor.isClient) {
+
 
 Template.chat.messages = function () {
 	return ChatMessage.find({ channel: "global" });
@@ -30,3 +32,25 @@ Template.chat.rendered = function () {
         this.rendered = true;
     }
 };
+
+} else {
+
+
+    Meteor.methods({
+
+        sendChatMessage: function (opts) {
+            console.log("Sending message");
+            console.log(opts);
+            ChatMessage.insert({
+                message: opts.message,
+                sender: { name: getCorp().name, id: getCorp().id },
+                channel: opts.channel
+            });
+        },
+
+
+    });
+
+
+
+}

@@ -69,17 +69,23 @@
 
         tbody
             tr
-                border: 1px solid transparent
+                padding: 1px
 
-            tr:hover
-                @extend .hover
-                border: 1px solid !important
-                color: white
+                &:hover
+                    @extend .hover
+                    padding: 0
+                    border: 1px solid !important
+                    color: white
             
+                &:last-child
+                    border-bottom: 1px dashed
+
             td
                 border-left: 1px dashed
                 border-right: 1px dashed
                 padding-left: 5px
+
+                
 
 
 

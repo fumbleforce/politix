@@ -21,9 +21,6 @@ capitalize = function(str) {
 };
 UI.registerHelper('capitalize', capitalize);
 
-getCorp = function () {
-    return Corporation.findOne(Meteor.user().corporation);
-};
 
 
 

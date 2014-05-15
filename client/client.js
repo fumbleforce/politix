@@ -21,7 +21,8 @@ Template.dashboard.rendered = function () {
 
     $(".main").height($(window).height());
 };
-    
+
+
 Template.navList.rendered = function () {
 
     if (!this.rendered) {
@@ -60,6 +61,19 @@ Template.dashboard.events({
 });
 
 
+displayView = function (selector) {
+    Session.set("panelOrder", Session.get("panelOrder") + 1);
+
+    $(selector).css({
+        "left": "50%",
+        "z-index": Session.get("panelOrder")
+    }).show();
+};
+
+hideView = function (selector) {
+
+    $(selector).hide();
+};
 
 Meteor.startup(addDragsFunc);
 Meteor.startup(contextMenu);
@@ -73,11 +87,15 @@ function contextMenu () {
                 actions: [
                     {
                         name: "Discard",
-                        func: null
+                        func: discardItem
                     },
                     {
                         name: "Sell",
-                        func: null
+                        func: createSellOrder
+                    },
+                    {
+                        name: "Buy",
+                        func: createBuyOrder
                     }
                 ]
             },
@@ -95,6 +113,7 @@ function contextMenu () {
             },
         };
         
+    var $contextEl;
 
     var populateMenu = function (context) {
         $("#context-menu").find("ul").empty();
@@ -102,8 +121,6 @@ function contextMenu () {
         for (var c = 0; c < context.length; c++) {
             
             var name = context[c];
-            console.log("Populating the " + name + " context");
-            console.log(contexts[name]);
 
             for (var i = 0; i < contexts[name].actions.length; i++) {
                 $("#context-menu").find("ul").append($("<li data-action='"+contexts[name].actions[i].name+"'>"+contexts[name].actions[i].name+"</li>"));
@@ -112,17 +129,18 @@ function contextMenu () {
     };
 
     var executeMenuAction = function (a, opts) {
-        contexts[currentContext][a](opts);
+        var action = _.find(contexts[currentContext].actions, function (el) {
+            return el.name === a;
+        });
+
+        action.func($contextEl);
     };
 
     $(document).bind("contextmenu", function (event) {
         event.preventDefault();
 
-        currentContext = $(event.target).closest("[data-context]").attr("data-context");
-
-        console.log($(event.target).closest("[data-context]"));
-        console.log("Contexts:");
-        console.log(currentContext);
+        $contextEl = $(event.target).closest("[data-context]");
+        currentContext = $contextEl.attr("data-context");
 
         if (currentContext) {
 
@@ -137,6 +155,13 @@ function contextMenu () {
             }
 
             $("#context-menu").css({ top: event.pageY + "px", left: event.pageX + "px" }).show(50);
+
+            $("#context-menu li").bind("click", function () {
+                executeMenuAction($(this).attr("data-action"));
+                $("#context-menu").hide();
+            });
+
+
         } else {
             $("#context-menu").hide();
         }
@@ -144,13 +169,12 @@ function contextMenu () {
         
     });
 
-    $(document).bind("click", function (event) {
-        $("#context-menu").hide();
-    });
 
-    $("#context-menu li").click(function () {
-        executeMenuAction($(this).attr("data-action"));
+    $(document).bind("click", function (event) {
+        if (!$(event.target).is("li"))
+            $("#context-menu").hide();
     });
+    
 }
 
 function addDragsFunc () {

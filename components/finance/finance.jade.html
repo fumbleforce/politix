@@ -73,33 +73,21 @@ template(name="finance")
                         input
 
                     .row
-                        .col-xs-3 Description
-                        .col-xs-3 Target
-                        .col-xs-3 Amount
-                        .col-xs-3 Time
+                        .col-xs-2.col-xs-offset-1 Description
+                        .col-xs-2 Sender
+                        .col-xs-2 Receiver
+                        .col-xs-2 Amount
+                        .col-xs-2 Time
 
                     .row
                         ul.transaction-list
-                            li.transaction.row
-                                .col-xs-3 Market order
-                                .col-xs-3 NPC Corp inc.
-                                .col-xs-3 $ 8556.78
-                                .col-xs-3 23:24 Mar 15 2014
-                            li.transaction.row
-                                .col-xs-3 Market order
-                                .col-xs-3 NPC Corp inc.
-                                .col-xs-3 $ 8556.78
-                                .col-xs-3 23:24 Mar 15 2014
-                            li.transaction.row
-                                .col-xs-3 Market order
-                                .col-xs-3 NPC Corp inc.
-                                .col-xs-3 $ 8556.78
-                                .col-xs-3 23:24 Mar 15 2014
-                            li.transaction.row
-                                .col-xs-3 Market order
-                                .col-xs-3 NPC Corp inc.
-                                .col-xs-3 $ 8556.78
-                                .col-xs-3 23:24 Mar 15 2014
+                            each transactions
+                                li.transaction.row
+                                    .col-xs-2.col-xs-offset-1= description
+                                    .col-xs-2= sender.name
+                                    .col-xs-2= receiver.name
+                                    .col-xs-2= amount
+                                    .col-xs-2= time
                         
 
                 #finance-breakdown.tab-pane

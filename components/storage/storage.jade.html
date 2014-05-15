@@ -14,6 +14,7 @@ template(name="storage")
                 option(value="2") Westeros
             .storage-window
                 each storageList
-                    .storage-item(data-context="item")
-                        .placeholder-icon.pull-left
-                        .pull-left #{name} x#{amount}
+                    unless hide
+                        .storage-item(data-context="item" quantity="#{amount}" itemId="#{itemKey}")
+                            .placeholder-icon.pull-left
+                            .pull-left #{name} x#{amount}

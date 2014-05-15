@@ -43,13 +43,13 @@ template(name="market")
                                         tr
                                             th Corporation
                                             th Price
-                                            th Amount
+                                            th Quantity
                                     tbody
                                         each buyOrders
                                             tr.order(order="#{_id}")
-                                                td= owner
+                                                td= owner.name
                                                 td= price
-                                                td= amount
+                                                td= quantity
                             .col-xs-6
                                 table.sell.orders
                                     caption Sell Orders
@@ -57,13 +57,13 @@ template(name="market")
                                         tr
                                             th Corporation
                                             th Price
-                                            th Amount
+                                            th Quantity
                                     tbody
                                         each sellOrders
                                             tr.order(order="#{_id}")
-                                                td= owner
+                                                td= owner.name
                                                 td= price
-                                                td= amount
+                                                td= quantity
 
 
 
@@ -81,7 +81,7 @@ template(name="marketDialog")
                 else
                     h3 Sell Order
 
-                p Contract issuer: #{owner}
+                p Contract issuer: #{owner.name}
                 p Price each: #{price}
                 p Amount: #{amount}
 
@@ -95,4 +95,50 @@ template(name="marketDialog")
                         | Cancel
 
             
+
+
+
+template(name="marketCreateOrder")
+    //-
+        Dialog for accepting trades in the market
+
+    .market-create-order-dialog.panel.drag-component(style="display:none")
+        .panel-heading
+            .pull-left Create Order
+            .pull-right
+                .row
+                    .close-btn(view="market-create-order-dialog") X
+
+        .panel-body
+            with order
+
+                .row
+                    label Item
+                    p= item.name
+                .row
+                    .col-xs-6
+                        label Buy Order
+                        p: input(type="radio" name="orderType" value="buy")
+                    .col-xs-6
+                        label Sell Order
+                        p: input(type="radio" name="orderType" value="sell")
+                .row
+                    label Price each
+                    p: input(name="orderPrice" type="number" value="1" min="0" step="1")
+                .row
+                    label Quantity
+                    p: input(name="orderQuantity" type="number" value="1" min="0" step="1")
+                .row
+                    h4 Total Price: #{totalPrice}
+
+                .row
+                    button.create.btn.btn-success.pull-left
+                        | Create order
+
+                    button.cancel.btn.btn-warning.pull-left
+                        | Cancel
+
+            
+
+
 

@@ -1,0 +1,41 @@
+
+
+
+template(name="dialogConfirm")
+    //-
+        Dialog for accepting trades in the market
+
+    .dialog-confirm.panel.drag-component(style="display:none")
+            .panel-heading.warning
+                .pull-left Confirm
+                .pull-right
+                    .row
+                        .close-btn(view="dialog-confirm") X
+
+            .panel-body
+                .row
+                    p= question
+                .row
+                    .col-xs-6
+                        button.yes.btn.btn-success
+                            | Yes
+                    .col-xs-6
+                        button.no.btn.btn-warning
+                            | No
+
+
+template(name="dialogAlert")
+    //-
+        Dialog for accepting trades in the market
+
+    .dialog-alert.panel.drag-component(style="display:none")
+            .panel-heading.info
+                .pull-left Information
+                .pull-right
+                    .row
+                        .close-btn(view="dialog-alert") X
+
+            .panel-body
+                .row.text-center
+                    button.ok.btn.btn-success
+                        | OK
