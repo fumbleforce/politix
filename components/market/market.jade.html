@@ -29,8 +29,11 @@ template(name="market")
                     if item
                         .row.full-width.item-detail
                             with item
-                                .col-xs-6
-                                    h3= name
+                                .col-xs-1
+                                    button.buy.btn.btn-default(itemId="#{key}")
+                                        | Buy
+                                .col-xs-5
+                                    h3.text-center= name
                                 .col-xs-6
                                     .item-info
                                         p Weight: #{props.weight}
@@ -116,12 +119,20 @@ template(name="marketCreateOrder")
                     label Item
                     p= item.name
                 .row
-                    .col-xs-6
-                        label Buy Order
-                        p: input(type="radio" name="orderType" value="buy")
-                    .col-xs-6
-                        label Sell Order
-                        p: input(type="radio" name="orderType" value="sell")
+                    .row
+                        .col-xs-8
+                            label Buy Order
+                        .col-xs-4
+                            span.pill-radio Buy Order
+                            input(type="radio" id="radio1" name="orderType" value="buy" checked="checked")
+                            span.pill-radio Buy Order
+                    .row
+                        .col-xs-8
+                            label Sell Order
+                        .col-xs-4
+                            span.pill-radio Sell Order
+                            input(type="radio" id="radio2" name="orderType" value="sell")
+                            span.pill-radio Sell Order
                 .row
                     label Price each
                     p: input(name="orderPrice" type="number" value="1" min="0" step="1")
@@ -129,7 +140,8 @@ template(name="marketCreateOrder")
                     label Quantity
                     p: input(name="orderQuantity" type="number" value="1" min="0" step="1")
                 .row
-                    h4 Total Price: #{totalPrice}
+                    h4#totalPrice Total Price: #{totalPrice}
+
 
                 .row
                     button.create.btn.btn-success.pull-left

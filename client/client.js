@@ -20,6 +20,7 @@ Template.dashboard.noCorporation = function() { return !Template.dashboard.hasCo
 Template.dashboard.rendered = function () {
 
     $(".main").height($(window).height());
+
 };
 
 

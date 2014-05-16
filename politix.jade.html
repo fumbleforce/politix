@@ -3,14 +3,13 @@ head
     link(rel="stylesheet" type="text/css" href="/css/component.css")
     script(src="/js/classie.js")
     script(src="/js/jquery.sparklines.js")
-    
 
 
 template(name="main")
     //- 
         Top level template.
         The container for all templates.
-
+    
     .main
         if noUser
             +entrySignIn
@@ -66,6 +65,8 @@ template(name="dashboard")
     //- 
         Contains the view where all components are available
 
+    
+
     if noCorporation
         +startGame
     else if noName
@@ -90,6 +91,7 @@ template(name="dashboard")
 
         // Dialogs
         +dialogConfirm
+        +dialogAlert
         +marketDialog
         +marketCreateOrder
 

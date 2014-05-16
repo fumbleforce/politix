@@ -12,8 +12,10 @@
         display:table
     
     .orders
+        .buy
+            margin: 5px 0 0 0
         h3
-            margin: 0
+            margin: 5px 0 0 0
         
         .item-detail
             border: 2px solid white
@@ -26,6 +28,7 @@
     [class*="col-"]
         display: table-cell
         float: none
+        padding:0 5px
 
     .market-filter
         //background: darkgray
@@ -74,15 +77,14 @@
                 &:hover
                     @extend .hover
                     padding: 0
-                    border: 1px solid !important
-                    color: white
+                    background: white
+                    color: primary
             
                 &:last-child
-                    border-bottom: 1px dashed
+                    border-bottom: 1px solid
 
             td
-                border-left: 1px dashed
-                border-right: 1px dashed
+                border: 1px solid
                 padding-left: 5px
 
                 

@@ -6,7 +6,7 @@ text-sm = 10px
 
 primary = darkslategray
 primaryColor = white
-secondary = darkcyan
+secondary = lightseagreen
 secondaryColor = white
 
 panel-background = primary
@@ -19,10 +19,13 @@ panel-header-color = primaryColor
 
 html, body
     height:100%
-    background: white
+    background: black
+    font-size:12px
 
 body
     // background: url(http://2.bp.blogspot.com/-WVHrVifuR9Y/TbEEn_KgSyI/AAAAAAAAAIc/xDQpp7VyZT4/s1600/night-sky-stars.jpg)
+    // background: url(/img/airline-world.jpg)
+    background: url(http://img1.wikia.nocookie.net/__cb20130212011759/starwars/images/7/77/Galactic_City.png)
     packground-position: center
     packground-repeat: no-repeat
     background-size: cover
@@ -35,7 +38,7 @@ body
     border-radius: 0
 
 .panel
-    border-radius: 3px
+    border-radius: 0px
     user-select: none
     margin: 0
     overflow-y: hidden;
@@ -74,6 +77,54 @@ ul
 a
     color: linen
 
+
+
+
+/* Pill radios */
+
+span.pill-radio
+    position: absolute;
+    right: 0;
+    width: 60px;
+    height: 25px;
+    line-height: 25px;
+    padding: 3px;
+    color: #FFF;
+    text-align: center;
+    background: #c06f59;
+
+
+    /*
+    &:after
+        content: "";
+    */
+ 
+input[type="radio"]
+    position: absolute;
+    right: 0;
+    margin: 0;
+    width: 60px;
+    height: 35px;
+    opacity: 0;
+    cursor: pointer;
+
+ 
+    &+span /*the span element that immediately follow the radio button */
+        visibility: hidden; /*temporarily hide the "YES" label*/
+        background: #6EB558;
+        
+    /*
+    &+span:after
+        content: "Yes";
+    */
+ 
+    &:checked+span
+        visibility: visible; /*show the "YES" label only if the radio button is checked*/
+
+    
+
+
+
 input, textarea, option, select
     color:black
 
@@ -87,13 +138,13 @@ input, textarea, option, select
 
 .panel
     background: panel-background
-    border: 3px solid secondary
+    border: 5px solid primary
     color: panel-color
     opacity: 0.97
     
     .panel-heading
-        background: secondary
-        color: panel-header-color
+        background: ghostwhite
+        color: primary
         overflow: hidden
         resize: none
         
