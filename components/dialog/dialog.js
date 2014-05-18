@@ -42,7 +42,7 @@ if (Meteor.isClient) {
         },
     });
 
-    informUser = function (info, callback) {
+    informUser = function (info) {
 
         Session.set("dialogInfo", info);
         displayView(".dialog-alert");

@@ -10,6 +10,14 @@ items = [
             weight: 1.0
         }
     },
+    {
+        type:"metal",
+        key: 7,
+        name: "Iron",
+        props: {
+            weight: 1.0
+        }
+    },
 
     // Raw materials made from wood. Used in construction
     {
@@ -50,7 +58,28 @@ items = [
             weight: 10000000,
             capacity: 10
         }
-    }
+    },
+    {
+        type: "machine",
+        subType: "miner",
+        key: 6,
+        name: "Basic Miner",
+        props: {
+            weight: 10000000,
+            miningRate: 0.1,
+            cost: 15,
+            minWorkers: 1,
+            maxWorkers: 3
+        },
+        actions: [
+            {
+                name: "Construct",
+                func: constructMiner
+            },
+        ],
+        defaultItem: 7
+    },
+
 ];
 
 itemDict = {};

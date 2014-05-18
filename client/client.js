@@ -82,7 +82,7 @@ Meteor.startup(contextMenu);
 function contextMenu () {
     var $menu = $("#context-menu"),
         currentContext,
-
+        $contextEl,
         contexts = {
             item: {
                 actions: [
@@ -114,23 +114,32 @@ function contextMenu () {
             },
         };
         
-    var $contextEl;
-
-    var populateMenu = function (context) {
+    var populateMenu = function (actions) {
         $("#context-menu").find("ul").empty();
 
-        for (var c = 0; c < context.length; c++) {
-            
-            var name = context[c];
-
-            for (var i = 0; i < contexts[name].actions.length; i++) {
-                $("#context-menu").find("ul").append($("<li data-action='"+contexts[name].actions[i].name+"'>"+contexts[name].actions[i].name+"</li>"));
-            }
+        for (var i = 0; i < actions.length; i++) {
+            $("#context-menu").find("ul").append($("<li data-action='"+actions[i]+"'>"+actions[i]+"</li>"));
         }
     };
 
-    var executeMenuAction = function (a, opts) {
-        var action = _.find(contexts[currentContext].actions, function (el) {
+    var getActions = function (contextList) {
+        var actions = [];
+
+        for (var c = 0; c < contextList.length; c++) {
+            var name = contextList[c];
+            actions = actions.concat(contexts[name].actions);
+        }
+
+        if (_.contains(currentContext, "item") && getItem($contextEl.attr("itemId")).actions) {
+            var itemActions = getItem($contextEl.attr("itemId")).actions;
+            actions = actions.concat(itemActions);
+        }
+
+        return actions;
+    }
+
+    var executeMenuAction = function (actions, a) {
+        var action = _.find(actions, function (el) {
             return el.name === a;
         });
 
@@ -151,14 +160,18 @@ function contextMenu () {
                 currentContext = [currentContext];
             }
 
-            if (currentContext.length) {
-                populateMenu(currentContext);
+            var actions = getActions(currentContext);
+
+            console.log(actions);
+
+            if (actions.length) {
+                populateMenu(_.pluck(actions, "name"));
             }
 
             $("#context-menu").css({ top: event.pageY + "px", left: event.pageX + "px" }).show(50);
 
             $("#context-menu li").bind("click", function () {
-                executeMenuAction($(this).attr("data-action"));
+                executeMenuAction(actions, $(this).attr("data-action"));
                 $("#context-menu").hide();
             });
 

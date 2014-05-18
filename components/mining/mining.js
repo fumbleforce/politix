@@ -1,10 +1,31 @@
 
+
+
+constructMiner = function ($el) {
+    var minerId = +$el.attr("itemId");
+    console.log("Constructing miner with id "+minerId);
+    if (getFromStorage(minerId)) {
+        Meteor.call("constructMiner", { minerId: minerId }, function (err) {
+            if (err) informUser(err.message);
+        });
+    }
+};
+
+
 if (Meteor.isClient) {
 
     var minedDep = new Deps.Dependency();
 
     Template.mining.miners = function () {
-        return Miner.find({ corporation: Meteor.user().corporation });
+        var miners = Miner.find({ corporation: Meteor.user().corporation }).fetch();
+        if (miners.length) {
+            miners = _.map(miners, function (m) {
+                var item = getItem(m.minerId);
+                return _.extend(m, item);
+            });
+            return miners;
+        }
+        return [];
     };
 
     Template.mining.mined = function () {
@@ -13,11 +34,11 @@ if (Meteor.isClient) {
     };
 
     Template.mining.minedData = {
-        iron: 123,
-        aluminium: 234,
-        coal: 12,
-        gold: 111,
-        copper: 222
+        iron: 123.00,
+        aluminium: 234.00,
+        coal: 12.00,
+        gold: 111.00,
+        copper: 222.00
     };
 
     Template.mining.events({
@@ -28,11 +49,12 @@ if (Meteor.isClient) {
 
     mine = function () {
 
-        Template.mining.miners.forEach(function (miner) {
+        if (!Template.mining.minersCached)
+            Template.mining.minersCached = Template.mining.miners();
+
+        _.each(Template.mining.minersCached, function (miner) {
             
-            Template.mining.minedData.iron += 10;
-            Template.mining.minedData.gold += 6;
-            Template.mining.minedData.copper += 3;
+            Template.mining.minedData[getItem(miner.item).name.toLowerCase()] += miner.props.miningRate;
         });
 
         minedDep.changed();
@@ -40,20 +62,13 @@ if (Meteor.isClient) {
 
     Meteor.setInterval(mine, 1000);
 
-
+    
 
 
 } else {
 
     Meteor.methods({
 
-
-        addResource: function (opts) {
-            var action = {};
-            action[opts.item] = opts.amount;
-
-            Storage.update({ corporation: Meteor.user().corporation }, { "Volantis": { $inc: action } });
-        },
 
 
         refreshMinerals: function () {
@@ -70,12 +85,43 @@ if (Meteor.isClient) {
                 timeDelta = now - miner.lastRun;
                 amount = timeDelta * miner.miningRate;
 
-                addResource({
+                addItems({
                     item: miner.item,
                     amount: amount,
                 });
             });
         },
+
+        constructMiner: function (opts) {
+
+            var minerId = opts.minerId,
+                minerItem = getItem(minerId);
+
+            console.log(minerId);
+            console.log(minerItem);
+
+            if (!minerId || !minerItem)
+                throw new Meteor.Error(400, "Missing miner ID");
+
+            if (minerItem.subType != "miner")
+                throw new Meteor.Error(400, "Item is not a miner");
+
+            if (!storageCount(minerId))
+                throw new Meteor.Error(413, "No miner in storage, had "+storageCount(minerId));
+
+            Meteor.call("removeItems", { item: minerId, amount: 1 });
+
+            Miner.insert({
+                corporation: Meteor.user().corporation,
+                minerId: minerId,
+                upgrades: {},
+                item: minerItem.defaultItem,
+                workers: 0,
+                lastRun: new Date()
+            });
+
+            Deps.flush();
+        }
 
 
     });

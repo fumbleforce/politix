@@ -89,6 +89,8 @@ if (Meteor.isServer) {
         { itemId: 3, owner: npc, buyOrder: false, price: 0.43, quantity: 100, location: 1, status: 1 },
         { itemId: 5, owner: npc, buyOrder: false, price: 0.43, quantity: 1, location: 1, status: 1 },
         { itemId: 5, owner: npc, buyOrder: false, price: 0.43, quantity: 1, location: 1, status: 1 },
+        { itemId: 6, owner: npc, buyOrder: false, price: 0.43, quantity: 1, location: 1, status: 1 },
+        { itemId: 6, owner: npc, buyOrder: false, price: 0.43, quantity: 1, location: 1, status: 1 },
     ];
 
     _.each(orders, function (o) {

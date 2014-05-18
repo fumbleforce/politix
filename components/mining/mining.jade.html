@@ -43,6 +43,6 @@ template(name="mining")
                             .miner-img.col-xs-3
 
                             .miner-info.col-xs-9
-                                p Mining rate: 804.6 / hour
-                                p Cost: $ 54 / hour
-                                p Workers: 1 / 3
+                                p Mining rate: #{props.miningRate} / hour
+                                p Cost: $ #{props.cost} / hour
+                                p Workers: #{workers} / #{props.maxWorkers}

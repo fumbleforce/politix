@@ -34,7 +34,11 @@ getFromStorage = function (id) {
     return false;
 };
 
-
+storageCount = function (id) {
+    if (getStorage()["Volantis"][id])
+        return getStorage()["Volantis"][id].amount;
+    return 0;
+};
 
 
 
@@ -55,7 +59,6 @@ if (Meteor.isClient) {
 
         getConfirmation(question, function (res) {
             if (res) {
-                console.log(res);
                 Meteor.call("discardItem", { itemId: itemId, quantity: quantity });
             }
         });
@@ -74,6 +77,18 @@ if (Meteor.isClient) {
 
             Storage.update({ corporation: Meteor.user().corporation },
                 { $set: { "Volantis": storage } });
+        },
+
+        addItems: function (opts) {
+            var action = {};
+            action[opts.item] = opts.amount;
+
+            Storage.update({ corporation: Meteor.user().corporation }, { "Volantis": { $inc: action } });
+        },
+
+        removeItems: function (opts) {
+            opts.amount = -opts.amount;
+            Meteor.call("addItems", opts);
         }
 
     });
