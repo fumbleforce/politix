@@ -79,15 +79,15 @@ template(name="finance")
                         .col-xs-2 Amount
                         .col-xs-2 Time
 
-                    .row
-                        ul.transaction-list
+                    .row.transaction-list
+                        ul
                             each transactions
                                 li.transaction.row
-                                    .col-xs-2.col-xs-offset-1= description
+                                    .col-xs-3= description
                                     .col-xs-2= sender.name
                                     .col-xs-2= receiver.name
                                     .col-xs-2= amount
-                                    .col-xs-2= time
+                                    .col-xs-3= time
                         
 
                 #finance-breakdown.tab-pane

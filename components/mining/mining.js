@@ -3,7 +3,7 @@
 
 constructMiner = function ($el) {
     var minerId = +$el.attr("itemId");
-    console.log("Constructing miner with id "+minerId);
+    
     if (getFromStorage(minerId)) {
         Meteor.call("constructMiner", { minerId: minerId }, function (err) {
             if (err) informUser(err.message);

@@ -57,7 +57,13 @@ items = [
         props: {
             weight: 10000000,
             capacity: 10
-        }
+        },
+        actions: [
+            {
+                name: "Construct",
+                func: constructFactory
+            },
+        ],
     },
     {
         type: "machine",
@@ -86,23 +92,28 @@ itemDict = {};
 itemHierarchy = [];
 
 _.each(items, function (i, index) {
-    var typeIndex = _.find(itemHierarchy, function (el) { return i.type == el; });
+    var hasType = _.some(itemHierarchy, function (el) { return i.type === el.key; });
 
-    if (!typeIndex) {
+    if (!hasType) {
         itemHierarchy.push({
             key: i.type,
             name: capitalize(i.type),
             itemList: [{ itemKey: i.key, itemName: i.name }]
         });
     } else {
+        var typeIndex = -1;
+        
+        _.each(itemHierarchy, function(el, localIndex) { 
+            if (el.key === i.type)
+                typeIndex = localIndex;
+        });
+
         itemHierarchy[typeIndex].itemList.push({ itemKey: i.key, itemName: i.name });
     }
-
 
     itemDict[i.key] = index;
 });
 
-console.log(itemHierarchy);
 
 
 sortedItems = _.sortBy(items, function(item) {

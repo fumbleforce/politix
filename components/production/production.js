@@ -1,4 +1,16 @@
 
+
+constructFactory = function ($el) {
+    var itemId = +$el.attr("itemId");
+
+    Meteor.call("constructFactory", { itemId: itemId }, function (err) {
+        if (err) informUser(err.message);
+    });
+}
+
+
+
+
 if (Meteor.isClient) {
 
 
@@ -15,9 +27,8 @@ if (Meteor.isClient) {
     Template.production.events({
         "click .construct": function (e) {
             var build = $(e.currentTarget).attr('building');
-            Meteor.call("constructFactory", { itemId: build }, function (err, stuff) {
-                console.log(err);
-                console.log(stuff);
+            Meteor.call("constructFactory", { itemId: build }, function (err) {
+                if (err) informUser(err.message);
             });
         }
     });
@@ -30,12 +41,12 @@ if (Meteor.isClient) {
             var item = getItem(opts.itemId);
             
             if (item.type !== "buildings")
-                throw new  Meteor.Error("Item not building");
+                throw new  Meteor.Error(413, "Item is not building");
 
-            if (storageAmount(opts.itemId) < 1)
+            if (storageCount(opts.itemId) < 1)
                 throw new Meteor.Error(400, "Not enough buildings in storage");
 
-            Meteor.call("removeItem", { item: opts.itemId, amount: 1 });
+            Meteor.call("removeItems", { item: opts.itemId, amount: 1 });
 
             return Factory.insert({
                 corporation: Meteor.user().corporation,
