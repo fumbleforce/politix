@@ -32,16 +32,10 @@ if (Meteor.isClient) {
             if (item.type !== "buildings")
                 throw new  Meteor.Error("Item not building");
 
-
-            var storage = getStorage()["Volantis"];
-
-            if (!storage[opts.itemId] || !storage[opts.itemId].amount)
+            if (storageAmount(opts.itemId) < 1)
                 throw new Meteor.Error(400, "Not enough buildings in storage");
 
-            storage[opts.itemId].amount -= 1;
-
-            Storage.update({ corporation: Meteor.user().corporation },
-                { $set: { "Volantis": storage } });
+            Meteor.call("removeItem", { item: opts.itemId, amount: 1 });
 
             return Factory.insert({
                 corporation: Meteor.user().corporation,

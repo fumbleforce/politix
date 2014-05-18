@@ -3,7 +3,8 @@
 getStorage = function (loc) {
     if (getCorp()) {
         var s = Storage.findOne({ corporation: Meteor.user().corporation });
-        return s;
+
+        return s["Volantis"];
     }
     return {};
 };
@@ -13,13 +14,17 @@ getStorageList = function (loc) {
     var storage = getStorage();
 
     if (storage) {
-        storage = storage["Volantis"];
-
         var arr = asArray(storage);
-        _.each(arr, function (item) {
-            item.name = getItem(item.itemKey).name;
-            item.hide = item.amount === 0;
-        });
+
+        if (arr.length) {
+            _.each(arr, function (item) {
+                item.itemKey = item.key;
+                item.name = getItem(item.key).name;
+                item.hide = item.value === 0;
+                item.amount = item.value;
+            });
+        }
+        
 
         return arr;
     } else {
@@ -29,14 +34,14 @@ getStorageList = function (loc) {
 
 getFromStorage = function (id) {
     if (getCorp()) {
-        return getStorage()["Volantis"][id];
+        return getStorage()[id];
     }
     return false;
 };
 
 storageCount = function (id) {
-    if (getStorage()["Volantis"][id])
-        return getStorage()["Volantis"][id].amount;
+    if (getStorage()[id])
+        return getStorage()[id];
     return 0;
 };
 
@@ -59,7 +64,7 @@ if (Meteor.isClient) {
 
         getConfirmation(question, function (res) {
             if (res) {
-                Meteor.call("discardItem", { itemId: itemId, quantity: quantity });
+                Meteor.call("removeItems", { item: itemId, amount: quantity });
             }
         });
 
@@ -69,21 +74,12 @@ if (Meteor.isClient) {
 
     Meteor.methods({
 
-        discardItem: function (opts) {
-
-            var storage = getStorage()["Volantis"];
-
-            storage[opts.itemId].amount = 0;
-
-            Storage.update({ corporation: Meteor.user().corporation },
-                { $set: { "Volantis": storage } });
-        },
-
         addItems: function (opts) {
             var action = {};
-            action[opts.item] = opts.amount;
+            action["Volantis."+opts.item] = opts.amount;
 
-            Storage.update({ corporation: Meteor.user().corporation }, { "Volantis": { $inc: action } });
+            Storage.update({ corporation: Meteor.user().corporation },
+                { $inc: action });
         },
 
         removeItems: function (opts) {

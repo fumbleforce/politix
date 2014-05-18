@@ -66,7 +66,7 @@ items = [
         name: "Basic Miner",
         props: {
             weight: 10000000,
-            miningRate: 0.1,
+            miningRate: 1,
             cost: 15,
             minWorkers: 1,
             maxWorkers: 3

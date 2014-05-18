@@ -8,7 +8,7 @@ if (Meteor.isClient) {
     };
 
     Template.finance.rendered = function () {
-        console.log("Rendered finance");
+
     };
 
     Template.finance.events({

@@ -201,19 +201,15 @@ if (Meteor.isClient) {
                 cashDelta = order.quantity * order.price;
 
 
-            if (!_.has(storage, "Volantis"))
-                storage["Volantis"] = {};
-
-            storage = storage["Volantis"];
-
-            if (!_.has(storage, order.itemId))
-                storage[order.itemId] = { itemKey: order.itemId, amount: 0 };
-
             if (order.buyOrder) {
-                if (storage[order.itemId].amount < order.quantity)
+                if (storageCount(order.itemId) < order.quantity)
                     throw new Meteor.Error(413, "Not enough items");
 
-                storage[order.itemId].amount -= order.quantity;
+                Meteor.call("removeItems", {
+                    item: order.itemId,
+                    amount: order.quantity
+                });
+
                 corp.cash += cashDelta;
 
                 Transaction.insert({
@@ -231,7 +227,12 @@ if (Meteor.isClient) {
                 // TODO check if have money, pay
 
                 if (corp.cash >= cashDelta) {
-                    storage[order.itemId].amount += order.quantity;
+
+                    Meteor.call("addItems", {
+                        item: order.itemId,
+                        amount: order.quantity
+                    });
+
                     corp.cash -= cashDelta;
 
                 } else {
@@ -250,7 +251,7 @@ if (Meteor.isClient) {
             }
 
             Corporation.update(Meteor.user().corporation,
-                { $set: { "cash": corp.cash } });
+                { $inc: { "cash": corp.cash } });
 
             MarketOrder.update(order._id,
                 { $set: {
@@ -258,9 +259,6 @@ if (Meteor.isClient) {
                     "acceptedBy": { name: getCorp().name, id: getCorp()._id },
                     "acceptedTime": new Date()
                 }});
-
-            Storage.update({ corporation: Meteor.user().corporation },
-                { $set: { "Volantis": storage } });
 
             Deps.flush();
         },
@@ -280,15 +278,6 @@ if (Meteor.isClient) {
                 totalPrice = quantity * price;
 
 
-            if (!_.has(storage, "Volantis"))
-                storage["Volantis"] = {};
-
-            storage = storage["Volantis"];
-
-            if (!_.has(storage, itemId))
-                storage[itemId] = { itemKey: itemId, amount: 0 };
-
-
             if (buyOrder) {
 
                 // TODO Escrow
@@ -300,11 +289,7 @@ if (Meteor.isClient) {
                 if (storage[itemId].amount < quantity)
                     throw new Meteor.Error(413, "Not enough items to sell");
 
-                storage[itemId].amount -= quantity;
-
-                Storage.update({ corporation: Meteor.user().corporation },
-                    { $set: { "Volantis": storage } });
-
+                Meteor.call("removeItems", { item: itemId, amount: quantity });
             }
 
             var order = {
@@ -315,8 +300,6 @@ if (Meteor.isClient) {
                 buyOrder: buyOrder,
                 status: 1
             };
-
-            console.log(order);
 
             MarketOrder.insert(order);
         }

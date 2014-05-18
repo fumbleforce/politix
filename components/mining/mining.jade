@@ -24,16 +24,18 @@ template(name="mining")
                     .iron-spark
 
                 .col-xs-4
-                    h4 Mined amount
-                    p
-                        button.btnx.btnx-1.btnx-1f Hour
-                        button.btnx.btnx-1.btnx-1f Day
-                        button.btnx.btnx-1.btnx-1f Week
-                    
-                    p Iron: #{mined.iron}
-                    p Gold: #{mined.gold}
-                    p Copper: #{mined.copper}
-
+                    .row
+                        h4 Mined amount
+                        p
+                            button.btnx.btnx-1.btnx-1f Hour
+                            button.btnx.btnx-1.btnx-1f Day
+                            button.btnx.btnx-1.btnx-1f Week
+                        
+                        p Iron: #{mined.iron}
+                        p Gold: #{mined.gold}
+                        p Copper: #{mined.copper}
+                    .row
+                        button.btn.btn-sm.btn-success.release-minerals Release minerals
             hr
 
             .row.full-width

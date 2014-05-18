@@ -33,28 +33,41 @@ if (Meteor.isClient) {
         return Template.mining.minedData;
     };
 
-    Template.mining.minedData = {
-        iron: 123.00,
-        aluminium: 234.00,
-        coal: 12.00,
-        gold: 111.00,
-        copper: 222.00
+
+    var setMinedData = function () {
+        var mined = {}
+
+        miners = Miner.find({ corporation: Meteor.user().corporation });
+
+        miners.forEach(function (miner) {
+            amount = minDiff(miner.lastRun) * getItem(miner.minerId).props.miningRate;
+            
+            mined[getItem(miner.item).name.toLowerCase()] = ~~amount;
+        });
+
+        Template.mining.minedData = mined;
     };
 
     Template.mining.events({
         "click .add-miner": function () {
             Meteor.call("addMiner", {});
+        },
+        "click .release-minerals": function () {
+            Meteor.call("refreshMinerals");
+            setMinedData();
         }
     });
 
     mine = function () {
 
-        if (!Template.mining.minersCached)
-            Template.mining.minersCached = Template.mining.miners();
+        if (!Template.mining.minedData)
+            setMinedData();
 
-        _.each(Template.mining.minersCached, function (miner) {
+        miners = Miner.find({ corporation: Meteor.user().corporation });
+
+        miners.forEach(function (miner) {
             
-            Template.mining.minedData[getItem(miner.item).name.toLowerCase()] += miner.props.miningRate;
+            Template.mining.minedData[getItem(miner.item).name.toLowerCase()] += getItem(miner.minerId).props.miningRate;
         });
 
         minedDep.changed();
@@ -82,13 +95,15 @@ if (Meteor.isClient) {
 
             miners.forEach(function (miner) {
                 
-                timeDelta = now - miner.lastRun;
-                amount = timeDelta * miner.miningRate;
+                timeDelta = Math.abs((now.getTime() - miner.lastRun.getTime()) / 1000);
+                amount = ~~(timeDelta * getItem(miner.minerId).props.miningRate);
 
-                addItems({
+                Meteor.call("addItems", {
                     item: miner.item,
                     amount: amount,
                 });
+
+                Miner.update(miner._id, { $set: { lastRun: new Date() } });
             });
         },
 
@@ -96,9 +111,6 @@ if (Meteor.isClient) {
 
             var minerId = opts.minerId,
                 minerItem = getItem(minerId);
-
-            console.log(minerId);
-            console.log(minerItem);
 
             if (!minerId || !minerItem)
                 throw new Meteor.Error(400, "Missing miner ID");

@@ -1,14 +1,13 @@
 
 asArray = function(obj) {
     var result = [];
-    console.log("From");
-    console.log(obj);
+
     for (var key in obj) {
-        obj[key].key = key;
-        result.push(obj[key]);
+        var o = {};
+        o["key"] = key;
+        o["value"] = obj[key];
+        result.push(o);
     }
-    console.log("To:");
-    console.log(result);
     return result;
 };
 UI.registerHelper('asArray', asArray);
@@ -25,7 +24,13 @@ UI.registerHelper('capitalize', capitalize);
 
 
 
-
+minDiff = function (from, to) {
+    if (!to) {
+        to = from;
+        from = new Date();
+    }
+    return Math.abs((from).getTime() - to.getTime()) / 1000;
+};
 
 
 NonEmptyString = Match.Where(function (x) {
