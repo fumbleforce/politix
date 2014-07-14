@@ -3,33 +3,39 @@ if (Meteor.isClient) {
 
     // Market
 
-    Template.market.items = function () {
-        return itemHierarchy;
-    };
+    Template.market.helpers({
+        items: function () {
+            return itemHierarchy;
+        },
 
-    Template.market.item = function () {
-        return getItem(Session.get("activeMarketItem"));
-    };
+        item: function () {
+            return getItem(Session.get("activeMarketItem"));
+        },
 
-    Template.market.buyOrders = function () {
-        // TODO Sort by location
+        buyOrders: function () {
+            // TODO Sort by location
 
-        return MarketOrder.find({
-            itemId: +Session.get("activeMarketItem"),
-            buyOrder: true,
-            status: 1
-        });
-    };
+            return MarketOrder.find({
+                itemId: +Session.get("activeMarketItem"),
+                buyOrder: true,
+                status: 1
+            });
+        },
 
-    Template.market.sellOrders = function () {
-        // TODO Sort by location
-        
-        return MarketOrder.find({
-            itemId: +Session.get("activeMarketItem"),
-            buyOrder: false,
-            status: 1
-        });
-    };
+        sellOrders: function () {
+            // TODO Sort by location
+            
+            return MarketOrder.find({
+                itemId: +Session.get("activeMarketItem"),
+                buyOrder: false,
+                status: 1
+            });
+        },
+
+        viewAsTable: function () {
+            return Session.get("marketAsTable");
+        }
+    });
 
 
     Template.market.events({
@@ -49,13 +55,24 @@ if (Meteor.isClient) {
         },
         "click button.buy": function (event) {
             createBuyOrder($(event.target));
+        },
+        "click .view-type": function(e) {
+            var isTable = $(e.target).attr("type") === "table";
+            Session.set("marketAsTable", isTable);
+
+            if (!isTable) {
+                
+
+                console.log(data);
+            }
+
         }
     });
 
 
 
     Meteor.startup(function() {
-        //Session.set("activeMarketItem", { key: "hello" });
+        Session.set("marketAsTable", true);
     });
 
 
@@ -185,6 +202,12 @@ if (Meteor.isClient) {
 
 } else {
 
+    Meteor.startup(function () {
+        generateDailyMarketReport();
+        generateHourlyMarketReport();
+        Meteor.setInterval(function(){ generateHourlyMarketReport(); }, 60 * 1000);
+        Meteor.setInterval(function(){ generateDailyMarketReport(); }, 24 * 60 * 1000);
+    });
 
 
 
@@ -213,11 +236,13 @@ if (Meteor.isClient) {
                 corp.cash += cashDelta;
 
                 Transaction.insert({
-                    description: "Purchase of "+item.name,
+                    description: "Sold "+item.name,
                     time: new Date(),
                     receiver: { name: getCorp().name, id: getCorp()._id },
                     sender: order.owner,
                     amount: cashDelta,
+                    itemId: order.itemId,
+                    quantity: order.quantity,
                     type: "market"
                 });
 
@@ -241,11 +266,13 @@ if (Meteor.isClient) {
                 }
 
                 Transaction.insert({
-                    description: "Purchase of "+item.name,
+                    description: "Bought "+item.name,
                     time: new Date(),
                     sender: { name: getCorp().name, id: getCorp()._id },
                     receiver: order.owner,
                     amount: cashDelta,
+                    itemId: order.itemId,
+                    quantity: order.quantity,
                     type: "market"
                 });
             }
@@ -266,12 +293,12 @@ if (Meteor.isClient) {
 
 
         createOrder: function (opts) {
-            console.log("Creating order..")
+            console.log("Creating order..");
             var itemId = opts.itemId,
                 quantity = opts.quantity,
                 price = opts.price,
                 type = opts.type,
-                buyOrder = type === "buy"
+                buyOrder = type === "buy",
                 storage = getStorage(),
                 corp = getCorp(),
                 item = getItem(opts.itemId),
@@ -302,6 +329,169 @@ if (Meteor.isClient) {
             };
 
             MarketOrder.insert(order);
+        },
+
+
+
+        transactionData: function (opts) {
+            var itemId = opts.itemId;
+
+            var transactions = Transaction.find({
+                type: "market",
+                itemId: itemId,
+            }).sort({ time: 1 }),
+
+            data = transactions.map(function(t){
+                t.price = t.amount/t.quantity;
+                return t;
+            });
+
+            return transactions;
+        },
+
+        marketStats: function (opts) {
+            // TODO
         }
     });
+
+
+
+    resupplyGovernmentContracts = function () {
+        var government = Corporation.findOne({ name: "The Government" })._id;
+
+        _.each(items, function (i) {
+            var sellOrders = MarketOrder.find({ buyOrder: false, itemId: i.key, corporation: government, status: 1 }),
+                buyOrders = MarketOrder.find({ buyOrder: true, itemId: i.key, corporation: government, status: 1 });
+
+            if (sellOrders.count() < 10) {
+                for (var o = 0; o < 10 - sellOrders.count(); o++) {
+                    MarketOrder.insert({
+                        itemId: i,
+                        owner: government,
+                        buyOrder: false,
+                        price: Math.random() * 100,
+                        quantity: Math.random() * 5,
+                        location: 1,
+                        status: 1
+                    });
+                }
+            }
+
+            if (buyOrders.count() < 10) {
+                for (var o = 0; o < 10 - buyOrders.count(); o++) {
+                    MarketOrder.insert({
+                        itemId: i,
+                        owner: government,
+                        buyOrder: true,
+                        price: Math.random() * 100,
+                        quantity: Math.random() * 5,
+                        location: 1,
+                        status: 1
+                    });
+                }
+            }
+
+        });
+    };
+
+}
+
+
+
+
+marketGraph = function(container, marketData) {
+    container = $(container)[0];
+
+    var
+    summaryTicks = financeData.summaryTicks,
+    options = {
+    container : container,
+    data : {
+      price : financeData.price,
+      volume : financeData.volume,
+      summary : financeData.price
+    },
+    trackFormatter : function (o) {
+
+      var
+        data = o.series.data,
+        index = data[o.index][0],
+        value;
+
+      value = summaryTicks[index].date + ': $' + summaryTicks[index].close + ", Vol: " + summaryTicks[index].volume;
+
+      return value;
+    },
+    xTickFormatter : function (index) {
+      var date = new Date(financeData.summaryTicks[index].date);
+      return date.getFullYear() + '';
+    },
+    // An initial selection
+    selection : {
+      data : {
+        x : {
+          min : 100,
+          max : 200
+        }
+      }
+    }
+  };
+
+  return new envision.templates.Finance(options);
+};
+
+
+
+
+function generateHourlyMarketReport () {
+    _.each(items, function (i) {
+        var id = i.key,
+            hourAgo = (new Date()).setHours((new Date()).getHours() - 2),
+            activeOrders = MarketOrder.find({
+                itemId: id,
+                status: 1
+            }).fetch(),
+            completedOrders = MarketOrder.find({
+                itemId: id,
+                status: 2,
+                date: { $gte: hourAgo }
+            }).fetch(),
+            orders = activeOrders.concat(completedOrders),
+            sellOrders = orders.filter(function (o) { return !o.buyOrder; }),
+            buyOrders = orders.filter(function (o) { return o.buyOrder; }),
+            activeSellOrders = activeOrders.filter(function (o) { return !o.buyOrder; }),
+            activeBuyOrders = activeOrders.filter(function (o) { return o.buyOrder; }),
+            completedSellOrders = completedOrders.filter(function (o) { return !o.buyOrder; }),
+            completedBuyOrders = completedOrders.filter(function (o) { return o.buyOrder; });
+
+        
+        var orderQuantitySum = function(a, b) { return a.quantity + b.quantity; },
+            orderMin = function (a, b) { return a.price > b.price ? a.price : b.price; },
+            orderMax = function (a, b) { return a.price > b.price ? a.price : b.price; },
+            orderSum = function (a, b) { return a.price + b.price; };
+
+        MarketReport.insert({
+            type: "hourly",
+            date: new Date(),
+            itemId: id,
+            sellHigh: sellOrders.reduce(orderMax,0),
+            sellLow: sellOrders.reduce(orderMin,0),
+            sellAvg: sellOrders.reduce(orderSum,0)/sellOrders.length,
+            buyHigh: buyOrders.reduce(orderMax,0),
+            buyLow: buyOrders.reduce(orderMin,0),
+            buyAvg: buyOrders.reduce(orderSum,0)/buyOrders.length,
+            demand: buyOrders.reduce(orderQuantitySum,0),
+            supply: sellOrders.reduce(orderQuantitySum,0),
+            movement: completedBuyOrders.reduce(orderQuantitySum,0) + completedSellOrders.reduce(orderQuantitySum,0),
+            sold: completedSellOrders.reduce(orderQuantitySum,0),
+            bought: completedBuyOrders.reduce(orderQuantitySum,0),
+        });
+
+    });
+}
+
+function generateDailyMarketReport () {
+    console.log("Generating daily market report");
+
+    // TODO, combine the day's hourly reports
 }

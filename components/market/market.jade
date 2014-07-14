@@ -14,7 +14,13 @@ template(name="market")
         .panel-body
             .row
                 .market-filter.col-sm-3
-
+                    .row
+                        .col-xs-6
+                            button.view-type.btnx.btnx-1.btnx-1f(type="table")
+                                            | Table
+                        .col-xs-6
+                            button.view-type.btnx.btnx-1.btnx-1f(type="graph")
+                                            | Graph
                     p Volantis District
 
                     ul.filter-list
@@ -38,35 +44,39 @@ template(name="market")
                                     .item-info
                                         p Weight: #{props.weight}
                                         p Type: #{type}
-                        .row.full-width
-                            .col-xs-6
-                                table.buy.orders
-                                    caption Buy Orders
-                                    thead
-                                        tr
-                                            th Corporation
-                                            th Price
-                                            th Quantity
-                                    tbody
-                                        each buyOrders
-                                            tr.order(order="#{_id}")
-                                                td= owner.name
-                                                td= price
-                                                td= quantity
-                            .col-xs-6
-                                table.sell.orders
-                                    caption Sell Orders
-                                    thead
-                                        tr
-                                            th Corporation
-                                            th Price
-                                            th Quantity
-                                    tbody
-                                        each sellOrders
-                                            tr.order(order="#{_id}")
-                                                td= owner.name
-                                                td= price
-                                                td= quantity
+                        if viewAsTable
+                            .row.full-width
+                                .col-xs-6
+                                    table.buy.orders
+                                        caption Buy Orders
+                                        thead
+                                            tr
+                                                th Corporation
+                                                th Price
+                                                th Quantity
+                                        tbody
+                                            each buyOrders
+                                                tr.order(order="#{_id}")
+                                                    td= owner.name
+                                                    td= price
+                                                    td= quantity
+                                .col-xs-6
+                                    table.sell.orders
+                                        caption Sell Orders
+                                        thead
+                                            tr
+                                                th Corporation
+                                                th Price
+                                                th Quantity
+                                        tbody
+                                            each sellOrders
+                                                tr.order(order="#{_id}")
+                                                    td= owner.name
+                                                    td= price
+                                                    td= quantity
+                        else
+                            .row.full-width
+                                .market-graph
 
 
 

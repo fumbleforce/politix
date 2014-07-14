@@ -1,11 +1,13 @@
 {
   "packages": {
     "jade": {},
+    "sparklines": {},
+    "flot": {},
+    "ogv-threejs": {},
     "bootstrap-3": {},
     "iron-router": {},
     "accounts-entry": {},
     "stylus-multi": {},
-    "sparklines": {},
-    "flot": {}
+    "queue": {}
   }
 }

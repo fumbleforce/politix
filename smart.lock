@@ -3,23 +3,40 @@
   "dependencies": {
     "basePackages": {
       "jade": {},
+      "sparklines": {},
+      "flot": {},
+      "ogv-threejs": {},
       "bootstrap-3": {},
       "iron-router": {},
       "accounts-entry": {},
       "stylus-multi": {},
-      "sparklines": {},
-      "flot": {}
+      "queue": {}
     },
     "packages": {
       "jade": {
         "git": "https://github.com/mquandalle/meteor-jade.git",
-        "tag": "v0.2.2",
-        "commit": "0391abab7d592b17ff74d9b9beaa721051970729"
+        "tag": "v0.2.4",
+        "commit": "a47a4c59daaa57e7fe5f1544d4ea76d95a5c9abf"
+      },
+      "sparklines": {
+        "git": "https://github.com/austinrivas/meteor-sparklines.git",
+        "tag": "v1.0.0",
+        "commit": "cf86cd43401699509efa75f79719c553d97f6916"
+      },
+      "flot": {
+        "git": "https://github.com/austinrivas/meteor-flot.git",
+        "tag": "v1.0.6",
+        "commit": "b1561652ac7a73a99397a9922d39a5e19a75d26e"
+      },
+      "ogv-threejs": {
+        "git": "https://github.com/inderpreetsingh/meteor-threejs-ogv",
+        "tag": "v1.0.0",
+        "commit": "076295aee895e03c06a931eb56c8493924e10333"
       },
       "bootstrap-3": {
         "git": "https://github.com/mangasocial/meteor-bootstrap-3.git",
-        "tag": "v3.1.1-1",
-        "commit": "63dd38968828bb8963636df93e9a1c45e2dfe67e"
+        "tag": "v3.2.0-1",
+        "commit": "17a63902fc6cf1096c5289d963c66cf28b474727"
       },
       "iron-router": {
         "git": "https://github.com/EventedMind/iron-router.git",
@@ -36,15 +53,10 @@
         "tag": "v0.0.2",
         "commit": "f9a3e832f43edfda74d845fce6007725f5e05a5f"
       },
-      "sparklines": {
-        "git": "https://github.com/austinrivas/meteor-sparklines.git",
-        "tag": "v1.0.0",
-        "commit": "cf86cd43401699509efa75f79719c553d97f6916"
-      },
-      "flot": {
-        "git": "https://github.com/austinrivas/meteor-flot.git",
-        "tag": "v1.0.6",
-        "commit": "b1561652ac7a73a99397a9922d39a5e19a75d26e"
+      "queue": {
+        "git": "https://github.com/artwells/meteor-queue.git",
+        "tag": "v0.0.2",
+        "commit": "c3b95a0df06be468f479ce292edf3755cc0bb0ce"
       },
       "blaze-layout": {
         "git": "https://github.com/EventedMind/blaze-layout.git",

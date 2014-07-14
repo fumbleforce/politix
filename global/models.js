@@ -28,14 +28,14 @@ if (Meteor.isServer) {
 
     var npc;
 
-    if (Corporation.find({ name: "NPC corp" }).count() === 0) {
+    if (Corporation.find({ name: "The Government" }).count() === 0) {
         Corporation.insert({
-            name: "NPC corp",
+            name: "The Government",
             cash: 999999999999999999,
         });
     }
 
-    npc = Corporation.findOne({ name: "NPC corp" });
+    npc = Corporation.findOne({ name: "The Government" });
 }
 
 
@@ -67,36 +67,31 @@ MarketOrder = new Meteor.Collection('marketOrder');
 if (Meteor.isServer) {
     //MarketOrder.find().count() === 0
 
-    npc.id = npc._id
+    npc.id = npc._id;
 
     MarketOrder.remove({});
-    var orders = [
-        { itemId: 1, owner: npc, buyOrder: true, price: 0.43, quantity: 100, location: 1, status: 1 },
-        { itemId: 1, owner: npc, buyOrder: true, price: 0.43, quantity: 100, location: 1, status: 1 },
-        { itemId: 1, owner: npc, buyOrder: true, price: 0.03, quantity: 100, location: 1, status: 1 },
-        { itemId: 1, owner: npc, buyOrder: true, price: 0.43, quantity: 500, location: 1, status: 1 },
-        { itemId: 1, owner: npc, buyOrder: true, price: 0.33, quantity: 1900, location: 1, status: 1 },
-        { itemId: 2, owner: npc, buyOrder: true, price: 0.43, quantity: 100, location: 1, status: 1 },
-        { itemId: 2, owner: npc, buyOrder: true, price: 33.43, quantity: 100, location: 1, status: 1 },
-        { itemId: 2, owner: npc, buyOrder: true, price: 0.43, quantity: 100, location: 1, status: 1 },
-        { itemId: 2, owner: npc, buyOrder: false, price: 10.43, quantity: 100, location: 1, status: 1 },
-        { itemId: 2, owner: npc, buyOrder: false, price: 6.93, quantity: 1300, location: 1, status: 1 },
-        { itemId: 2, owner: npc, buyOrder: false, price: 0.43, quantity: 1040, location: 1, status: 1 },
-        { itemId: 1, owner: npc, buyOrder: false, price: 0.43333, quantity: 1500, location: 1, status: 1 },
-        { itemId: 1, owner: npc, buyOrder: false, price: 0.403, quantity: 200, location: 1, status: 1 },
-        { itemId: 1, owner: npc, buyOrder: false, price: 0.43, quantity: 100, location: 1, status: 1 },
-        { itemId: 3, owner: npc, buyOrder: false, price: 0.43, quantity: 300, location: 1, status: 1 },
-        { itemId: 3, owner: npc, buyOrder: false, price: 0.43, quantity: 100, location: 1, status: 1 },
-        { itemId: 5, owner: npc, buyOrder: false, price: 0.43, quantity: 1, location: 1, status: 1 },
-        { itemId: 5, owner: npc, buyOrder: false, price: 0.43, quantity: 1, location: 1, status: 1 },
-        { itemId: 6, owner: npc, buyOrder: false, price: 0.43, quantity: 1, location: 1, status: 1 },
-        { itemId: 6, owner: npc, buyOrder: false, price: 0.43, quantity: 1, location: 1, status: 1 },
-    ];
-
-    _.each(orders, function (o) {
-        MarketOrder.insert(o);
-    });
+    resupplyGovernmentContracts();
 }
+
+
+/* Market report
+
+date
+itemId
+sellHigh
+sellLow
+buyLow
+buyHigh
+avgBuy
+avgSell
+demand
+supply
+movement
+sold
+bought
+
+*/
+MarketReport = new Meteor.Collection("marketReport");
 
 
 
@@ -120,10 +115,12 @@ ChatMessage = new Meteor.Collection('chatMessage');
     amount
     sender
     receiver
+    itemId
+    quantity
     type
 
 */
-Transaction = new Meteor.Collection("transaction")
+Transaction = new Meteor.Collection("transaction");
 
 
 

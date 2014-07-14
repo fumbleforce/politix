@@ -1,9 +1,8 @@
 head
     title politix
     link(rel="stylesheet" type="text/css" href="/css/component.css")
-    script(src="/js/classie.js")
-    script(src="/js/jquery.sparklines.js")
-
+    style.
+        canvas { width: 100%; height: 100% }
 
 template(name="main")
     //- 
@@ -64,7 +63,8 @@ template(name="layout")
 template(name="dashboard")
     //- 
         Contains the view where all components are available
-
+    
+    canvas#spaceCanvas
     
 
     if noCorporation

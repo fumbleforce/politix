@@ -21,7 +21,10 @@ capitalize = function(str) {
 UI.registerHelper('capitalize', capitalize);
 
 
-
+formatDate = function() {
+    return this.date.toLocaleString();
+};
+UI.registerHelper('formatDate', formatDate);
 
 
 minDiff = function (from, to) {
