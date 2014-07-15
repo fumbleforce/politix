@@ -44,6 +44,13 @@ if (Meteor.isClient) {
         },
         "click .sub-filter-list > li": function(event) {
             Session.set("activeMarketItem", $(event.currentTarget).attr('item'));
+            if (!Session.get("marketAsTable")) {
+                console.log("Calling market data");
+                Meteor.call("marketData", { itemId: Session.get("activeMarketItem") }, function (err, data) {
+                    marketGraph(".market-graph", data);
+                });
+                
+            }
         },
         "click .order": function(event) {
             Session.set("selectedMarketOrder", $(event.currentTarget).attr('order'));
@@ -61,9 +68,11 @@ if (Meteor.isClient) {
             Session.set("marketAsTable", isTable);
 
             if (!isTable) {
+                console.log("Calling market data");
+                Meteor.call("marketData", { itemId: Session.get("activeMarketItem") }, function (err, data) {
+                    marketGraph(".market-graph", data);
+                });
                 
-
-                console.log(data);
             }
 
         }
@@ -205,8 +214,14 @@ if (Meteor.isClient) {
     Meteor.startup(function () {
         generateDailyMarketReport();
         generateHourlyMarketReport();
-        Meteor.setInterval(function(){ generateHourlyMarketReport(); }, 60 * 1000);
-        Meteor.setInterval(function(){ generateDailyMarketReport(); }, 24 * 60 * 1000);
+        //Meteor.setInterval(generateHourlyMarketReport, 60 * 1000);
+        Meteor.setInterval(function () {
+            console.log("Re-generating government conracts to test reports");
+            MarketOrder.remove({});
+            resupplyGovernmentContracts();
+            generateHourlyMarketReport();
+        }, 5 * 60 * 1000);
+        Meteor.setInterval(generateDailyMarketReport, 24 * 60 * 60 * 1000);
     });
 
 
@@ -349,28 +364,47 @@ if (Meteor.isClient) {
             return transactions;
         },
 
-        marketStats: function (opts) {
-            // TODO
+        marketData: function (opts) {
+            console.log("Finding reports for item ", opts.itemId);
+            var reports = MarketReport.find({ itemId: +opts.itemId }).fetch(),
+                price = [
+                    reports.map(function(r, i) { return i; }),
+                    reports.map(function(r) { return r.sellAvg; }),
+                ],
+                quantity = [
+                    reports.map(function(r, i) { return i; }),
+                    reports.map(function(r) { return r.movement; }),
+                ];
+            console.log("consolidating data");
+            var data = {
+                price: price,
+                quantity: quantity,
+                summaryTicks: reports
+            };
+            console.log("Returning data");
+            return data;
         }
     });
 
 
 
     resupplyGovernmentContracts = function () {
-        var government = Corporation.findOne({ name: "The Government" })._id;
+        console.log("Resupplying government contracts");
+
+        var government = Corporation.findOne({ name: "The Government" });
 
         _.each(items, function (i) {
-            var sellOrders = MarketOrder.find({ buyOrder: false, itemId: i.key, corporation: government, status: 1 }),
-                buyOrders = MarketOrder.find({ buyOrder: true, itemId: i.key, corporation: government, status: 1 });
+            var sellOrders = MarketOrder.find({ buyOrder: false, itemId: i.key, "owner.id": government._id, status: 1 }),
+                buyOrders = MarketOrder.find({ buyOrder: true, itemId: i.key, "owner.id": government._id, status: 1 });
 
             if (sellOrders.count() < 10) {
                 for (var o = 0; o < 10 - sellOrders.count(); o++) {
                     MarketOrder.insert({
-                        itemId: i,
-                        owner: government,
+                        itemId: i.key,
+                        owner: { name: government.name, id: government._id },
                         buyOrder: false,
-                        price: Math.random() * 100,
-                        quantity: Math.random() * 5,
+                        price: (Math.random() * 100 + 50).toFixed(2),
+                        quantity: Math.floor(Math.random() * 5)+1,
                         location: 1,
                         status: 1
                     });
@@ -380,11 +414,11 @@ if (Meteor.isClient) {
             if (buyOrders.count() < 10) {
                 for (var o = 0; o < 10 - buyOrders.count(); o++) {
                     MarketOrder.insert({
-                        itemId: i,
-                        owner: government,
+                        itemId: i.key,
+                        owner:  { name: government.name, id: government._id },
                         buyOrder: true,
-                        price: Math.random() * 100,
-                        quantity: Math.random() * 5,
+                        price: (Math.random() * 10 + 5).toFixed(2),
+                        quantity: Math.floor(Math.random() * 5)+1,
                         location: 1,
                         status: 1
                     });
@@ -400,16 +434,17 @@ if (Meteor.isClient) {
 
 
 marketGraph = function(container, marketData) {
+    $(container).empty();
     container = $(container)[0];
 
     var
-    summaryTicks = financeData.summaryTicks,
+    summaryTicks = marketData.summaryTicks,
     options = {
     container : container,
     data : {
-      price : financeData.price,
-      volume : financeData.volume,
-      summary : financeData.price
+      price : marketData.price,
+      volume : marketData.quantity,
+      summary : marketData.price
     },
     trackFormatter : function (o) {
 
@@ -418,13 +453,13 @@ marketGraph = function(container, marketData) {
         index = data[o.index][0],
         value;
 
-      value = summaryTicks[index].date + ': $' + summaryTicks[index].close + ", Vol: " + summaryTicks[index].volume;
+      value = summaryTicks[index].date + ': $' + summaryTicks[index].sellAvg + ", Vol: " + summaryTicks[index].movement;
 
       return value;
     },
     xTickFormatter : function (index) {
-      var date = new Date(financeData.summaryTicks[index].date);
-      return date.getFullYear() + '';
+      var date = marketData.summaryTicks[index].date;
+      return date.getDate() + '';
     },
     // An initial selection
     selection : {
@@ -444,6 +479,7 @@ marketGraph = function(container, marketData) {
 
 
 function generateHourlyMarketReport () {
+    console.log("Generating market report");
     _.each(items, function (i) {
         var id = i.key,
             hourAgo = (new Date()).setHours((new Date()).getHours() - 2),
@@ -464,21 +500,22 @@ function generateHourlyMarketReport () {
             completedSellOrders = completedOrders.filter(function (o) { return !o.buyOrder; }),
             completedBuyOrders = completedOrders.filter(function (o) { return o.buyOrder; });
 
-        
-        var orderQuantitySum = function(a, b) { return a.quantity + b.quantity; },
-            orderMin = function (a, b) { return a.price > b.price ? a.price : b.price; },
-            orderMax = function (a, b) { return a.price > b.price ? a.price : b.price; },
-            orderSum = function (a, b) { return a.price + b.price; };
+
+        var orderQuantitySum = function(a, b) { return a + b.quantity; },
+            orderMin = function (a, b) { return a < b.price ? a : b.price; },
+            orderMax = function (a, b) { return a > b.price ? a : b.price; },
+            orderSum = function (a, b) { return +a + (+b.price); };
+
 
         MarketReport.insert({
             type: "hourly",
             date: new Date(),
             itemId: id,
             sellHigh: sellOrders.reduce(orderMax,0),
-            sellLow: sellOrders.reduce(orderMin,0),
+            sellLow: sellOrders.reduce(orderMin,Infinity),
             sellAvg: sellOrders.reduce(orderSum,0)/sellOrders.length,
             buyHigh: buyOrders.reduce(orderMax,0),
-            buyLow: buyOrders.reduce(orderMin,0),
+            buyLow: buyOrders.reduce(orderMin,Infinity),
             buyAvg: buyOrders.reduce(orderSum,0)/buyOrders.length,
             demand: buyOrders.reduce(orderQuantitySum,0),
             supply: sellOrders.reduce(orderQuantitySum,0),

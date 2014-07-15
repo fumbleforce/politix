@@ -7,7 +7,9 @@ Package.on_use(function (api) {
 
   var path = Npm.require('path');
   var asset_path = path.join('envision');
+
+  api.export("envision");
   api.add_files(path.join(asset_path, 'envision.min.css'), 'client');
-  api.add_files(path.join(asset_path, 'envision.min.js'), 'client');
+  api.add_files(path.join(asset_path, 'envision.js'), 'client');
 
 });
