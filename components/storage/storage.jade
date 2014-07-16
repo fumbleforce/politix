@@ -10,8 +10,8 @@ template(name="storage")
                     .close-btn(view="storage") X
         .panel-body
             select
-                option(value="1") Volantis
-                option(value="2") Westeros
+                each locations
+                    option(value="#{value}") #{label}
             .storage-window
                 each storageList
                     unless hide

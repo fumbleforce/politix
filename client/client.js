@@ -1,28 +1,30 @@
 Template.dashboard.noUser = !Meteor.user();
 
+Template.dashboard.helpers({
+    hasName: function () {
+        if (Meteor.user() && Meteor.user().profile)
+            return Meteor.user().profile.name;
+        return false;
+    },
 
-Template.dashboard.hasName = function () {
-    if (Meteor.user() && Meteor.user().profile)
-        return Meteor.user().profile.name;
-    return false;
-};
+    noName: function() { return !Template.dashboard.hasName(); },
 
-Template.dashboard.noName = function() { return !Template.dashboard.hasName(); };
+    hasCorporation: function () {
+        if (Meteor.user())
+            return Meteor.user().corporation;
+        return false;
+    },
 
-Template.dashboard.hasCorporation = function () {
-    if (Meteor.user())
-        return Meteor.user().corporation;
-    return false;
-};
+    noCorporation: function() { return !Template.dashboard.hasCorporation(); },
 
-Template.dashboard.noCorporation = function() { return !Template.dashboard.hasCorporation(); };
+    rendered: function () {
 
-Template.dashboard.rendered = function () {
+        $(".main").height($(window).height());
 
-    $(".main").height($(window).height());
+        generateMap();
+    }
+});
 
-    startSpace();
-};
 
 
 Template.navList.rendered = function () {
@@ -137,7 +139,7 @@ function contextMenu () {
         }
 
         return actions;
-    }
+    };
 
     var executeMenuAction = function (actions, a) {
         var action = _.find(actions, function (el) {
@@ -284,4 +286,19 @@ function startSpace () {
 
     render();
 
+}
+
+
+function generateMap () {
+    var s = new sigma({
+        container: "map-container",
+        graph: mapData,
+        settings: {
+            defaultNodeColor: "#FFFF00",
+            defaultLabelColor: "#fff",
+            defaultEdgeColor: "#fff",
+            sideMargin: 2,
+            labelThreshold: 3
+        }
+    });
 }

@@ -55,6 +55,15 @@ if (Meteor.isClient) {
         return getStorageList();
     };
 
+    Template.storage.locations = function () {
+        return mapData.nodes.map(function (n) {
+            return {
+                value: n.id,
+                label: n.label
+            };
+        });
+    };
+
     discardItem = function ($el) {
         var itemId = $el.attr("itemId"),
             quantity = $el.attr("quantity");
