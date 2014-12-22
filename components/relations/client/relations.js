@@ -1,12 +1,14 @@
-Template.relations.Corporation = function () {
-    return Corporation.find();
-};
+Template.Relations.helpers({
+    Corporation: function () {
+        return Corporation.find();
+    },
 
-Template.relations.selectedCorp = function () {
-    return Corporation.findOne(Session.get("selectedCorp"));
-};
+    selectedCorp: function () {
+        return Corporation.findOne(Session.get("selectedCorp"));
+    }
+});
 
-Template.relations.events({
+Template.Relations.events({
     'click input': function () {
         // template data, if any, is available in 'this'
         if (typeof console !== 'undefined')

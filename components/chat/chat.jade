@@ -1,10 +1,10 @@
 
-template(name="chat")
+template(name="Chat")
     //-
         Chat module
         Can join different channels
 
-    .chat.panel.drag-component.resizable
+    .chat.panel
 
         .panel-heading
             .pull-left Chat
@@ -25,3 +25,9 @@ template(name="chat")
                             p= message
 
             input.chat-input(type="text")
+
+
+    script.
+        $(".chat").height($(window).height()-$(".nav-list").height());
+        $(".chat .panel-body").height($(".chat").height()-50);
+        $(".chat .chat-message-list").height($(".chat .panel-body").height()-80);

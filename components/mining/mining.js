@@ -12,68 +12,72 @@ constructMiner = function ($el) {
 };
 
 
-if (Meteor.isClient) {
+if (Meteor.isClient && Meteor.userId()) {
 
     var minedDep = new Deps.Dependency();
 
-    Template.mining.miners = function () {
-        var miners = Miner.find({ corporation: Meteor.user().corporation }).fetch();
-        if (miners.length) {
-            miners = _.map(miners, function (m) {
-                var item = getItem(m.minerId);
-                return _.extend(m, item);
-            });
-            return miners;
+    Template.Mining.helpers({
+        miners: function () {
+            var miners = Miner.find({ corporation: Meteor.user().corporation }).fetch();
+            if (miners.length) {
+                miners = _.map(miners, function (m) {
+                    var item = getItem(m.minerId);
+                    return _.extend(m, item);
+                });
+                return miners;
+            }
+            return [];
+        },
+
+        mined: function () {
+            minedDep.depend();
+            return Template.Mining.minedData;
         }
-        return [];
-    };
-
-    Template.mining.mined = function () {
-        minedDep.depend();
-        return Template.mining.minedData;
-    };
+    });
 
 
-    var setMinedData = function () {
-        var mined = {}
 
-        miners = Miner.find({ corporation: Meteor.user().corporation });
-
-        miners.forEach(function (miner) {
-            amount = minDiff(miner.lastRun) * getItem(miner.minerId).props.miningRate;
-            
-            mined[getItem(miner.item).name.toLowerCase()] = ~~amount;
-        });
-
-        Template.mining.minedData = mined;
-    };
-
-    Template.mining.events({
+    Template.Mining.events({
         "click .add-miner": function () {
             Meteor.call("addMiner", {});
         },
         "click .release-minerals": function () {
             Meteor.call("refreshMinerals");
-            setMinedData();
+            for (var key in Template.Mining.minedData) {
+                Template.Mining.minedData[key] = 0;
+            }
+            minedDep.changed();
         }
     });
 
+    var updateInterval = 10;
+
     mine = function () {
+        if (window.Miner == undefined) return;
 
-        if (!Template.mining.minedData)
-            setMinedData();
+        var miners = Miner.find({ corporation: Meteor.user().corporation });
 
-        miners = Miner.find({ corporation: Meteor.user().corporation });
+        if (!Template.Mining.minedData) {
+            var mined = {}
+            miners.forEach(function (miner) {
+                amount = secDiff(miner.lastRun) * getItem(miner.minerId).props.miningRate;
+                
+                mined[getItem(miner.item).name.toLowerCase()] = ~~amount;
+            });
+            Template.Mining.minedData = mined;
+        }
+
 
         miners.forEach(function (miner) {
             
-            Template.mining.minedData[getItem(miner.item).name.toLowerCase()] += getItem(miner.minerId).props.miningRate;
+            Template.Mining.minedData[getItem(miner.item).name.toLowerCase()] += getItem(miner.minerId).props.miningRate * updateInterval;
         });
-
+        
         minedDep.changed();
     };
 
-    Meteor.setInterval(mine, 1000);
+    mine();
+    Meteor.setInterval(mine, updateInterval * 1000);
 
     
 
@@ -95,7 +99,7 @@ if (Meteor.isClient) {
 
             miners.forEach(function (miner) {
                 
-                timeDelta = Math.abs((now.getTime() - miner.lastRun.getTime()) / 1000);
+                timeDelta = secDiff(miner.lastRun);
                 amount = ~~(timeDelta * getItem(miner.minerId).props.miningRate);
 
                 Meteor.call("addItems", {

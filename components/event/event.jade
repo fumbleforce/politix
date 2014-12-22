@@ -1,10 +1,10 @@
-template(name="eventList")
+template(name="EventList")
     //-
         Chat module
         Can join different channels
 
 
-    .events.panel.drag-component.resizable
+    .events.panel
 
         .panel-heading
             .pull-left Events
@@ -13,14 +13,17 @@ template(name="eventList")
                     .close-btn(view="events") X
 
         .panel-body
-
-            .filters.clearfix
-                button.btnx.btnx-1.btnx-1f Bankruptcy
-                button.btnx.btnx-1.btnx-1f Weather
-                button.btnx.btnx-1.btnx-1f Workers
-                button.btnx.btnx-1.btnx-1f Merket
-                button.btnx.btnx-1.btnx-1f Messagerr
+            //-
+                .filters.clearfix
+                    button.btnx.btnx-1.btnx-1f Bankruptcy
+                    button.btnx.btnx-1.btnx-1f Weather
+                    button.btnx.btnx-1.btnx-1f Workers
+                    button.btnx.btnx-1.btnx-1f Merket
+                    button.btnx.btnx-1.btnx-1f Messagerr
             
             .event-list
                 each events
                     .event-entry= message
+
+    script.
+        $(".events").height($(window).height()-$(".nav-list").height());

@@ -1,70 +1,46 @@
-var requireLogin = function() {
-	if (!Meteor.user() && !Meteor.loggingIn()) {
-		Router.go('/sign-in');
-		return;
-	}
-};
-
-Router.onBeforeAction(requireLogin, {only: ['dashboard'] });
-
-Router.map(function() {
-	this.route('main', {
-		path: '/',
-	});
-	this.route('dashboard', {
-		path: '/dashboard',
-	});
-
-	/*
-	this.route('employees', {
-		path: '/employees',
-		onBeforeAction: function () {
-			AccountsEntry.signInRequired(this);
-		}
-	});
-	this.route('economy', {
-		path: '/economy',
-		onBeforeAction: function () {
-			AccountsEntry.signInRequired(this);
-		}
-	});
-	this.route('production', {
-		path: '/production',
-		onBeforeAction: function () {
-			AccountsEntry.signInRequired(this);
-		}
-	});
-	this.route('relations', {
-		path: '/relations',
-		onBeforeAction: function () {
-			AccountsEntry.signInRequired(this);
-		}
-	});
-	this.route('politics', {
-		path: '/politics',
-		onBeforeAction: function () {
-			AccountsEntry.signInRequired(this);
-		}
-	});
-	this.route('market', {
-		path: '/market',
-		onBeforeAction: function () {
-			AccountsEntry.signInRequired(this);
-		}
-	});
-	*/
-});
-
-
 Router.configure({
-	loadingTemplate: 'loading',
-	layoutTemplate: 'layout',
-	yieldTemplates: {
-		header: { to: 'header' },
-		footer: { to: 'footer'}
-	},
+	loadingTemplate: 'Loading',
+	layoutTemplate: 'Layout',
 	before: function () {
 		$('meta[name^="description"]').remove();
 	}
 });
+
+Router.route('/', function () { this.render("Main"); });
+
+Router.route('/dashboard', function () { this.render("Dashboard"); });
   
+
+
+//Routes
+AccountsTemplates.configureRoute('changePwd');
+AccountsTemplates.configureRoute('enrollAccount');
+AccountsTemplates.configureRoute('forgotPwd');
+AccountsTemplates.configureRoute('resetPwd');
+AccountsTemplates.configureRoute('signIn');
+AccountsTemplates.configureRoute('signUp');
+AccountsTemplates.configureRoute('verifyEmail');
+
+// Options
+AccountsTemplates.configure({
+    //defaultLayout: 'emptyLayout',
+    showForgotPasswordLink: true,
+    overrideLoginErrors: true,
+    enablePasswordChange: true,
+    sendVerificationEmail: false,
+
+    //enforceEmailVerification: true,
+    //confirmPassword: true,
+    //continuousValidation: false,
+    //displayFormLabels: true,
+    //forbidClientAccountCreation: false,
+    //formValidationFeedback: true,
+    //homeRoutePath: '/',
+    //showAddRemoveServices: false,
+    //showPlaceholders: true,
+
+    negativeValidation: true,
+    positiveValidation:true,
+    negativeFeedback: false,
+    positiveFeedback:true,
+});

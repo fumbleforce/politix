@@ -1,11 +1,11 @@
-template(name="market")
+template(name="Market")
     //-
         The grand market
         Buy and sell products of all kinds
         Get statistics of transactions
         View corporation orders
 
-    .market.panel.drag-component.resizable(style="display:none")
+    .market.panel.component(style="display:none")
         .panel-heading
             .pull-left Market
             .pull-right
@@ -81,7 +81,7 @@ template(name="market")
 
 
 
-template(name="marketDialog")
+template(name="MarketDialog")
     //-
         Dialog for accepting trades in the market
 
@@ -111,7 +111,7 @@ template(name="marketDialog")
 
 
 
-template(name="marketCreateOrder")
+template(name="MarketCreateOrder")
     //-
         Dialog for accepting trades in the market
 

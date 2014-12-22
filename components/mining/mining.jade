@@ -1,8 +1,8 @@
-template(name="mining")
+template(name="Mining")
     //-
         Screen for mining resources
 
-    .mining.panel.drag-component.resizable(style="display:none")
+    .mining.panel.component(style="display:none")
 
         .panel-heading
             .pull-left Mining
@@ -26,14 +26,9 @@ template(name="mining")
                 .col-xs-4
                     .row
                         h4 Mined amount
-                        p
-                            button.btnx.btnx-1.btnx-1f Hour
-                            button.btnx.btnx-1.btnx-1f Day
-                            button.btnx.btnx-1.btnx-1f Week
-                        
-                        p Iron: #{mined.iron}
-                        p Gold: #{mined.gold}
-                        p Copper: #{mined.copper}
+                        div Iron: #{mined.iron}
+                        div Gold: #{mined.gold}
+                        div Copper: #{mined.copper}
                     .row
                         button.btnx.btnx-1.btnx-1f.release-minerals Release minerals
             hr
@@ -45,6 +40,6 @@ template(name="mining")
                             .miner-img.col-xs-3
 
                             .miner-info.col-xs-9
-                                p Mining rate: #{props.miningRate} / hour
-                                p Cost: $ #{props.cost} / hour
-                                p Workers: #{workers} / #{props.maxWorkers}
+                                div Mining rate: #{props.miningRate} / hour
+                                div Cost: $ #{props.cost} / hour
+                                div Workers: #{workers} / #{props.maxWorkers}

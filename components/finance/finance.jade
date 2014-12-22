@@ -1,10 +1,10 @@
-template(name="finance")
+template(name="Finance")
     //-
         Internal economy status
         Cashflow over time
         Ownershipm, Results, Income, expences
 
-    .finance.panel.drag-component.resizable(style="display:none")
+    .finance.panel.component(style="display:none")
         .panel-heading
             .pull-left Finance
             .pull-right
@@ -20,51 +20,56 @@ template(name="finance")
 
             .tab-content
                 #finance-overview.tab-pane.active
+
+                    h3 Cash: #{cash}
+
+                    hr
+                    h3 Seeing the last #{timeFilter} days
                     .time-filter
-                        button.btnx.btnx-1.btnx-1f Hour
-                        button.btnx.btnx-1.btnx-1f Day
-                        button.btnx.btnx-1.btnx-1f Week
-                        button.btnx.btnx-1.btnx-1f Month
-                        button.btnx.btnx-1.btnx-1f Year
+                        button.btnx.btnx-1.btnx-1f(days="1") Day
+                        button.btnx.btnx-1.btnx-1f(days="7") Week
+                        button.btnx.btnx-1.btnx-1f(days="30") Month
+                        button.btnx.btnx-1.btnx-1f(days="365") Year
 
                     .row
                         .income.col-xs-6
-                            h2 Income
-                            
-                            h4: a(data-toggle="collapse" data-target="#sales") Sales +$ 789.46
-                            #sales.collapse.pad-left
-                                p Wool: $ 300.35
-                                p Steel: $ 879.3
-                                p Toys: $ 33333.33
-                            
-                            h4: a(data-toggle="collapse" data-target="#interest") Interest +$ 6547
-                            #interest.collapse.pad-left
-                                p Bank: $ 300.35
-                                p Loans: $ 879.3
-                                p Property: $7566.3
-                            
-                            h4: a(data-toggle="collapse" data-target="#grants") Grants +$ 6547
-                            #grants.collapse.pad-left
-                                p Bank: $ 300.35
-                                p Loans: $ 879.3
-                                p Property: $7566.3
-                            
-                            h4: a(data-toggle="collapse" data-target="#services") Services +$ 6547
-                            #services.collapse.pad-left
-                                p Bank: $ 300.35
-                                p Loans: $ 879.3
-                                p Property: $7566.3
+                            h2 Income $ #{income}
+                            //
+                                h4: a(data-toggle="collapse" data-target="#sales") Sales +$ 789.46
+                                #sales.collapse.pad-left
+                                    p Wool: $ 300.35
+                                    p Steel: $ 879.3
+                                    p Toys: $ 33333.33
+                                
+                                h4: a(data-toggle="collapse" data-target="#interest") Interest +$ 6547
+                                #interest.collapse.pad-left
+                                    p Bank: $ 300.35
+                                    p Loans: $ 879.3
+                                    p Property: $7566.3
+                                
+                                h4: a(data-toggle="collapse" data-target="#grants") Grants +$ 6547
+                                #grants.collapse.pad-left
+                                    p Bank: $ 300.35
+                                    p Loans: $ 879.3
+                                    p Property: $7566.3
+                                
+                                h4: a(data-toggle="collapse" data-target="#services") Services +$ 6547
+                                #services.collapse.pad-left
+                                    p Bank: $ 300.35
+                                    p Loans: $ 879.3
+                                    p Property: $7566.3
                             
                         .expences.col-xs-6
-                            h2 Expences
-                            p Salaries: $ 0
-                            p Loan Interest: $ 0
-                            p Rent: $ 0
-                            p Politics: $ 0
+                            h2 Expences $ #{expences}
+                            //
+                                p Salaries: $ 0
+                                p Loan Interest: $ 0
+                                p Rent: $ 0
+                                p Politics: $ 0
                     hr
 
                     .row
-                        h3 Result: +$ 99857.58
+                        h3 Result $ #{result}
 
 
                 #finance-transactions.tab-pane

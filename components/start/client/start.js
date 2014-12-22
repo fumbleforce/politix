@@ -1,7 +1,11 @@
 
+Template.StartGame.helpers({
+    error: function () {
+        return Session.get("createError");
+    }
+})
 
-
-Template.startGame.events({
+Template.StartGame.events({
     'click .save': function (event, template) {
         var corporationName = template.find(".corporationName").value,
             owner = template.find(".owner").value;
@@ -17,7 +21,3 @@ Template.startGame.events({
     }
 
 });
-
-Template.startGame.error = function () {
-    return Session.get("createError");
-};

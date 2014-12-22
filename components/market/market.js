@@ -3,7 +3,7 @@ if (Meteor.isClient) {
 
     // Market
 
-    Template.market.helpers({
+    Template.Market.helpers({
         items: function () {
             return itemHierarchy;
         },
@@ -38,7 +38,7 @@ if (Meteor.isClient) {
     });
 
 
-    Template.market.events({
+    Template.Market.events({
         "click .filter-list > li": function(event) {
             $(event.currentTarget).next(".sub-filter-list").toggle();
         },
@@ -89,18 +89,20 @@ if (Meteor.isClient) {
     // Market dialog
 
 
-    Template.marketDialog.order = function () {
-        console.log("finding order "+Session.get("selectedMarketOrder"));
-        return MarketOrder.findOne(Session.get("selectedMarketOrder"));
-    };
+    Template.MarketDialog.helpers({
+        order: function () {
+            console.log("finding order "+Session.get("selectedMarketOrder"));
+            return MarketOrder.findOne(Session.get("selectedMarketOrder"));
+        },
 
-    Template.marketDialog.totalPrice = function () {
-        var o = MarketOrder.findOne(Session.get("selectedMarketOrder"));
-        // Todo add tax and transaction cost
-        return o.quantity * o.price;
-    };
+        totalPrice: function () {
+            var o = MarketOrder.findOne(Session.get("selectedMarketOrder"));
+            // Todo add tax and transaction cost
+            return o.quantity * o.price;
+        }
+    });
 
-    Template.marketDialog.events({
+    Template.MarketDialog.events({
         "click .cancel": function(event) {
             $('.market-order-dialog').hide();
         },
@@ -124,24 +126,27 @@ if (Meteor.isClient) {
 
     // Order creation
 
-    Template.marketCreateOrder.order = function () {
-        return Session.get("createMarketOrder");
-    };
+    Template.MarketCreateOrder.helpers({
+        order: function () {
+            return Session.get("createMarketOrder");
+        },
+        
+        totalPrice: function () {
+            var o = Session.get("createMarketOrder"),
+                $createOrder = $('.market-create-order-dialog'),
+                quantity = ~~$createOrder.find("input[name='orderQuantity']").val(),
+                price = +$createOrder.find("input[name='orderPrice']").val();
+
+            totalPriceDep.depend();
+
+            return (price * quantity).toFixed(2);
+        }
+    })
 
     var totalPriceDep = new Deps.Dependency();
 
-    Template.marketCreateOrder.totalPrice = function () {
-        var o = Session.get("createMarketOrder"),
-            $createOrder = $('.market-create-order-dialog'),
-            quantity = ~~$createOrder.find("input[name='orderQuantity']").val(),
-            price = +$createOrder.find("input[name='orderPrice']").val();
 
-        totalPriceDep.depend();
-
-        return (price * quantity).toFixed(2);
-    };
-
-    Template.marketCreateOrder.events({
+    Template.MarketCreateOrder.events({
         "click .cancel": function(event) {
             $('.market-create-order-dialog').hide();
         },
@@ -248,9 +253,7 @@ if (Meteor.isClient) {
                     amount: order.quantity
                 });
 
-                corp.cash += cashDelta;
-
-                Transaction.insert({
+                spend({
                     description: "Sold "+item.name,
                     time: new Date(),
                     receiver: { name: getCorp().name, id: getCorp()._id },
@@ -273,27 +276,21 @@ if (Meteor.isClient) {
                         amount: order.quantity
                     });
 
-                    corp.cash -= cashDelta;
-
                 } else {
                     console.log("Have "+corp.cash+" need "+cashDelta);
                     throw new Meteor.Error(413, "Not enough cash");
                 }
 
-                Transaction.insert({
+                spend({
                     description: "Bought "+item.name,
-                    time: new Date(),
                     sender: { name: getCorp().name, id: getCorp()._id },
                     receiver: order.owner,
-                    amount: cashDelta,
+                    amount: -cashDelta,
                     itemId: order.itemId,
                     quantity: order.quantity,
                     type: "market"
                 });
             }
-
-            Corporation.update(Meteor.user().corporation,
-                { $inc: { "cash": corp.cash } });
 
             MarketOrder.update(order._id,
                 { $set: {

@@ -47,8 +47,6 @@ string corporation
 Storage = new Meteor.Collection('storage');
 
 
-
-
 /* Market order
 
 int itemId

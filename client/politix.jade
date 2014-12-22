@@ -4,102 +4,99 @@ head
     style.
         canvas { width: 100%; height: 100% }
 
-template(name="main")
+
+
+template(name="Main")
     //- 
         Top level template.
         The container for all templates.
     
     .main
-        if noUser
-            +entrySignIn
         
+        if currentUser
+            if noCorporation
+                +StartGame
+            else
+                +Dashboard
+        else
+            +atForm
 
-        h1.text-center
-            | Greed
-        
+
+template(name="Nav")
+    +atNavButton
+    
+    if currentUser
+        p= currentUser
         .row
             a.text-center(href="/dashboard")
                 .btn.btn-primary.btn-lg Game
+    else
+        .pull-right
 
 
-
-template(name="layout")
+template(name="Layout")
     //- 
         Places the components in their proper place.
         Displayed if company and owner is set
     
+    //-
+        .top-bar
+            +Nav
 
-    .top-bar
-        if currentUser
-            +loginButtons
-            .user-info
-                span Corporation: #{currentUser.corporation}
-                span Name: #{currentUser.profile.name}
+    .side-bar
+        if gameActive
+            +NavList
+            //+Chat
+            +EventList
 
-    +yield
+    .main-window
+        +Main
 
-            //-
-                .row.page
-                    // Company status row
-                    +companyStatus
-
-                .row
-                    .col-md-1.page
-                        // Nav, other things?
-                        +navList
-
-                    .col-md-9.page
-                        // Content of different pages
-                        +yield
-
-                    .col-md-2.page
-                        // Chat, status updates
-                        +eventList
-                        +chat
+    script.
+        $(".main-window")
+            .width($(window).width()-200)
+            .height($(window).height());
 
 
 
-
-template(name="dashboard")
+template(name="Dashboard")
     //- 
         Contains the view where all components are available
-    
-    canvas#spaceCanvas
-    #map-container
+
+    //-canvas#spaceCanvas
+    //-#map-container
 
     if noCorporation
-        +startGame
+        +StartGame
     else if noName
-        +startGame
+        +StartGame
     else
     
         // Standard on
-        +corporation
-        +navList
-        +eventList
-        +chat
+        +Corporation
+        
 
         // Togglable
-        +employees
-        +finance
-        +market
-        +politics
-        +production
-        +relations
-        +storage
-        +mining
+        +Employees
+        +Finance
+        +Market
+        +Politics
+        +Production
+        +Relations
+        +Storage
+        +Mining
 
         // Dialogs
-        +dialogConfirm
-        +dialogAlert
-        +marketDialog
-        +marketCreateOrder
+        +DialogConfirm
+        +DialogAlert
+        +MarketDialog
+        +MarketCreateOrder
 
     #context-menu.context-menu(style="display:none")
         ul
             li.btn-btn-default Close
 
-template(name="home")
+template(name="Home")
     //-
         Home page.
         Displays news maybe
@@ -112,7 +109,7 @@ template(name="home")
 
 
 
-template(name="loading")
+template(name="Loading")
     //-
         Loading page, might be useful
 

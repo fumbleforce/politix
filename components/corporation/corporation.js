@@ -14,31 +14,27 @@ getCorp = function (corpId) {
 
 
 
-
-
-
-
-
-
 if (Meteor.isClient) {
 
 
-Template.corporation.corporation = function () {
-    if (Meteor.user())
-        return Corporation.findOne(Meteor.user().corporation);
-    return false;
-};
+Template.Corporation.helpers({
+    corporation: function () {
+        if (Meteor.user())
+            return Corporation.findOne(Meteor.user().corporation);
+        return false;
+    },
 
-Template.corporation.rendered = function () {
-    $('.corporation nav').tab();
-    /*
-    $('.corporation nav a').click(function (e) {
-        e.preventDefault();
-    });
-*/
-};
+    rendered: function () {
+        $('.corporation nav').tab();
+        /*
+        $('.corporation nav a').click(function (e) {
+            e.preventDefault();
+        });
+    */
+    }
+});
 
-Template.corporation.events({
+Template.Corporation.events({
     "click .save-corp-info": function (e) {
         Corporation.update(getCorp()._id,
             { $set: { 

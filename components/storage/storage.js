@@ -49,20 +49,22 @@ storageCount = function (id) {
 
 if (Meteor.isClient) {
 
-    Template.storage.storageList = function () {
-        if (!getCorp()) return;
-        
-        return getStorageList();
-    };
+    Template.Storage.helpers({
+        storageList: function () {
+            if (!getCorp()) return;
+            
+            return getStorageList();
+        },
 
-    Template.storage.locations = function () {
-        return mapData.nodes.map(function (n) {
-            return {
-                value: n.id,
-                label: n.label
-            };
-        });
-    };
+        locations: function () {
+            return mapData.nodes.map(function (n) {
+                return {
+                    value: n.id,
+                    label: n.label
+                };
+            });
+        }
+    });
 
     discardItem = function ($el) {
         var itemId = $el.attr("itemId"),

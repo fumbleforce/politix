@@ -14,17 +14,19 @@ constructFactory = function ($el) {
 if (Meteor.isClient) {
 
 
-    Template.production.factories = function () {
-        return Factory.find({ corporation: Meteor.user().corporation });
-    };
+    Template.Production.helpers({
+        factories: function () {
+            return Factory.find({ corporation: Meteor.user().corporation });
+        },
 
-    Template.production.constructable = function () {
-        return getStorageList().filter(function (i) {
-            return getItem(i.itemKey).type == "buildings" && i.amount;
-        });
-    };
+        constructable: function () {
+            return getStorageList().filter(function (i) {
+                return getItem(i.itemKey).type == "buildings" && i.amount;
+            });
+        }
+    });
 
-    Template.production.events({
+    Template.Production.events({
         "click .construct": function (e) {
             var build = $(e.currentTarget).attr('building');
             Meteor.call("constructFactory", { itemId: build }, function (err) {

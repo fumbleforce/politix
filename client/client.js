@@ -1,13 +1,17 @@
-Template.dashboard.noUser = !Meteor.user();
+Template.registerHelper("gameActive", function () {
+    return Meteor.user() && Meteor.user().corporation
+});
 
-Template.dashboard.helpers({
+
+
+Template.Main.helpers({
     hasName: function () {
         if (Meteor.user() && Meteor.user().profile)
             return Meteor.user().profile.name;
         return false;
     },
 
-    noName: function() { return !Template.dashboard.hasName(); },
+    noName: function() { return !(Meteor.user() && Meteor.user().profile); },
 
     hasCorporation: function () {
         if (Meteor.user())
@@ -15,7 +19,12 @@ Template.dashboard.helpers({
         return false;
     },
 
-    noCorporation: function() { return !Template.dashboard.hasCorporation(); },
+    noCorporation: function() { return !(Meteor.user() && Meteor.user().corporation); },
+
+});
+
+
+Template.Dashboard.helpers({
 
     rendered: function () {
 
@@ -27,7 +36,7 @@ Template.dashboard.helpers({
 
 
 
-Template.navList.rendered = function () {
+Template.NavList.rendered = function () {
 
     if (!this.rendered) {
         console.log("Adding dragging listener");
@@ -42,7 +51,7 @@ Template.navList.rendered = function () {
     }
 };
 
-Template.dashboard.events({
+Template.Dashboard.events({
     "click .close-btn": function (e) {
         var frame = $(e.target).attr("view");
         $("."+frame).hide();

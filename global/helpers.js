@@ -27,7 +27,7 @@ formatDate = function() {
 UI.registerHelper('formatDate', formatDate);
 
 
-minDiff = function (from, to) {
+secDiff = function (from, to) {
     if (!to) {
         to = from;
         from = new Date();

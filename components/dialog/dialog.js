@@ -1,14 +1,24 @@
 
+informUser = function (info) {
+
+    if (Meteor.isClient) {
+        Session.set("dialogInfo", info);
+        displayView(".dialog-alert");
+    }
+};
+
 if (Meteor.isClient) {
 
 
     // Dialog Confirm
 
-    Template.dialogConfirm.question = function () {
-        return Session.get("dialogQuestion");
-    };
+    Template.DialogConfirm.helpers({
+        question: function () {
+            return Session.get("dialogQuestion");
+        }
+    });
 
-    Template.dialogConfirm.events({
+    Template.DialogConfirm.events({
         "click .yes": function () {
             Template.dialogConfirm.callback(true);
             hideView(".dialog-confirm");
@@ -32,21 +42,19 @@ if (Meteor.isClient) {
 
     // Dialog Alert
 
-    Template.dialogAlert.info = function () {
-        return Session.get("dialogInfo");
-    };
+    Template.DialogAlert.helpers({
+        info: function () {
+            return Session.get("dialogInfo");
+        }
+    });
 
-    Template.dialogAlert.events({
+    Template.DialogAlert.events({
         "click button.ok": function () {
             hideView(".dialog-alert");
         },
     });
 
-    informUser = function (info) {
 
-        Session.set("dialogInfo", info);
-        displayView(".dialog-alert");
-    };
 
 
 
