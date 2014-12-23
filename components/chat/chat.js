@@ -2,39 +2,38 @@
 if (Meteor.isClient) {
 
 
-Template.Chat.helpers({
+    Template.Chat.helpers({
 
-    messages: function () {
-	   return ChatMessage.find({ channel: "global" });
-    },
-    
-    rendered: function () {
+        messages: function () {
+    	   return ChatMessage.find({ channel: "global" });
+        },
+        
+        rendered: function () {
+            if (!this.rendered) {
 
-        if (!this.rendered) {
-
-            $(".chat").resize(function () {
-                console.log("Resizing chat");
-                $(".chat-message-list").css({
-                    "max-height": ($(".chat panel-body").height()-50) + "px",
-                    "height": ($(".chat panel-body").height()-50) + "px"
+                $(".chat").resize(function () {
+                    console.log("Resizing chat");
+                    $(".chat-message-list").css({
+                        "max-height": ($(".chat panel-body").height()-50) + "px",
+                        "height": ($(".chat panel-body").height()-50) + "px"
+                    });
                 });
-            });
-            
-            this.rendered = true;
+                
+                this.rendered = true;
+            }
         }
-    }
-});
+    });
 
 
-Template.Chat.events({
-    "keypress input.chat-input": function (e) {
-        if (e.which == 13 || e.keyCode == 13) {
-            var msg = $(e.currentTarget).val();
-            sendChatMessage({ channel: "global", message: msg });
-            $(e.currentTarget).val("");
+    Template.Chat.events({
+        "keypress input.chat-input": function (e) {
+            if (e.which == 13 || e.keyCode == 13) {
+                var msg = $(e.currentTarget).val();
+                sendChatMessage({ channel: "global", message: msg });
+                $(e.currentTarget).val("");
+            }
         }
-    }
-});
+    });
 
 
 } else {

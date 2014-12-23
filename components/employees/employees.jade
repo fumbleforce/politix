@@ -39,73 +39,28 @@ template(name="Employees")
                 #employees-list.tab-pane
                     .employee-filter
 
-                    table.employee-table.full-width
-                        thead
-                            tr
-                                th Name
-                                th Age
-                                th Occupation
-                                th Status
-                                th Wage
-                                th Happiness
+                    .employee-table.full-width
                                 
-                        tbody
-                            tr
-                                td Bob
-                                td 43
-                                td Secretary
-                                td Working
-                                td $ 78.6 / hour
-                                td :D
-                                td: .btn.btn-sm.btn-primary Details
-                            tr
-                                td Lisa
-                                td 23
-                                td Secretary
-                                td Free
-                                td $ 98.6 / hour
-                                td :|
-                                td: .btn.btn-sm.btn-primary Details
-                            tr
-                                td Leif
-                                td 98
-                                td Researcher
-                                td Working
-                                td $ 178.6 / hour
-                                td :(
-                                td: .btn.btn-sm.btn-primary Details
-                            
+                        ul
+                            each employees
+                                li.employee
+                                    div= name
+                                    div= type
+                                    div= state
+                                    div $ #{wage} / day
+                                    div: .btn.btn-sm.btn-primary.get-details Details
 
 
                 #employees-hire.tab-pane
                     table.hire-table.full-width
                         thead
                             tr
-                                th Name
-                                th Age
-                                th Occupation
+                                th Disposition
                                 th Wage
-                                th Base Happiness
                                 
                         tbody
-                            tr
-                                td Bob
-                                td 43
-                                td Secretary
-                                td $ 78.6 / hour
-                                td :D
-                                td: .btn.btn-sm.btn-primary Hire
-                            tr
-                                td Lisa
-                                td 23
-                                td Secretary
-                                td $ 98.6 / hour
-                                td :|
-                                td: .btn.btn-sm.btn-primary Hire
-                            tr
-                                td Leif
-                                td 98
-                                td Researcher
-                                td $ 178.6 / hour
-                                td :(
-                                td: .btn.btn-sm.btn-primary Hire
+                            each available
+                                tr
+                                    td= type
+                                    td $ #{wage} / hour
+                                    td: .btn.btn-sm.btn-primary.hire(workerid=workerId) Hire

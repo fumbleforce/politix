@@ -35,8 +35,79 @@ body
     margin:0
 
 
+
+/* General button style (reset) */
 .btn
-    border-radius: 0
+    border: none;
+    font-family: inherit;
+    font-size: 8px;
+    color: inherit;
+    background: none;
+    cursor: pointer;
+    padding: 4px 7px;
+    display: inline-block;
+    margin: 3px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    outline: none;
+    position: relative;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    border: 1px solid #fff;
+    color: #fff;
+    overflow: hidden;
+
+
+.btn:after
+    content: '';
+    position: absolute;
+    z-index: -1;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+    width: 101%;
+    height: 0;
+    top: 50%;
+    left: 50%;
+    background: #fff;
+    opacity: 0;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    -moz-transform: translateX(-50%) translateY(-50%);
+    -ms-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+
+
+/* Pseudo elements for icons */
+.btn:before
+    font-family: 'icomoon';
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+
+.btn:hover,
+.btn:active
+    color: #0e83cd;
+    background: white
+
+.btn:hover:after
+    height: 75%;
+    opacity: 1;
+
+
+.btn:active:after
+    height: 130%;
+    opacity: 1;
+
+
+
+
 
 .panel
     border-radius: 0px
@@ -78,6 +149,10 @@ ul
 
     li
         list-style-type: none
+
+table
+    width: 100%
+
 
 .nav-tabs
     

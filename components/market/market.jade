@@ -16,10 +16,10 @@ template(name="Market")
                 .market-filter.col-sm-3
                     .row
                         .col-xs-6
-                            button.view-type.btnx.btnx-1.btnx-1f(type="table")
+                            button.view-type.btn(type="table")
                                             | Table
                         .col-xs-6
-                            button.view-type.btnx.btnx-1.btnx-1f(type="graph")
+                            button.view-type.btn(type="graph")
                                             | Graph
                     p Volantis District
 
@@ -36,7 +36,7 @@ template(name="Market")
                         .row.full-width.item-detail
                             with item
                                 .col-xs-1
-                                    button.buy.btnx.btnx-1.btnx-1f(itemId="#{key}")
+                                    button.buy.btn(itemId="#{key}")
                                         | Buy
                                 .col-xs-5
                                     h3.text-center= name
@@ -101,10 +101,10 @@ template(name="MarketDialog")
                 h4 Total: #{totalPrice}
 
                 .row
-                    button.accept.btnx.btnx-1.btnx-1f.pull-left
+                    button.accept.btn.pull-left
                         | Accept Trade
 
-                    button.cancel.btnx.btnx-1.btnx-1f.pull-left
+                    button.cancel.btn.pull-left
                         | Cancel
 
             
@@ -154,10 +154,10 @@ template(name="MarketCreateOrder")
 
 
                 .row
-                    button.create.btnx.btnx-1.btnx-1f.pull-left
+                    button.create.btn.pull-left
                         | Create order
 
-                    button.cancel.btnx.btnx-1.btnx-1f.pull-left
+                    button.cancel.btn.pull-left
                         | Cancel
 
             

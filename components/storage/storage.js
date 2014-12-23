@@ -1,17 +1,18 @@
 
+Storage = {};
 
-getStorage = function (loc) {
-    if (getCorp()) {
-        var s = Storage.findOne({ corporation: Meteor.user().corporation });
+Storage.get = function (loc) {
+    if (Corporation.get()) {
+        var s = StorageCollection.findOne({ corporation: Meteor.user().corporation });
 
         return s["Volantis"];
     }
     return {};
 };
 
-getStorageList = function (loc) {
+Storage.getList = function (loc) {
 
-    var storage = getStorage();
+    var storage = Storage.get();
 
     if (storage) {
         var arr = asArray(storage);
@@ -19,7 +20,7 @@ getStorageList = function (loc) {
         if (arr.length) {
             _.each(arr, function (item) {
                 item.itemKey = item.key;
-                item.name = getItem(item.key).name;
+                item.name = Item.get(item.key).name;
                 item.hide = item.value === 0;
                 item.amount = item.value;
             });
@@ -32,16 +33,16 @@ getStorageList = function (loc) {
     }
 };
 
-getFromStorage = function (id) {
-    if (getCorp()) {
-        return getStorage()[id];
+Storage.getItem = function (id) {
+    if (Corporation.get()) {
+        return Storage.get()[id];
     }
     return false;
 };
 
-storageCount = function (id) {
-    if (getStorage()[id])
-        return getStorage()[id];
+Storage.count = function (id) {
+    if (Storage.get()[id])
+        return Storage.get()[id];
     return 0;
 };
 
@@ -51,9 +52,9 @@ if (Meteor.isClient) {
 
     Template.Storage.helpers({
         storageList: function () {
-            if (!getCorp()) return;
+            if (!Corporation.get()) return;
             
-            return getStorageList();
+            return Storage.getList();
         },
 
         locations: function () {
@@ -71,9 +72,9 @@ if (Meteor.isClient) {
             quantity = $el.attr("quantity");
 
         var question = "Are you sure you want to discard " +
-            quantity + " of " + getItem(itemId).name + "?";
+            quantity + " of " + Item.get(itemId).name + "?";
 
-        getConfirmation(question, function (res) {
+        Dialog.getConfirmation(question, function (res) {
             if (res) {
                 Meteor.call("removeItems", { item: itemId, amount: quantity });
             }
@@ -89,7 +90,7 @@ if (Meteor.isClient) {
             var action = {};
             action["Volantis."+opts.item] = opts.amount;
 
-            Storage.update({ corporation: Meteor.user().corporation },
+            StorageCollection.update({ corporation: Meteor.user().corporation },
                 { $inc: action });
         },
 

@@ -1,8 +1,8 @@
 
 
+Event = {};
 
-
-addEvent = function (msg) {
+Event.addEvent = function (msg) {
     if (Meteor.isClient) {
 
         var events = Session.get("events");
@@ -17,10 +17,8 @@ addEvent = function (msg) {
 if (Meteor.isClient) {
     Session.set("events", []);
 
-
     Template.EventList.helpers({
         events: function () {
-
             return Session.get("events").reverse();
         }
     });

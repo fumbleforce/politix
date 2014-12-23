@@ -5,17 +5,17 @@ if (Meteor.isClient) {
 
     Template.Market.helpers({
         items: function () {
-            return itemHierarchy;
+            return Item.itemHierarchy;
         },
 
         item: function () {
-            return getItem(Session.get("activeMarketItem"));
+            return Item.get(Session.get("activeMarketItem"));
         },
 
         buyOrders: function () {
             // TODO Sort by location
 
-            return MarketOrder.find({
+            return MarketOrderCollection.find({
                 itemId: +Session.get("activeMarketItem"),
                 buyOrder: true,
                 status: 1
@@ -25,7 +25,7 @@ if (Meteor.isClient) {
         sellOrders: function () {
             // TODO Sort by location
             
-            return MarketOrder.find({
+            return MarketOrderCollection.find({
                 itemId: +Session.get("activeMarketItem"),
                 buyOrder: false,
                 status: 1
@@ -47,7 +47,7 @@ if (Meteor.isClient) {
             if (!Session.get("marketAsTable")) {
                 console.log("Calling market data");
                 Meteor.call("marketData", { itemId: Session.get("activeMarketItem") }, function (err, data) {
-                    marketGraph(".market-graph", data);
+                    Market.marketGraph(".market-graph", data);
                 });
                 
             }
@@ -61,7 +61,7 @@ if (Meteor.isClient) {
             }).show();
         },
         "click button.buy": function (event) {
-            createBuyOrder($(event.target));
+            Market.createBuyOrder($(event.target));
         },
         "click .view-type": function(e) {
             var isTable = $(e.target).attr("type") === "table";
@@ -70,7 +70,7 @@ if (Meteor.isClient) {
             if (!isTable) {
                 console.log("Calling market data");
                 Meteor.call("marketData", { itemId: Session.get("activeMarketItem") }, function (err, data) {
-                    marketGraph(".market-graph", data);
+                    Market.marketGraph(".market-graph", data);
                 });
                 
             }
@@ -92,11 +92,11 @@ if (Meteor.isClient) {
     Template.MarketDialog.helpers({
         order: function () {
             console.log("finding order "+Session.get("selectedMarketOrder"));
-            return MarketOrder.findOne(Session.get("selectedMarketOrder"));
+            return MarketOrderCollection.findOne(Session.get("selectedMarketOrder"));
         },
 
         totalPrice: function () {
-            var o = MarketOrder.findOne(Session.get("selectedMarketOrder"));
+            var o = MarketOrderCollection.findOne(Session.get("selectedMarketOrder"));
             // Todo add tax and transaction cost
             return o.quantity * o.price;
         }
@@ -111,13 +111,8 @@ if (Meteor.isClient) {
             var orderId = Session.get("selectedMarketOrder"),
                 quantity = $('.market-order-dialog').find("input .orderAmount").val();
             
-            Meteor.call('acceptOrder', { orderId: orderId, quantity: quantity }, function(err) {
-                if (err) {
-                    informUser(err.message);
-                    addEvent(err.message);
-                }
-            });
-            addEvent("Accepted order "+orderId);
+            Meteor.call('acceptOrder', { orderId: orderId, quantity: quantity }, Error.handler);
+            Event.addEvent("Accepted order "+orderId);
         },
     });
 
@@ -160,14 +155,9 @@ if (Meteor.isClient) {
             order.type = $createOrder.find("input[name='orderType']:checked").val();
             order.price = +$createOrder.find("input[name='orderPrice']").val();
 
-            Meteor.call('createOrder', order, function(err) {
-                if (err) {
-                    informUser(err.message);
-                    addEvent(err.message);
-                }
-            });
+            Meteor.call('createOrder', order, Error.handler);
 
-            addEvent("Created order");
+            Event.addEvent("Created order");
         },
         "change input[name='orderQuantity']": function () {
             totalPriceDep.changed();
@@ -178,55 +168,22 @@ if (Meteor.isClient) {
 
     });
 
-    var createOrder = function($el, itemId, quantity) {
-
-        itemId = itemId || +$el.attr("itemId");
-        quantity = quantity || +$el.attr("quantity");
-        
-        var $createOrder = $('.market-create-order-dialog');
-
-        $createOrder.find("[name=\"orderQuantity\"]").val(quantity);
-
-        Session.set("createMarketOrder", {
-            item: getItem(itemId),
-            itemId: itemId
-        });
-
-        Session.set("panelOrder", Session.get("panelOrder") + 1);
-
-        totalPriceDep.changed();
-        
-        $createOrder.css({
-            "left": "50%",
-            "z-index": Session.get("panelOrder")
-        }).show();
-    };
-
-    createSellOrder = function ($el) {
-        $('.market-create-order-dialog').find("[name=\"orderType\"][value=\"sell\"]").prop("checked", true);
-        createOrder($el);
-    };
-
-
-    createBuyOrder = function ($el) {
-        $('.market-create-order-dialog').find("[name=\"orderType\"][value=\"buy\"]").prop("checked", true);
-        createOrder($el);
-    };
+    
 
 
 } else {
 
     Meteor.startup(function () {
-        generateDailyMarketReport();
-        generateHourlyMarketReport();
+        Market.generateDailyMarketReport();
+        Market.generateHourlyMarketReport();
         //Meteor.setInterval(generateHourlyMarketReport, 60 * 1000);
         Meteor.setInterval(function () {
             console.log("Re-generating government conracts to test reports");
-            MarketOrder.remove({});
-            resupplyGovernmentContracts();
-            generateHourlyMarketReport();
+            MarketOrderCollection.remove({});
+            Market.resupplyGovernmentContracts();
+            Market.generateHourlyMarketReport();
         }, 5 * 60 * 1000);
-        Meteor.setInterval(generateDailyMarketReport, 24 * 60 * 60 * 1000);
+        Meteor.setInterval(Market.generateDailyMarketReport, 24 * 60 * 60 * 1000);
     });
 
 
@@ -237,15 +194,15 @@ if (Meteor.isClient) {
 
             var orderId = opts.orderId,
                 quantity = opts.quantity,
-                storage = getStorage(),
-                corp = getCorp(),
-                order = MarketOrder.findOne(orderId),
-                item = getItem(order.itemId),
+                storage = Storage.get(),
+                corp = Corporation.get(),
+                order = MarketOrderCollection.findOne(orderId),
+                item = Item.get(order.itemId),
                 cashDelta = order.quantity * order.price;
 
 
             if (order.buyOrder) {
-                if (storageCount(order.itemId) < order.quantity)
+                if (Storage.count(order.itemId) < order.quantity)
                     throw new Meteor.Error(413, "Not enough items");
 
                 Meteor.call("removeItems", {
@@ -253,10 +210,10 @@ if (Meteor.isClient) {
                     amount: order.quantity
                 });
 
-                spend({
+                Wallet.spend({
                     description: "Sold "+item.name,
                     time: new Date(),
-                    receiver: { name: getCorp().name, id: getCorp()._id },
+                    receiver: { name: Corporation.get().name, id: Corporation.get()._id },
                     sender: order.owner,
                     amount: cashDelta,
                     itemId: order.itemId,
@@ -281,9 +238,9 @@ if (Meteor.isClient) {
                     throw new Meteor.Error(413, "Not enough cash");
                 }
 
-                spend({
+                Wallet.spend({
                     description: "Bought "+item.name,
-                    sender: { name: getCorp().name, id: getCorp()._id },
+                    sender: { name: Corporation.get().name, id: Corporation.get()._id },
                     receiver: order.owner,
                     amount: -cashDelta,
                     itemId: order.itemId,
@@ -292,10 +249,10 @@ if (Meteor.isClient) {
                 });
             }
 
-            MarketOrder.update(order._id,
+            MarketOrderCollection.update(order._id,
                 { $set: {
                     "status": 2,
-                    "acceptedBy": { name: getCorp().name, id: getCorp()._id },
+                    "acceptedBy": { name: Corporation.get().name, id: Corporation.get()._id },
                     "acceptedTime": new Date()
                 }});
 
@@ -311,9 +268,9 @@ if (Meteor.isClient) {
                 price = opts.price,
                 type = opts.type,
                 buyOrder = type === "buy",
-                storage = getStorage(),
-                corp = getCorp(),
-                item = getItem(opts.itemId),
+                storage = Storage.get(),
+                corp = Corporation.get(),
+                item = Item.get(opts.itemId),
                 totalPrice = quantity * price;
 
 
@@ -340,7 +297,7 @@ if (Meteor.isClient) {
                 status: 1
             };
 
-            MarketOrder.insert(order);
+            MarketOrderCollection.insert(order);
         },
 
 
@@ -348,7 +305,7 @@ if (Meteor.isClient) {
         transactionData: function (opts) {
             var itemId = opts.itemId;
 
-            var transactions = Transaction.find({
+            var transactions = TransactionCollection.find({
                 type: "market",
                 itemId: itemId,
             }).sort({ time: 1 }),
@@ -363,7 +320,7 @@ if (Meteor.isClient) {
 
         marketData: function (opts) {
             console.log("Finding reports for item ", opts.itemId);
-            var reports = MarketReport.find({ itemId: +opts.itemId }).fetch(),
+            var reports = MarketReportCollection.find({ itemId: +opts.itemId }).fetch(),
                 price = [
                     reports.map(function(r, i) { return i; }),
                     reports.map(function(r) { return r.sellAvg; }),
@@ -385,52 +342,14 @@ if (Meteor.isClient) {
 
 
 
-    resupplyGovernmentContracts = function () {
-        console.log("Resupplying government contracts");
 
-        var government = Corporation.findOne({ name: "The Government" });
-
-        _.each(items, function (i) {
-            var sellOrders = MarketOrder.find({ buyOrder: false, itemId: i.key, "owner.id": government._id, status: 1 }),
-                buyOrders = MarketOrder.find({ buyOrder: true, itemId: i.key, "owner.id": government._id, status: 1 });
-
-            if (sellOrders.count() < 10) {
-                for (var o = 0; o < 10 - sellOrders.count(); o++) {
-                    MarketOrder.insert({
-                        itemId: i.key,
-                        owner: { name: government.name, id: government._id },
-                        buyOrder: false,
-                        price: (Math.random() * 100 + 50).toFixed(2),
-                        quantity: Math.floor(Math.random() * 5)+1,
-                        location: 1,
-                        status: 1
-                    });
-                }
-            }
-
-            if (buyOrders.count() < 10) {
-                for (var o = 0; o < 10 - buyOrders.count(); o++) {
-                    MarketOrder.insert({
-                        itemId: i.key,
-                        owner:  { name: government.name, id: government._id },
-                        buyOrder: true,
-                        price: (Math.random() * 10 + 5).toFixed(2),
-                        quantity: Math.floor(Math.random() * 5)+1,
-                        location: 1,
-                        status: 1
-                    });
-                }
-            }
-
-        });
-    };
 
 }
 
 
+Market = {};
 
-
-marketGraph = function(container, marketData) {
+Market.marketGraph = function(container, marketData) {
     $(container).empty();
     container = $(container)[0];
 
@@ -473,18 +392,52 @@ marketGraph = function(container, marketData) {
 };
 
 
+Market.createOrder = function($el, itemId, quantity) {
+
+    itemId = itemId || +$el.attr("itemId");
+    quantity = quantity || +$el.attr("quantity");
+    
+    var $createOrder = $('.market-create-order-dialog');
+
+    $createOrder.find("[name=\"orderQuantity\"]").val(quantity);
+
+    Session.set("createMarketOrder", {
+        item: Item.get(itemId),
+        itemId: itemId
+    });
+
+    Session.set("panelOrder", Session.get("panelOrder") + 1);
+
+    totalPriceDep.changed();
+    
+    $createOrder.css({
+        "left": "50%",
+        "z-index": Session.get("panelOrder")
+    }).show();
+};
+
+Market.createSellOrder = function ($el) {
+    $('.market-create-order-dialog').find("[name=\"orderType\"][value=\"sell\"]").prop("checked", true);
+    Market.createOrder($el);
+};
 
 
-function generateHourlyMarketReport () {
+Market.createBuyOrder = function ($el) {
+    $('.market-create-order-dialog').find("[name=\"orderType\"][value=\"buy\"]").prop("checked", true);
+    Market.createOrder($el);
+};
+
+
+Market.generateHourlyMarketReport = function () {
     console.log("Generating market report");
-    _.each(items, function (i) {
+    _.each(Item.items, function (i) {
         var id = i.key,
             hourAgo = (new Date()).setHours((new Date()).getHours() - 2),
-            activeOrders = MarketOrder.find({
+            activeOrders = MarketOrderCollection.find({
                 itemId: id,
                 status: 1
             }).fetch(),
-            completedOrders = MarketOrder.find({
+            completedOrders = MarketOrderCollection.find({
                 itemId: id,
                 status: 2,
                 date: { $gte: hourAgo }
@@ -504,7 +457,7 @@ function generateHourlyMarketReport () {
             orderSum = function (a, b) { return +a + (+b.price); };
 
 
-        MarketReport.insert({
+        MarketReportCollection.insert({
             type: "hourly",
             date: new Date(),
             itemId: id,
@@ -522,10 +475,51 @@ function generateHourlyMarketReport () {
         });
 
     });
-}
+};
 
-function generateDailyMarketReport () {
+
+Market.generateDailyMarketReport = function () {
     console.log("Generating daily market report");
 
     // TODO, combine the day's hourly reports
-}
+};
+
+Market.resupplyGovernmentContracts = function () {
+    console.log("Resupplying government contracts");
+
+    var government = CorporationCollection.findOne({ name: "The Government" });
+
+    _.each(Item.items, function (i) {
+        var sellOrders = MarketOrderCollection.find({ buyOrder: false, itemId: i.key, "owner.id": government._id, status: 1 }),
+            buyOrders = MarketOrderCollection.find({ buyOrder: true, itemId: i.key, "owner.id": government._id, status: 1 });
+
+        if (sellOrders.count() < 10) {
+            for (var o = 0; o < 10 - sellOrders.count(); o++) {
+                MarketOrderCollection.insert({
+                    itemId: i.key,
+                    owner: { name: government.name, id: government._id },
+                    buyOrder: false,
+                    price: (Math.random() * 100 + 50).toFixed(2),
+                    quantity: Math.floor(Math.random() * 5)+1,
+                    location: 1,
+                    status: 1
+                });
+            }
+        }
+
+        if (buyOrders.count() < 10) {
+            for (var o = 0; o < 10 - buyOrders.count(); o++) {
+                MarketOrderCollection.insert({
+                    itemId: i.key,
+                    owner:  { name: government.name, id: government._id },
+                    buyOrder: true,
+                    price: (Math.random() * 10 + 5).toFixed(2),
+                    quantity: Math.floor(Math.random() * 5)+1,
+                    location: 1,
+                    status: 1
+                });
+            }
+        }
+
+    });
+};

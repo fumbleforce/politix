@@ -13,7 +13,12 @@ asArray = function(obj) {
 UI.registerHelper('asArray', asArray);
 
 
-
+Error.handler = function (err) {
+    if (err) {
+        Dialog.informUser(err.message);
+        Event.addEvent(err.message);
+    }
+};
 
 capitalize = function(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);

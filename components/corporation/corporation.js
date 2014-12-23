@@ -1,10 +1,11 @@
 
+Corporation = {};
 
-getCorp = function (corpId) {
+Corporation.get = function (corpId) {
     if (corpId) {
-        return Corporation.findOne(corpId);
+        return CorporationCollection.findOne(corpId);
     } else {
-        return Corporation.findOne(Meteor.user().corporation);
+        return CorporationCollection.findOne(Meteor.user().corporation);
     }
 };
 
@@ -20,7 +21,7 @@ if (Meteor.isClient) {
 Template.Corporation.helpers({
     corporation: function () {
         if (Meteor.user())
-            return Corporation.findOne(Meteor.user().corporation);
+            return CorporationCollection.findOne(Meteor.user().corporation);
         return false;
     },
 
@@ -36,7 +37,7 @@ Template.Corporation.helpers({
 
 Template.Corporation.events({
     "click .save-corp-info": function (e) {
-        Corporation.update(getCorp()._id,
+        CorporationCollection.update(getCorp()._id,
             { $set: { 
                 description: $("textarea.description-edit").val(),
                 motto: $("input.motto-edit").val()
@@ -64,12 +65,12 @@ Meteor.methods({
         if (!this.userId)
             throw new Meteor.Error(401, "Must be logged in");
 
-        if (Corporation.find({ name: options.name }).count())
+        if (CorporationCollection.find({ name: options.name }).count())
             throw new Meteor.Error(400, "Corporation name exists");
 
         var id = options._id || Random.id();
         
-        Corporation.insert({
+        CorporationCollection.insert({
             _id: id,
             owner: this.userId,
             name: options.name,
@@ -77,7 +78,7 @@ Meteor.methods({
             employees: [],
         });
 
-        Storage.insert({
+        StorageCollection.insert({
             corporation: id,
             "Volantis": {}
         });

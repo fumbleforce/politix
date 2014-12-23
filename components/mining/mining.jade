@@ -13,7 +13,18 @@ template(name="Mining")
             .row.full-width
                 .col-xs-4
                     p Overall efficiency: 58%
-                    p Active workers: 10 / 60
+                    p Active workers:
+                    ul
+                        each workers
+                            if free
+                                li [________]
+                            else
+                                li
+                                    span= name
+                                    .btn.remove-miner(employeeid=id) Remove
+                        if needsWorker
+                            li: .btn.add-worker Add workers
+                                
 
 
                 .col-xs-4
@@ -30,7 +41,7 @@ template(name="Mining")
                         div Gold: #{mined.gold}
                         div Copper: #{mined.copper}
                     .row
-                        button.btnx.btnx-1.btnx-1f.release-minerals Release minerals
+                        .btn.release-minerals Release minerals
             hr
 
             .row.full-width
@@ -42,4 +53,4 @@ template(name="Mining")
                             .miner-info.col-xs-9
                                 div Mining rate: #{props.miningRate} / hour
                                 div Cost: $ #{props.cost} / hour
-                                div Workers: #{workers} / #{props.maxWorkers}
+                                div Workers: #{props.maxWorkers}

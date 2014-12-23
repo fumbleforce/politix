@@ -8,7 +8,7 @@ dict contributions
 list priorities
     list of things he is in favor of
 */
-Politician = new Meteor.Collection('politician');
+PoliticianCollection = new Meteor.Collection('politician');
 
 
 /* corporation
@@ -22,20 +22,20 @@ dict employees
     float base_motivation
     float salary
 */
-Corporation = new Meteor.Collection('corporation');
+CorporationCollection = new Meteor.Collection('corporation');
 
 if (Meteor.isServer) {
 
     var npc;
 
-    if (Corporation.find({ name: "The Government" }).count() === 0) {
+    if (CorporationCollection.find({ name: "The Government" }).count() === 0) {
         Corporation.insert({
             name: "The Government",
             cash: 999999999999999999,
         });
     }
 
-    npc = Corporation.findOne({ name: "The Government" });
+    npc = CorporationCollection.findOne({ name: "The Government" });
 }
 
 
@@ -44,7 +44,14 @@ if (Meteor.isServer) {
 string corporation
 
 */
-Storage = new Meteor.Collection('storage');
+StorageCollection = new Meteor.Collection('storage');
+
+
+
+
+
+EmployeeCollection = new Meteor.Collection('employee');
+
 
 
 /* Market order
@@ -60,15 +67,17 @@ int status [0: failed, 1: active, 2: accepted]
 date acceptedTime
 
 */
-MarketOrder = new Meteor.Collection('marketOrder');
+MarketOrderCollection = new Meteor.Collection('marketOrder');
 
 if (Meteor.isServer) {
     //MarketOrder.find().count() === 0
 
-    npc.id = npc._id;
+    Meteor.startup(function () {
+        npc.id = npc._id;
+        MarketOrderCollection.remove({});
+        Market.resupplyGovernmentContracts();
+    });
 
-    MarketOrder.remove({});
-    resupplyGovernmentContracts();
 }
 
 
@@ -89,7 +98,7 @@ sold
 bought
 
 */
-MarketReport = new Meteor.Collection("marketReport");
+MarketReportCollection = new Meteor.Collection("marketReport");
 
 
 
@@ -102,7 +111,7 @@ sender: {
     id
 }
 */
-ChatMessage = new Meteor.Collection('chatMessage');
+ChatMessageCollection = new Meteor.Collection('chatMessage');
 
 
 
@@ -118,7 +127,7 @@ ChatMessage = new Meteor.Collection('chatMessage');
     type
 
 */
-Transaction = new Meteor.Collection("transaction");
+TransactionCollection = new Meteor.Collection("transaction");
 
 
 
@@ -143,7 +152,7 @@ machines: [
     }
 ]
 */
-Factory = new Meteor.Collection("factory");
+FactoryCollection = new Meteor.Collection("factory");
 
 /* Miner
 
@@ -152,4 +161,4 @@ string corporation
 int item (id)
 
 */
-Miner = new Meteor.Collection("miner");
+MinerCollection = new Meteor.Collection("miner");

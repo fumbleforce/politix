@@ -1,6 +1,6 @@
+Item = {};
 
-
-items = [
+Item.items = [
     // Raw metals used for producing things
     {
         type:"metal",
@@ -61,7 +61,7 @@ items = [
         actions: [
             {
                 name: "Construct",
-                func: constructFactory
+                func: Production.constructFactory
             },
         ],
     },
@@ -74,28 +74,39 @@ items = [
             weight: 10000000,
             miningRate: 1,
             cost: 15,
-            minWorkers: 1,
             maxWorkers: 3
         },
         actions: [
             {
                 name: "Construct",
-                func: constructMiner
+                func: Mining.constructMiner
             },
         ],
         defaultItem: 7
     },
-
 ];
 
-itemDict = {};
-itemHierarchy = [];
+Item.workers = [
+    {
+        workerId: 0,
+        type: "manual",
+        wage: 5
+    },
+    {   
+        workerId: 1,
+        type: "economics",
+        wage: 10,
+    }
+];
 
-_.each(items, function (i, index) {
-    var hasType = _.some(itemHierarchy, function (el) { return i.type === el.key; });
+Item.itemDict = {};
+Item.itemHierarchy = [];
+
+_.each(Item.items, function (i, index) {
+    var hasType = _.some(Item.itemHierarchy, function (el) { return i.type === el.key; });
 
     if (!hasType) {
-        itemHierarchy.push({
+        Item.itemHierarchy.push({
             key: i.type,
             name: capitalize(i.type),
             itemList: [{ itemKey: i.key, itemName: i.name }]
@@ -103,23 +114,23 @@ _.each(items, function (i, index) {
     } else {
         var typeIndex = -1;
         
-        _.each(itemHierarchy, function(el, localIndex) { 
+        _.each(Item.itemHierarchy, function(el, localIndex) { 
             if (el.key === i.type)
                 typeIndex = localIndex;
         });
 
-        itemHierarchy[typeIndex].itemList.push({ itemKey: i.key, itemName: i.name });
+        Item.itemHierarchy[typeIndex].itemList.push({ itemKey: i.key, itemName: i.name });
     }
 
-    itemDict[i.key] = index;
+    Item.itemDict[i.key] = index;
 });
 
 
 
-sortedItems = _.sortBy(items, function(item) {
+Item.sortedItems = _.sortBy(Item.items, function(item) {
     return item.key;
 });
 
-getItem = function (id) {
-    return items[itemDict[id]];
+Item.get = function (id) {
+    return Item.items[Item.itemDict[id]];
 };

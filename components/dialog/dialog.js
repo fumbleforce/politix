@@ -1,10 +1,20 @@
+Dialog = {};
 
-informUser = function (info) {
+Dialog.informUser = function (info) {
 
     if (Meteor.isClient) {
         Session.set("dialogInfo", info);
         displayView(".dialog-alert");
     }
+};
+
+Dialog.getConfirmation = function (question, callback) {
+
+    Session.set("dialogQuestion", question);
+    Template.DialogConfirm.callback = callback;
+
+    displayView(".dialog-confirm");
+
 };
 
 if (Meteor.isClient) {
@@ -20,24 +30,14 @@ if (Meteor.isClient) {
 
     Template.DialogConfirm.events({
         "click .yes": function () {
-            Template.dialogConfirm.callback(true);
+            Template.DialogConfirm.callback(true);
             hideView(".dialog-confirm");
         },
         "click .no": function () {
-            Template.dialogConfirm.callback(false);
+            Template.DialogConfirm.callback(false);
             hideView(".dialog-confirm");
         }
     });
-
-    getConfirmation = function (question, callback) {
-
-        Session.set("dialogQuestion", question);
-        Template.dialogConfirm.callback = callback;
-
-        displayView(".dialog-confirm");
-
-    };
-
 
 
     // Dialog Alert
@@ -53,11 +53,6 @@ if (Meteor.isClient) {
             hideView(".dialog-alert");
         },
     });
-
-
-
-
-
 
 
 }

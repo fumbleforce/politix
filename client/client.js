@@ -40,7 +40,7 @@ Template.NavList.rendered = function () {
 
     if (!this.rendered) {
         console.log("Adding dragging listener");
-        $(".drag-component").drags({ handle: ".panel-heading" });
+        //$(".drag-component").drags({ handle: ".panel-heading" });
 
         $(".panel").click(function () {
             Session.set("panelOrder", Session.get("panelOrder")+1);
@@ -89,7 +89,7 @@ hideView = function (selector) {
 };
 
 Meteor.startup(addDragsFunc);
-Meteor.startup(contextMenu);
+//Meteor.startup(contextMenu);
 
 function contextMenu () {
     var $menu = $("#context-menu"),
@@ -100,15 +100,15 @@ function contextMenu () {
                 actions: [
                     {
                         name: "Discard",
-                        func: discardItem
+                        func: Storage.discardItem
                     },
                     {
                         name: "Sell",
-                        func: createSellOrder
+                        func: Market.createSellOrder
                     },
                     {
                         name: "Buy",
-                        func: createBuyOrder
+                        func: Market.createBuyOrder
                     }
                 ]
             },
@@ -142,8 +142,8 @@ function contextMenu () {
             actions = actions.concat(contexts[name].actions);
         }
 
-        if (_.contains(currentContext, "item") && getItem($contextEl.attr("itemId")).actions) {
-            var itemActions = getItem($contextEl.attr("itemId")).actions;
+        if (_.contains(currentContext, "item") && Item.get($contextEl.attr("itemId")).actions) {
+            var itemActions = Item.get($contextEl.attr("itemId")).actions;
             actions = actions.concat(itemActions);
         }
 
