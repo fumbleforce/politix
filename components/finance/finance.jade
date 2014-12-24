@@ -78,21 +78,17 @@ template(name="Finance")
                         input
 
                     .row
-                        .col-xs-2.col-xs-offset-1 Description
-                        .col-xs-2 Sender
-                        .col-xs-2 Receiver
-                        .col-xs-2 Amount
-                        .col-xs-2 Time
+                        .col-xs-4.col-xs-offset-1 Description
+                        .col-xs-4 Amount
+                        .col-xs-4 Time
 
                     .row.transaction-list
                         ul
                             each transactions
                                 li.transaction.row
-                                    .col-xs-3= description
-                                    .col-xs-2= sender.name
-                                    .col-xs-2= receiver.name
-                                    .col-xs-2= amount
-                                    .col-xs-3= formatDate                 
+                                    .col-xs-4= desc
+                                    .col-xs-4= amount
+                                    .col-xs-4= formatDate                 
 
                 #finance-breakdown.tab-pane
                     #accordion.panel-group

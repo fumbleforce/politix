@@ -24,7 +24,11 @@ Mining.maxWorkers = function () {
     });
     console.log("max woorkers", max)
     return max;
-}
+};
+
+Mining.activeWorkers = function () {
+    return Employees.get({ state:"mining" });
+};
 
 Mining.mine = function () {
 
@@ -47,7 +51,6 @@ Mining.mine = function () {
     });
     
     minedDep.changed();
-    console.log("mined");
 };
 
 
@@ -78,7 +81,7 @@ if (Meteor.isClient && Meteor.userId()) {
 
         workers: function () {
             var workers = [];
-            Employees.get({ state:"mining" }).forEach(function (e) {
+            Mining.activeWorkers().forEach(function (e) {
                 workers.push({ name: e.name, free: false, id: e._id });
             });
             var active = workers.length;

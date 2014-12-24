@@ -9,10 +9,12 @@ primaryColor = white
 secondary = lightseagreen
 secondaryColor = white
 
-panel-background = primary
+panel-background = white
 panel-color = primaryColor
-panel-header-background = primary
+panel-header-background = white
 panel-header-color = primaryColor
+
+textcolor = primary
 
 
 /* Bootstrap and default overrides */
@@ -21,7 +23,7 @@ html, body
     height:100%
     background: white
     font-size:12px
-    color: white !important
+    color: textcolor !important
 
 body
     // background: url(http://2.bp.blogspot.com/-WVHrVifuR9Y/TbEEn_KgSyI/AAAAAAAAAIc/xDQpp7VyZT4/s1600/night-sky-stars.jpg)
@@ -41,7 +43,6 @@ body
     border: none;
     font-family: inherit;
     font-size: 8px;
-    color: inherit;
     background: none;
     cursor: pointer;
     padding: 4px 7px;
@@ -55,10 +56,10 @@ body
     -webkit-transition: all 0.3s;
     -moz-transition: all 0.3s;
     transition: all 0.3s;
-    border: 1px solid #fff;
-    color: #fff;
+    border: 1px solid darkslategray;
+    background: darkslategray
     overflow: hidden;
-
+    color: white !important
 
 .btn:after
     content: '';
@@ -93,7 +94,7 @@ body
 
 .btn:hover,
 .btn:active
-    color: #0e83cd;
+    color: darkslategray !important
     background: white
 
 .btn:hover:after
@@ -116,14 +117,16 @@ body
     overflow-y: hidden;
     overflow-x: hidden;
     padding: 0px
+    color: textcolor !important
     
     li
-        color:white
+        color:textcolor
 
     .panel-heading
         padding: 1px 5px
         border-radius: 0px
         user-select: none
+        border-bottom: 1px solid primary !important
 
     .panel-body
         padding: 5px
@@ -133,7 +136,7 @@ body
         overflow-x: hidden;
         
         p, h1, h2, h3, h4
-            color: white 
+            color: textcolor 
         
 .panel.resizable
     float:left
@@ -162,11 +165,6 @@ table
     > li
         > a
             border-radius: 1px 1px 0 0
-
-
-
-a
-    color: linen
 
 
 
@@ -236,7 +234,7 @@ input, textarea, option, select
     
     .panel-heading
         background: transparent
-        color: white
+        color: textcolor
         overflow: hidden
         resize: none
         font-weight: bolder
@@ -245,13 +243,13 @@ input, textarea, option, select
         .close-btn, .min-btn
 
             font-weight: bolder
-            background: primary
-            color: white
+            border: 2px solid primary
+            color: textcolor
             width: 20px
             height: 20px
             border-radius: 2px
             text-align: center
-            font-size: 15px
+            font-size: 12px
 
             &:hover
                 cursor: pointer !important
@@ -289,3 +287,5 @@ input, textarea, option, select
     min-height: 90px
     max-width: 100%
     max-height: 100%
+
+

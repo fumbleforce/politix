@@ -5,6 +5,7 @@
 .market
     min-width: 800px !important
     min-height: 500px !important
+    
 
     .row
         display:table
@@ -39,34 +40,34 @@
         .filter-list
             > li
                 padding: 0 5px
-                border-bottom: 5px solid transparent
-                background: secondary
-                color:white
+                background: white
+                border: 2px solid darkslategray
+                border-radius: 1px
+                border-bottom: 3px solid transparent
+
+                &:last-child
+                    border-bottom: 1px solid darkslategray
 
         .sub-filter-list
             padding: 0 0 0 5px
 
             > li
                 padding: 0 0 0 15px !important
-                background: cadetblue !important
-                color:white !important
-    
+                border: 2px solid darkslategray
+                border-radius: 1px
+                border-bottom: 3px solid transparent 
     
 
     table
         width: 100%
-        max-height: 300px
         overflow-y: auto
 
         thead
-            background:gray
             
             th
                 text-align:center
 
         caption
-            background: gray
-            color: white
 
         tbody
             tr

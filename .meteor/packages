@@ -17,8 +17,8 @@ ishwerdas:ogv-threejs@1.0.0
 envision
 mrt:queue@0.0.2
 iron:router
-mizzao:bootstrap-3
 useraccounts:core
 useraccounts:foundation
 ewall:foundation
 service-configuration
+mizzao:bootstrap-3
