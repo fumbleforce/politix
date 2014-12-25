@@ -3,6 +3,8 @@ Item = {};
 Item.items = [
     // Raw metals used for producing things
     {
+        id: "steel",
+        category: "material",
         type:"metal",
         key: 1,
         name: "Steel",
@@ -11,6 +13,8 @@ Item.items = [
         }
     },
     {
+        id: "iron",
+        category: "material",
         type:"metal",
         key: 7,
         name: "Iron",
@@ -21,6 +25,8 @@ Item.items = [
 
     // Raw materials made from wood. Used in construction
     {
+        id: "plank",
+        category: "material",
         type:"wood",
         key: 2,
         name: "Plank",
@@ -28,62 +34,30 @@ Item.items = [
             weight: 1.0
         }
     },
-
-    // Machines used in factories
     {
-        type:"machine",
-        key: 3,
-        name: "Metal Cutter",
+        id: "log",
+        category: "material",
+        type:"wood",
+        key: 2,
+        name: "Logs",
         props: {
-            weight: 1000.0
+            weight: 1.0
         }
     },
 
-    // Research equipment
     {
-        type:"research",
-        key: 4,
-        name: "Glassware",
-        props: {
-            weight: 50.0
-        }
+        id: "fish",
+        category: "food",
+        name: "Barrel of fish",
+
     },
 
-    // Buildings
     {
-        type: "buildings",
-        key: 5,
-        name: "Toy Factory",
-        props: {
-            weight: 10000000,
-            capacity: 10
-        },
-        actions: [
-            {
-                name: "Construct",
-                func: Production.constructFactory
-            },
-        ],
-    },
-    {
-        type: "machine",
-        subType: "miner",
-        key: 6,
-        name: "Basic Miner",
-        props: {
-            weight: 10000000,
-            miningRate: 1,
-            cost: 15,
-            maxWorkers: 3
-        },
-        actions: [
-            {
-                name: "Construct",
-                func: Mining.constructMiner
-            },
-        ],
-        defaultItem: 7
-    },
+        id: "grain",
+        category:"food",
+        name: "Bundle of grains"
+    }
+
 ];
 
 Item.workers = [
@@ -99,30 +73,33 @@ Item.workers = [
     }
 ];
 
+Building = {};
+
+Building.buildings = {
+    "tradepost": {
+        name: "Trading Post",
+    },
+    "farm": {
+        name: "Farm",
+    }
+
+};
+
+Building.get = function (key) {
+    return Building.buildings[key];
+}
+
 Item.itemDict = {};
 Item.itemHierarchy = [];
 
 _.each(Item.items, function (i, index) {
-    var hasType = _.some(Item.itemHierarchy, function (el) { return i.type === el.key; });
+    Item.itemDict[i.id] = index;
+});
 
-    if (!hasType) {
-        Item.itemHierarchy.push({
-            key: i.type,
-            name: capitalize(i.type),
-            itemList: [{ itemKey: i.key, itemName: i.name }]
-        });
-    } else {
-        var typeIndex = -1;
-        
-        _.each(Item.itemHierarchy, function(el, localIndex) { 
-            if (el.key === i.type)
-                typeIndex = localIndex;
-        });
-
-        Item.itemHierarchy[typeIndex].itemList.push({ itemKey: i.key, itemName: i.name });
-    }
-
-    Item.itemDict[i.key] = index;
+Item.byCategory = {};
+_.each(Item.items, function (i, index) {
+    if (!(i.category in Item.byCategory)) Item.byCategory[i.category] = []
+    Item.byCategory[i.category].push(i);
 });
 
 

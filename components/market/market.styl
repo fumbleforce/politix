@@ -6,89 +6,12 @@
     min-width: 800px !important
     min-height: 500px !important
     
-
-    .row
-        display:table
+    .item
+        border: 1px solid darkslategray
+        color: darkslategray
+        float:left
+        margin: 1px 2px
+        padding: 3px
     
-    .orders
-        .buy
-            margin: 5px 0 0 0
-        h3
-            margin: 5px 0 0 0
-        
-        .item-detail
-            border: 2px solid white
-            margin-bottom: 5px
-
-            .item-info
-                p
-                    margin: 0
-
-    [class*="col-"]
-        display: table-cell
-        float: none
-        padding:0 5px
-
-    .market-filter
-        //background: darkgray
-        height: auto
-
-        li:hover
-            cursor: pointer
-            opacity: 0.8
-
-        .filter-list
-            > li
-                padding: 0 5px
-                background: white
-                border: 2px solid darkslategray
-                border-radius: 1px
-                border-bottom: 3px solid transparent
-
-                &:last-child
-                    border-bottom: 1px solid darkslategray
-
-        .sub-filter-list
-            padding: 0 0 0 5px
-
-            > li
-                padding: 0 0 0 15px !important
-                border: 2px solid darkslategray
-                border-radius: 1px
-                border-bottom: 3px solid transparent 
-    
-
-    table
-        width: 100%
-        overflow-y: auto
-
-        thead
-            
-            th
-                text-align:center
-
-        caption
-
-        tbody
-            tr
-                padding: 1px
-
-                &:hover
-                    @extend .hover
-                    padding: 0
-                    background: white
-                    color: primary
-            
-                &:last-child
-                    border-bottom: 1px solid
-
-            td
-                border: 1px solid
-                padding-left: 5px
-
-                
-
-
-
 .market-order-dialog
     width: 300px

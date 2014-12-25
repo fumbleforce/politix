@@ -1,6 +1,16 @@
 
 Meteor.publish( null, function() {
-    return Meteor.users.find({}, {fields: {profile: 1, username: 1, corporation: 1 }})
+    return Meteor.users.find({}, {fields: {
+        created: 1,
+        createDate: 1,
+        name: 1,
+        treasury: 1,
+        level: 1,
+        mayor: 1,
+        settlers: 1,
+        storage: 1,
+        buildings: 1,
+    }});
 });
 
 

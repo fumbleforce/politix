@@ -3,9 +3,10 @@ if (Meteor.isClient) {
 
     // Market
 
-    Template.Market.helpers({
+    Template.Trade.helpers({
         items: function () {
-            return Item.itemHierarchy;
+            console.log(Item.byCategory)
+            return Item.byCategory;
         },
 
         item: function () {
@@ -38,7 +39,7 @@ if (Meteor.isClient) {
     });
 
 
-    Template.Market.events({
+    Template.Trade.events({
         "click .filter-list > li": function(event) {
             $(event.currentTarget).next(".sub-filter-list").toggle();
         },
@@ -81,7 +82,7 @@ if (Meteor.isClient) {
 
 
     Meteor.startup(function() {
-        Session.set("marketAsTable", true);
+
     });
 
 
@@ -90,16 +91,7 @@ if (Meteor.isClient) {
 
 
     Template.MarketDialog.helpers({
-        order: function () {
-            console.log("finding order "+Session.get("selectedMarketOrder"));
-            return MarketOrderCollection.findOne(Session.get("selectedMarketOrder"));
-        },
 
-        totalPrice: function () {
-            var o = MarketOrderCollection.findOne(Session.get("selectedMarketOrder"));
-            // Todo add tax and transaction cost
-            return o.quantity * o.price;
-        }
     });
 
     Template.MarketDialog.events({
@@ -174,16 +166,7 @@ if (Meteor.isClient) {
 } else {
 
     Meteor.startup(function () {
-        Market.generateDailyMarketReport();
-        Market.generateHourlyMarketReport();
-        //Meteor.setInterval(generateHourlyMarketReport, 60 * 1000);
-        Meteor.setInterval(function () {
-            console.log("Re-generating government conracts to test reports");
-            MarketOrderCollection.remove({});
-            Market.resupplyGovernmentContracts();
-            Market.generateHourlyMarketReport();
-        }, 5 * 60 * 1000);
-        Meteor.setInterval(Market.generateDailyMarketReport, 24 * 60 * 60 * 1000);
+
     });
 
 
@@ -349,6 +332,7 @@ if (Meteor.isClient) {
 
 Market = {};
 
+/*
 Market.marketGraph = function(container, marketData) {
     $(container).empty();
     container = $(container)[0];
@@ -523,3 +507,5 @@ Market.resupplyGovernmentContracts = function () {
 
     });
 };
+
+*/

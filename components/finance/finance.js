@@ -42,7 +42,7 @@ Wallet.financeGraph = function(container, financeData) {
     }
   };
 
-  return new envision.templates.Finance(options);
+  return new envision.templates.Treasury(options);
 };
 
 if (Meteor.isClient) {
@@ -50,7 +50,7 @@ if (Meteor.isClient) {
     // Number of days to query transactions for.
     Session.set("financeDays", 1);
 
-    Template.Finance.helpers({
+    Template.Treasury.helpers({
         transactions: function () {
             return TransactionCollection.find({ $or: [
                 { "corp": Meteor.user().corporation },
@@ -68,12 +68,11 @@ if (Meteor.isClient) {
         },
 
         cash: function () {
-            return Corporation.get().cash;
+            return Meteor.user().treasury;
         },
 
         income: function () {
             var trans = TransactionCollection.find({
-                    corp: Meteor.user().corporation,
                     amount: { $gt: 0 },
                     time: { $gt: new Date((new Date()).setDate((new Date()).getDate()-Session.get("financeDays"))) }
                 }),
@@ -88,7 +87,6 @@ if (Meteor.isClient) {
 
         expences: function () {
             var trans = TransactionCollection.find({
-                    corp: Meteor.user().corporation,
                     amount: { $lt: 0 },
                     time: { $gt: new Date((new Date()).setDate((new Date()).getDate()-Session.get("financeDays"))) }
                 }),
@@ -103,7 +101,6 @@ if (Meteor.isClient) {
 
         result: function () {
             var trans = TransactionCollection.find({
-                    corp: Meteor.user().corporation,
                     time: { $gt: new Date((new Date()).setDate((new Date()).getDate()-Session.get("financeDays"))) }
                 }),
                 result = 0;
@@ -117,7 +114,7 @@ if (Meteor.isClient) {
         
     });
 
-    Template.Finance.events({
+    Template.Treasury.events({
         "click #finance-graphs-btn": function (e) {
             console.log("Making spark");
             $(".result-spark").show().sparkline([1,2,3,4,-5,-6,-7], {
@@ -138,7 +135,7 @@ if (Meteor.isClient) {
         spend: function (opts) {
             var amount = opts.amount;
 
-            opts.corp = Meteor.user().corporation;
+            opts.user = Meteor.userId();
             opts.time = new Date();
 
             if (amount == 0.0)
@@ -149,8 +146,8 @@ if (Meteor.isClient) {
 
             TransactionCollection.insert(opts);
 
-            CorporationCollection.update(Meteor.user().corporation,
-                { $inc: { "cash": amount } });
+            Meteor.users.update(Meteor.userId(),
+                { $inc: { "treasury": amount } });
 
         }
     })

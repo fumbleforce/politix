@@ -6,9 +6,7 @@ template(name="Relations")
     .relations.panel.component(style="display:none")
         .panel-heading
             .pull-left Relations
-            .pull-right
-                .row
-                    .close-btn(view="relations") X
+
         .panel-body
             p
                 span Search: 
@@ -19,13 +17,5 @@ template(name="Relations")
 
                 .col-xs-6.corporation-list
                     
-                    each Corporation
-                        a: p.corporation-entry(corp="#{_id}")= name
 
                 .col-xs-6
-
-                    with selectedCorp
-                        h3= name
-                        p= motto
-                        p= desc
-                        p= reputation

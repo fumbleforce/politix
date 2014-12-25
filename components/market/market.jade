@@ -1,82 +1,51 @@
-template(name="Market")
+template(name="Trade")
     //-
         The grand market
         Buy and sell products of all kinds
         Get statistics of transactions
-        View corporation orders
 
     .market.panel.component(style="display:none")
         .panel-heading
             .pull-left Market
-            .pull-right
-                .row
-                    .close-btn(view="market") X
+
         .panel-body
-            .row
-                .market-filter.col-sm-3
-                    .row
-                        .col-xs-6
-                            button.view-type.btn(type="table")
-                                            | Table
-                        .col-xs-6
-                            button.view-type.btn(type="graph")
-                                            | Graph
-                    p Volantis District
 
-                    ul.filter-list
-                        each items
-                            li= name
+            ul.nav.nav-tabs
+                li.active: a(href="#trade-materials" data-toggle="tab") Materials
+                li: a(href="#trade-food" data-toggle="tab") Food
+                li: a(href="#trade-luxury" data-toggle="tab") Luxury
 
-                            ul.sub-filter-list(style="display:none")
-                                each itemList
-                                    li(item="#{itemKey}")= itemName
+            .tab-content
+                #trade-materials.tab-pane.active
+                    each items.material
+                        .item(itemid=id)
+                            span= name
+                            p Buying for $ #{buyPrice}
+                            p Selling for $ #{sellPrice}
+                            input.amount(placeholder="Amount")
+                            .btn Buy
+                            .btn Sell
+                #trade-food.tab-pane
+                    each items.food
+                        .item(itemid=id)
+                            span= name
+                            p Buying for $ #{buyPrice}
+                            p Selling for $ #{sellPrice}
+                            input.amount(placeholder="Amount")
+                            .btn Buy
+                            .btn Sell
+                #trade-luxury.tab-pane
+                    each items.luxury
+                        .item(itemid=id)
+                            span= name
+                            p Buying for $ #{buyPrice}
+                            p Selling for $ #{sellPrice}
+                            input.amount(placeholder="Amount")
+                            .btn Buy
+                            .btn Sell
 
-                .orders.col-sm-9
-                    if item
-                        .row.full-width.item-detail
-                            with item
-                                .col-xs-1
-                                    button.buy.btn(itemId="#{key}")
-                                        | Buy
-                                .col-xs-5
-                                    h3.text-center= name
-                                .col-xs-6
-                                    .item-info
-                                        p Weight: #{props.weight}
-                                        p Type: #{type}
-                        if viewAsTable
-                            .row.full-width
-                                .col-xs-6
-                                    table.buy.orders
-                                        caption Buy Orders
-                                        thead
-                                            tr
-                                                th Corporation
-                                                th Price
-                                                th Quantity
-                                        tbody
-                                            each buyOrders
-                                                tr.order(order="#{_id}")
-                                                    td= owner.name
-                                                    td= price
-                                                    td= quantity
-                                .col-xs-6
-                                    table.sell.orders
-                                        caption Sell Orders
-                                        thead
-                                            tr
-                                                th Corporation
-                                                th Price
-                                                th Quantity
-                                        tbody
-                                            each sellOrders
-                                                tr.order(order="#{_id}")
-                                                    td= owner.name
-                                                    td= price
-                                                    td= quantity
-                        else
-                            .row.full-width
-                                .market-graph
+
+
 
 
 

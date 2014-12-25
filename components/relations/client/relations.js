@@ -1,11 +1,5 @@
 Template.Relations.helpers({
-    Corporation: function () {
-        return CorporationCollection.find();
-    },
 
-    selectedCorp: function () {
-        return CorporationCollection.findOne(Session.get("selectedCorp"));
-    }
 });
 
 Template.Relations.events({

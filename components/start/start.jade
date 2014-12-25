@@ -4,23 +4,34 @@
     
 template(name="StartGame")
     //-
-        Form for setting setting corporation name and owner name
+        Form for setting setting corporation name and mayor name
 
     p= error
 
     .form-horizontal
 
         .form-group
-            label.control-label.col-sm-2(for="owner") Owner
+            label.control-label.col-sm-2(for="mayor") Mayor
             .col-sm-10
-                input#owner.form-control.owner
+                input#mayor.form-control.mayor
 
         .form-group
-            label.control-label.col-sm-2(for="name") Corporation Name
+            label.control-label.col-sm-2(for="name") Town Name
             .col-sm-10
-                input#name.form-control.corporationName
+                input#name.form-control.townName
+
+        .form-group
+            label.control-label.col-sm-2(for="focus") Focus
+            .col-sm-10
+                select#focus.form-control.focus
+                    option(value="food") Food production
+                    option(value="building") Building
+                    option(value="mining") Mining
+                    option(value="trading") Trading
+                    option(value="exploration") Exploration
+                    option(value="warfare") Warfare
 
         .form-group
             .col-sm-offset-2.col-sm-10
-                input.btn.btn-primary.save(type="submit", value="Found corporation")
+                input.btn.btn-primary.save(type="submit", value="Found town")
 

@@ -1,77 +1,26 @@
 
-Employees = {};
-
-Employees.getAll = function () {
-    return EmployeeCollection.find({ corporation: Meteor.user().corporation });
-};
-
-Employees.get = function (opts) {
-    opts.corporation = Meteor.user().corporation;
-    return EmployeeCollection.find(opts);
-}
-
-Employees.getFree = function () {
-    return EmployeeCollection.find({ corporation: Meteor.user().corporation, state: "free" });
-}
-
-Employees.getAvailable = function () {
-    return Item.workers;
-};
-
-Employees.count = function (opts) {
-    opts.corporation = Meteor.user().corporation;
-    return EmployeeCollection.find(opts).count();
-};
+Settlers = {};
 
 
-Employees.pay = function () {
-    var totalCost = 0,
-        goingToPay = false;
-
-    Employees.getAll().forEach(function (e) {
-        var deltaTime = (new Date()) - e.lastPaid;
-        console.log(deltaTime);
-        if (deltaTime > 1000 * 60 * 60) { // More than an hour
-            totalCost += e.wage * deltaTime / 1000 / 60 / 60 / 24;
-            EmployeeCollection.update(e.id, { $set: { lastPaid: new Date() } });
-            goingToPay = true;
-        }
-    });
-
-    if (goingToPay) {
-        console.log("Paying",-totalCost, "in wages");
-        Wallet.spend({
-            desc: "Wages for employees",
-            amount: -totalCost,
-        });
-    }
-};
 
 
 
 if (Meteor.isClient) {
-    Meteor.startup(function () {
-        Employees.pay();
-    })
-    
 
-    Template.Employees.helpers({
-        available: function () {
-            return Employees.getAvailable();
+    Template.Settlers.helpers({
+        settlers: function () {
+            return Meteor.user().settlers;
         },
 
-        employees: function () {
-            return Employees.getAll();
-        }
     });
 
-    Template.Employees.events({
+    Template.Settlers.events({
         "click .hire": function (e) {
             var id = +$(e.target).attr("workerid");
             Meteor.call("hireWorker", { id: id }, Error.handler);
         },
         "click .get-details": function (e) {
-            var el = $(e.target).closest(".employee");
+            var el = $(e.target).closest(".settler");
             if (el.attr("details-active") === "true")
                 el.attr("details-active", false);
             else
@@ -119,7 +68,7 @@ if (Meteor.isClient) {
             });
 
             if (!foundWorker)
-                throw new MeteorError("No available employees for "+state);
+                throw new MeteorError("No available settlers for "+state);
 
             return true;
         },

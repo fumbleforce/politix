@@ -7,16 +7,16 @@ Template.StartGame.helpers({
 
 Template.StartGame.events({
     'click .save': function (event, template) {
-        var corporationName = template.find(".corporationName").value,
-            owner = template.find(".owner").value;
-
-        if (!corporationName.length)
-            Session.set("createError", "The corporation needs a name");
-        else if (!owner.length)
+        var townName = template.find(".townName").value,
+            mayor = template.find(".mayor").value
+            focus = template.find(".focus :selected").value;
+        console.log("Focus: ", focus)
+        if (!townName.length)
+            Session.set("createError", "The town needs a name");
+        else if (!mayor.length)
             Session.set("createError", "You need to specify a name");
         else {
-            var id = createCorporation({ name: corporationName });
-            setOwnerName({ owner: owner });
+            Meteor.call("createTown", { name: townName, focus:focus, mayor: mayor });
         }
     }
 

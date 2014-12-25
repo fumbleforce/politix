@@ -1,13 +1,8 @@
 
 Storage = {};
 
-Storage.get = function (loc) {
-    if (Corporation.get()) {
-        var s = StorageCollection.findOne({ corporation: Meteor.user().corporation });
-
-        return s["Volantis"];
-    }
-    return {};
+Storage.get = function () {
+    return Meteor.user().storage
 };
 
 Storage.getList = function (loc) {
@@ -52,8 +47,6 @@ if (Meteor.isClient) {
 
     Template.Storage.helpers({
         storageList: function () {
-            if (!Corporation.get()) return;
-            
             return Storage.getList();
         },
 
@@ -90,7 +83,7 @@ if (Meteor.isClient) {
             var action = {};
             action["Volantis."+opts.item] = opts.amount;
 
-            StorageCollection.update({ corporation: Meteor.user().corporation },
+            User.update({ corporation: Meteor.user().corporation },
                 { $inc: action });
         },
 

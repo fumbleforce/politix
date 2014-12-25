@@ -1,25 +1,16 @@
 Template.registerHelper("gameActive", function () {
-    return Meteor.user() && Meteor.user().corporation
+    return Meteor.user() && Meteor.user().created;
 });
 
 
 
 Template.Main.helpers({
-    hasName: function () {
-        if (Meteor.user() && Meteor.user().profile)
-            return Meteor.user().profile.name;
-        return false;
+
+    hasTown: function () { return (Meteor.user() && Meteor.user().created) },
+
+    noTown: function() {
+        return !(Meteor.user() && Meteor.user().created);
     },
-
-    noName: function() { return !(Meteor.user() && Meteor.user().profile); },
-
-    hasCorporation: function () {
-        if (Meteor.user())
-            return Meteor.user().corporation;
-        return false;
-    },
-
-    noCorporation: function() { return !(Meteor.user() && Meteor.user().corporation); },
 
 });
 
@@ -30,26 +21,9 @@ Template.Dashboard.helpers({
 
         $(".main").height($(window).height());
 
-        generateMap();
     }
 });
 
-
-
-Template.NavList.rendered = function () {
-
-    if (!this.rendered) {
-        console.log("Adding dragging listener");
-        //$(".drag-component").drags({ handle: ".panel-heading" });
-
-        $(".panel").click(function () {
-            Session.set("panelOrder", Session.get("panelOrder")+1);
-            $(this).css("z-index", Session.get("panelOrder"));
-        });
-
-        this.rendered = true;
-    }
-};
 
 Template.Dashboard.events({
     "click .close-btn": function (e) {
@@ -88,7 +62,7 @@ hideView = function (selector) {
     $(selector).hide();
 };
 
-Meteor.startup(addDragsFunc);
+//Meteor.startup(addDragsFunc);
 //Meteor.startup(contextMenu);
 
 function contextMenu () {

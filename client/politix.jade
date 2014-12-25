@@ -14,7 +14,7 @@ template(name="Main")
     .main
         
         if currentUser
-            if noCorporation
+            if noTown
                 +StartGame
             else
                 +Dashboard
@@ -66,31 +66,22 @@ template(name="Dashboard")
     //-canvas#spaceCanvas
     //-#map-container
 
-    if noCorporation
-        +StartGame
-    else if noName
-        +StartGame
-    else
-    
-        // Standard on
-        +Corporation
-        
+    // Standard on
+    +Town
+    +Settlers
+    +Treasury
+    +Trade
+    //+Politics
+    //+Production
+    +Relations
+    +Storage
+    //+Mining
 
-        // Togglable
-        +Employees
-        +Finance
-        +Market
-        +Politics
-        +Production
-        +Relations
-        +Storage
-        +Mining
-
-        // Dialogs
-        +DialogConfirm
-        +DialogAlert
-        +MarketDialog
-        +MarketCreateOrder
+    // Dialogs
+    +DialogConfirm
+    +DialogAlert
+    +MarketDialog
+    +MarketCreateOrder
 
     #context-menu.context-menu(style="display:none")
         ul

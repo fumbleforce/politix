@@ -124,8 +124,8 @@ if (Meteor.isClient && Meteor.userId()) {
 
     Meteor.startup(function () {
         Session.set("miningNeedsWorker", false);
-        Mining.mine();
-        Meteor.setInterval(Mining.mine, updateInterval * 1000);
+        //Mining.mine();
+        //Meteor.setInterval(Mining.mine, updateInterval * 1000);
     });
 
     

@@ -5,16 +5,11 @@ template(name="Storage")
     .storage.panel.component(style="display:none")
         .panel-heading
             .pull-left Storage
-            .pull-right
-                .row
-                    .close-btn(view="storage") X
+
         .panel-body
-            select
-                each locations
-                    option(value="#{value}") #{label}
+
             .storage-window
                 each storageList
-                    unless hide
-                        .storage-item(data-context="item" quantity="#{amount}" itemId="#{itemKey}")
-                            .placeholder-icon.pull-left
-                            .pull-left #{name} x#{amount}
+                    .storage-item(data-context="item" quantity="#{amount}" itemId="#{itemKey}")
+                        .placeholder-icon.pull-left
+                        .pull-left #{name} x#{amount}

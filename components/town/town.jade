@@ -1,0 +1,36 @@
+
+
+template(name="Town")
+    //-
+        Brief overview of town info.
+    
+    .town.panel.component
+        
+        .panel-heading
+            .pull-left Town
+
+        .panel-body
+            #town-hall.town-hall
+                with town
+                    h4= name
+                    p: i Town level #{level}
+                    p Treasury: $ #{treasury}
+                    p Mayor: #{currentUser.mayor}
+                    p Population: #{settlers.total}
+                    .btn.upgrade-town Improve
+
+            .buildings
+                each buildings
+                    .building
+                        p= name
+                        p Level #{level}
+            
+            .pop-stats
+                with settlers
+                    p Unemployed: #{unemployed}
+                    p Employed: #{mployed}
+                    p Farmers: #{farmers}
+                    p Miners: #{miners}
+                    p Lumberjacks: #{lumberjacks}
+                    p Smiths: #{smiths}
+                    p Carpenters: #{carpenters}
