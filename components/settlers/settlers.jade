@@ -9,5 +9,30 @@ template(name="Settlers")
             .pull-left Settlers
 
         .panel-body
-            #settlers-settlers
+            .pop-stats
+                with settlers
+                    p Total: #{total}
+                    p Unemployed: #{unemployed}
+                    p Employed: #{mployed}
+                    p 
+                        div Farmers: #{farmer}
+                        .btn.add-worker(workerid="farmer") Add
+                        .btn.rem-worker(workerid="farmer") Remove
+                    p
+                        div Miners: #{miner}
+                        .btn.add-worker(workerid="miner") Add
+                        .btn.rem-worker(workerid="miner") Remove
+                    p
+                        div Lumberjacks: #{lumberjack}
+                        .btn.add-worker(workerid="lumberjack") Add
+                        .btn.rem-worker(workerid="lumberjack") Remove
+                    p
+                        div Trader: #{trader}
+                        .btn.add-worker(workerid="trader") Add
+                        .btn.rem-worker(workerid="trader") Remove
+                    p
+                        div Carpenters: #{carpenter}
+                        .btn.add-worker(workerid="carpenter") Add
+                        .btn.rem-worker(workerid="carpenter") Remove
+
                 

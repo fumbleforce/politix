@@ -132,23 +132,36 @@ if (Meteor.isClient) {
 } else {
 
     Meteor.methods({
-        spend: function (opts) {
+        TreasurySpend: function (opts) {
             var amount = opts.amount;
 
             opts.user = Meteor.userId();
             opts.time = new Date();
 
-            if (amount == 0.0)
-                return;
-
-            if (amount > amount)
+            if (amount > Town.get().treasury)
                 throw new Meteor.Error(413, "Not enough cash");
+
+            if (amount < 0.1) return;
+            
+            TransactionCollection.insert(opts);
+
+            Meteor.users.update(Meteor.userId(),
+                { $inc: { "treasury": -amount } });
+
+        },
+
+        TreasuryEarn: function (opts) {
+            var amount = opts.amount;
+
+            opts.user = Meteor.userId();
+            opts.time = new Date();
+
+            if (amount < 0.1) return;
 
             TransactionCollection.insert(opts);
 
             Meteor.users.update(Meteor.userId(),
                 { $inc: { "treasury": amount } });
-
         }
     })
 

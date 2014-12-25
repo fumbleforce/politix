@@ -11,6 +11,8 @@ template(name="Main")
         Top level template.
         The container for all templates.
     
+
+
     .main
         
         if currentUser
@@ -43,18 +45,28 @@ template(name="Layout")
         .top-bar
             +Nav
 
-    .side-bar
-        if gameActive
-            +NavList
-            //+Chat
-            +EventList
+    .bg-blur.bg-img-town.active(style="z-index:-1")
+    .bg-blur.bg-img-market
+    .bg-blur.bg-img-gathering
+    .bg-blur.bg-img-settlers
+    .bg-blur.bg-img-treasury
+    .bg-blur.bg-img-relations
+    .bg-blur.bg-img-storage
+    
 
-    .main-window
-        +Main
+    .page-wrapper
+        .side-bar
+            if gameActive
+                +TownStatus
+                +NavList
+                //+Chat
+                +EventList
+
+        .main-window
+            +Main
 
     script.
         $(".main-window")
-            .width($(window).width()-200)
             .height($(window).height());
 
 
@@ -76,6 +88,7 @@ template(name="Dashboard")
     +Relations
     +Storage
     //+Mining
+    +Gathering
 
     // Dialogs
     +DialogConfirm

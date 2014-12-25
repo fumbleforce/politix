@@ -9,7 +9,7 @@ primaryColor = white
 secondary = lightseagreen
 secondaryColor = white
 
-panel-background = white
+panel-background = transparent
 panel-color = primaryColor
 panel-header-background = white
 panel-header-color = primaryColor
@@ -21,17 +21,121 @@ textcolor = primary
 
 html, body
     height:100%
-    background: white
     font-size:12px
     color: textcolor !important
+    overflow:hidden
+    overflow-y: auto
 
 body
     // background: url(http://2.bp.blogspot.com/-WVHrVifuR9Y/TbEEn_KgSyI/AAAAAAAAAIc/xDQpp7VyZT4/s1600/night-sky-stars.jpg)
     // background: url(/img/airline-world.jpg)
     //background: url(http://img1.wikia.nocookie.net/__cb20130212011759/starwars/images/7/77/Galactic_City.png)
+    
+.bg-blur
     packground-position: center
     packground-repeat: no-repeat
     background-size: cover
+    position: fixed;
+    top: 0; bottom: 0; left: 0; right: 0;
+    height: 100%;
+    z-index: -5
+
+    &.bg-img-town:before
+        background: url(img/valleybg.jpg)
+        content: "";
+        position: fixed;
+        height: 20%; width: 20%;
+        background-size: cover;
+        z-index: -1; /* Keep the background behind the content */
+        
+        /* don't forget to use the prefixes you need */
+        -webkit-transform: scale(5);
+        -webkit-transform-origin: top left;
+        -webkit-filter: blur(1px);
+        
+    &.bg-img-market:before
+        background: url(img/harborbg.jpg)
+        content: "";
+        position: fixed;
+        height: 20%; width: 20%;
+        background-size: cover;
+        z-index: -1; /* Keep the background behind the content */
+        
+        /* don't forget to use the prefixes you need */
+        -webkit-transform: scale(5);
+        -webkit-transform-origin: top left;
+        -webkit-filter: blur(1px);
+
+    &.bg-img-storage:before
+        background: url(img/cratesbg.jpg)
+        content: "";
+        position: fixed;
+        height: 20%; width: 20%;
+        background-size: cover;
+        z-index: -1; /* Keep the background behind the content */
+        
+        /* don't forget to use the prefixes you need */
+        -webkit-transform: scale(5);
+        -webkit-transform-origin: top left;
+        -webkit-filter: blur(1px);
+        
+    &.bg-img-treasury:before
+        background: url(img/bankbg.jpg)
+        content: "";
+        position: fixed;
+        height: 20%; width: 20%;
+        background-size: cover;
+        z-index: -1; /* Keep the background behind the content */
+        
+        /* don't forget to use the prefixes you need */
+        -webkit-transform: scale(5);
+        -webkit-transform-origin: top left;
+        -webkit-filter: blur(1px);
+    
+    &.bg-img-gathering:before
+        background: url(img/landbg.jpg)
+        content: "";
+        position: fixed;
+        height: 20%; width: 20%;
+        background-size: cover;
+        z-index: -1; /* Keep the background behind the content */
+        
+        /* don't forget to use the prefixes you need */
+        -webkit-transform: scale(5);
+        -webkit-transform-origin: top left;
+        -webkit-filter: blur(1px);
+        
+    &.bg-img-settlers:before
+        background: url(img/villagebg.jpg)
+        content: "";
+        position: fixed;
+        height: 20%; width: 20%;
+        background-size: cover;
+        z-index: -1; /* Keep the background behind the content */
+        
+        /* don't forget to use the prefixes you need */
+        -webkit-transform: scale(5);
+        -webkit-transform-origin: top left;
+        -webkit-filter: blur(1px);
+        
+    &.bg-img-relations:before
+        background: url(img/lettersbg.jpg)
+        content: "";
+        position: fixed;
+        height: 20%; width: 20%;
+        background-size: cover;
+        z-index: -1; /* Keep the background behind the content */
+        
+        /* don't forget to use the prefixes you need */
+        -webkit-transform: scale(5);
+        -webkit-transform-origin: top left;
+        -webkit-filter: blur(1px);
+
+
+#bg-blur:before
+    
+        
+
 
 .row
     margin:0
@@ -227,10 +331,8 @@ input, textarea, option, select
 
 .panel
     background: panel-background
-    border: 5px solid primary
     color: panel-color
     opacity: 0.97
-    box-shadow: 0px 0px 2px 2px black;
     
     .panel-heading
         background: transparent

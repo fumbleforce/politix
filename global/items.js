@@ -53,6 +53,12 @@ Item.items = [
     },
 
     {
+        id: "stone",
+        category: "material",
+        name: "Stack of stones"
+    },
+
+    {
         id: "grain",
         category:"food",
         name: "Bundle of grains"
@@ -73,21 +79,6 @@ Item.workers = [
     }
 ];
 
-Building = {};
-
-Building.buildings = {
-    "tradepost": {
-        name: "Trading Post",
-    },
-    "farm": {
-        name: "Farm",
-    }
-
-};
-
-Building.get = function (key) {
-    return Building.buildings[key];
-}
 
 Item.itemDict = {};
 Item.itemHierarchy = [];
