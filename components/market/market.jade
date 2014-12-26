@@ -19,30 +19,30 @@ template(name="Trade")
                 #trade-materials.tab-pane.active
                     each items.material
                         .item(itemid=id)
-                            span= name
-                            p Buying for $ #{buyPrice}
-                            p Selling for $ #{sellPrice}
+                            span: b= name
+                            div Buying for $ #{buyPrice}
+                            div Selling for $ #{sellPrice}
                             input.amount(placeholder="Amount")
-                            .btn Buy
-                            .btn Sell
+                            .btn.buy Buy
+                            .btn.sell Sell
                 #trade-food.tab-pane
                     each items.food
                         .item(itemid=id)
-                            span= name
-                            p Buying for $ #{buyPrice}
-                            p Selling for $ #{sellPrice}
+                            span: b= name
+                            div Buying for $ #{buyPrice}
+                            div Selling for $ #{sellPrice}
                             input.amount(placeholder="Amount")
-                            .btn Buy
-                            .btn Sell
+                            .btn.buy Buy
+                            .btn.sell Sell
                 #trade-luxury.tab-pane
                     each items.luxury
                         .item(itemid=id)
-                            span= name
-                            p Buying for $ #{buyPrice}
-                            p Selling for $ #{sellPrice}
+                            span: b= name
+                            div Buying for $ #{buyPrice}
+                            div Selling for $ #{sellPrice}
                             input.amount(placeholder="Amount")
-                            .btn Buy
-                            .btn Sell
+                            .btn.buy Buy
+                            .btn.sell Sell
 
 
 

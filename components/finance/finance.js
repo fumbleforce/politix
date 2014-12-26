@@ -133,7 +133,10 @@ if (Meteor.isClient) {
 
     Meteor.methods({
         TreasurySpend: function (opts) {
-            var amount = opts.amount;
+            var amount = +opts.amount;
+
+            if (isNaN(amount))
+                throw new Meteor.Error("Amount is Nan: ", opts.amount);
 
             opts.user = Meteor.userId();
             opts.time = new Date();

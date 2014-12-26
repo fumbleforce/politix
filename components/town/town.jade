@@ -3,7 +3,7 @@ template(name="TownStatus")
 
     .town-status
         with town
-            h4= name
+            h4 #{mayor} of #{name}
             div: i Level #{level}
             div $ #{treasury}
             div Pop: #{settlers.total}
@@ -50,12 +50,15 @@ template(name="Town")
 
             hr
 
+            h3 Your town
+
             .buildings
                 each buildings
                     .building
                         .info
                             h4= name
                             p:i Level #{level}
+                            p= desc
                             p Workers: #{activeWorkers} / #{maxWorkers}
                             
                             p
@@ -69,4 +72,20 @@ template(name="Town")
                                         span #{name} x#{qty}
                                         br
                                 .btn.upgrade-building(buildingid=id) Upgrade
-                
+            
+            hr
+
+            h3 Build
+            .unbuilt
+                each unbuilt
+                    .building
+                        .inner
+                            .info
+                                h4= name
+                                p= desc
+                            .upgrade-info
+                                p
+                                    each upgradeCost
+                                        span #{name} x#{qty}
+                                        br
+                                .btn.build-building(buildingid=id) Build

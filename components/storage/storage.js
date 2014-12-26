@@ -133,8 +133,11 @@ if (Meteor.isClient) {
         StorageAdd: function (opts) {
             var storage = Storage.get(),
                 id = opts.id,
-                qty = opts.qty,
+                qty = +opts.qty,
                 hasPos = false;
+
+            if (isNaN(qty))
+                throw new Meteor.Error("Quantity is NaN: " + opts.qty);
 
             for (var i = 0; i < storage.length; i++) {
                 if (storage[i].id === id) {

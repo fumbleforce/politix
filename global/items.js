@@ -8,6 +8,8 @@ Item.items = [
         type:"metal",
         key: 1,
         name: "Steel",
+        buyPrice: 50,
+        sellPrice: 100,
         props: {
             weight: 1.0
         }
@@ -18,6 +20,8 @@ Item.items = [
         type:"metal",
         key: 7,
         name: "Iron",
+        buyPrice: 25,
+        sellPrice: 50,
         props: {
             weight: 1.0
         }
@@ -30,6 +34,8 @@ Item.items = [
         type:"wood",
         key: 2,
         name: "Plank",
+        buyPrice: 5,
+        sellPrice: 10,
         props: {
             weight: 1.0
         }
@@ -40,6 +46,8 @@ Item.items = [
         type:"wood",
         key: 2,
         name: "Logs",
+        buyPrice: 2,
+        sellPrice: 5,
         props: {
             weight: 1.0
         }
@@ -48,6 +56,8 @@ Item.items = [
     {
         id: "fish",
         category: "food",
+        buyPrice: 3,
+        sellPrice: 6,
         name: "Barrel of fish",
 
     },
@@ -55,12 +65,16 @@ Item.items = [
     {
         id: "stone",
         category: "material",
+        buyPrice: 3,
+        sellPrice: 6,
         name: "Stack of stones"
     },
 
     {
         id: "grain",
         category:"food",
+        buyPrice: 3,
+        sellPrice: 6,
         name: "Bundle of grains"
     }
 

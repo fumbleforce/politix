@@ -65,15 +65,19 @@ Template.Town.helpers({
         t.nextBuildCap = t.buildCaps[t.level+1];
         t.upgradeCosts = t.upgrade[t.level];
         t.maxLevel = t.level >= t.upgrade.length;
-    // Populate full item name
-        for (var i = 0; i < t.upgradeCosts.length; i++) {
-            t.upgradeCosts[i].name = Item.get(t.upgradeCosts[i].id).name;
+        // Populate full item name
+        if (!t.maxLevel) {
+            for (var i = 0; i < t.upgradeCosts.length; i++) {
+                t.upgradeCosts[i].name = Item.get(t.upgradeCosts[i].id).name;
+            }
         }
         return t;
     },
+
     settlers: function () {
         return Meteor.user().settlers;
     },
+
     buildings: function () {
         var fullBuildings = [],
             ownedBuildings = Meteor.user().buildings;
@@ -97,6 +101,23 @@ Template.Town.helpers({
         }
         return fullBuildings;
     },
+
+    unbuilt: function () {
+        var unbuilt = [];
+
+        for (var b in Building.buildings) {
+            if (!(b in Town.get().buildings) && b != "towncenter") {
+                var building = Building.expand(b, {});
+                building.upgradeCost = building.upgrade[0];
+                // Populate full item name
+                for (var i = 0; i < building.upgradeCost.length; i++) {
+                    building.upgradeCost[i].name = Item.get(building.upgradeCost[i].id).name;
+                }
+                unbuilt.push(building);
+            }
+        }
+        return unbuilt;
+    },
 });
 
 Template.Town.events({
@@ -106,6 +127,10 @@ Template.Town.events({
     },
 
     "click .upgrade-building": function (e) {
+        Meteor.call("TownUpgradeBuilding", {id: $(e.target).attr("buildingid")});
+    },
+
+    "click .build-building": function (e) {
         Meteor.call("TownUpgradeBuilding", {id: $(e.target).attr("buildingid")});
     },
 
@@ -205,10 +230,10 @@ Meteor.methods({
 
     TownUpgradeBuilding: function (opts) {
         var buildingId = opts.id;
-        console.log("Upgrading ", buildingId);
 
         if (buildingId in Town.get().buildings) {
             // Upgrading existing
+            console.log("Upgrading ", buildingId);
             var building = Building.expand(buildingId, Town.get().buildings[buildingId]);
 
             if (building.level === Town.get().level)
@@ -233,13 +258,34 @@ Meteor.methods({
 
         } else {
             // Adding new building
+            console.log("Building ", buildingId);
+            var building = Building.get(buildingId);
+            var hasPrereq = Storage.has(building.upgrade[0]);
+            
+            if (!hasPrereq)
+                throw new Meteor.Error("Not enough resources to build.");
 
+            Meteor.call("StorageSpendMultiple", building.upgrade[0]);
+
+            var setObj = {};
+            setObj["buildings."+buildingId] = {
+                lastRelease: new Date(),
+                level: 1
+            };
+            User.update({ $set: setObj });
         }
     },
 
     TownReleaseRec: function (buildingId) {
-        console.log("TownReleaseRec____________________________")
+        console.log("\n_________TownReleaseRec_____________")
         var stock = Building.get(buildingId);
+
+        if (stock == undefined)
+            throw new Meteor.Error("Building does not exist.");
+
+        if (!(buildingId in Town.get().buildings))
+            throw new Meteor.Error("You don't own a "+stock.name);
+
         var building = Town.get().buildings[buildingId];
 
         if (building.lastRelease == undefined)

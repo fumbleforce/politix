@@ -5,7 +5,6 @@ if (Meteor.isClient) {
 
     Template.Trade.helpers({
         items: function () {
-            console.log(Item.byCategory)
             return Item.byCategory;
         },
 
@@ -13,69 +12,26 @@ if (Meteor.isClient) {
             return Item.get(Session.get("activeMarketItem"));
         },
 
-        buyOrders: function () {
-            // TODO Sort by location
-
-            return MarketOrderCollection.find({
-                itemId: +Session.get("activeMarketItem"),
-                buyOrder: true,
-                status: 1
-            });
-        },
-
-        sellOrders: function () {
-            // TODO Sort by location
-            
-            return MarketOrderCollection.find({
-                itemId: +Session.get("activeMarketItem"),
-                buyOrder: false,
-                status: 1
-            });
-        },
-
-        viewAsTable: function () {
-            return Session.get("marketAsTable");
-        }
     });
 
 
     Template.Trade.events({
-        "click .filter-list > li": function(event) {
-            $(event.currentTarget).next(".sub-filter-list").toggle();
+        "click .buy": function (e) {
+            var $el = $(e.target).closest(".item"),
+                qty = +$el.find(".amount").val(),
+                item = $el.attr("itemid");
+            console.log("qty:", qty);
+            console.log("item", item);
+            Meteor.call("TradeVendorBuy", { id: item, qty: qty });
         },
-        "click .sub-filter-list > li": function(event) {
-            Session.set("activeMarketItem", $(event.currentTarget).attr('item'));
-            if (!Session.get("marketAsTable")) {
-                console.log("Calling market data");
-                Meteor.call("marketData", { itemId: Session.get("activeMarketItem") }, function (err, data) {
-                    Market.marketGraph(".market-graph", data);
-                });
-                
-            }
-        },
-        "click .order": function(event) {
-            Session.set("selectedMarketOrder", $(event.currentTarget).attr('order'));
-            Session.set("panelOrder", Session.get("panelOrder")+1);
-            $('.market-order-dialog').css({
-                "left": "50%",
-                "z-index": Session.get("panelOrder")
-            }).show();
-        },
-        "click button.buy": function (event) {
-            Market.createBuyOrder($(event.target));
-        },
-        "click .view-type": function(e) {
-            var isTable = $(e.target).attr("type") === "table";
-            Session.set("marketAsTable", isTable);
 
-            if (!isTable) {
-                console.log("Calling market data");
-                Meteor.call("marketData", { itemId: Session.get("activeMarketItem") }, function (err, data) {
-                    Market.marketGraph(".market-graph", data);
-                });
-                
-            }
-
+        "click .sell": function (e) {
+            var $el = $(e.target).closest(".item"),
+                qty = +$el.find(".amount").val(),
+                item = $el.attr("itemid");
+            console.log("qty:", qty);
+            console.log("item", item);
+            Meteor.call("TradeVendorSell", { id: item, qty: qty });
         }
     });
 
@@ -173,117 +129,41 @@ if (Meteor.isClient) {
 
     Meteor.methods({
 
-        acceptOrder: function (opts) {
+        TradeVendorBuy: function (opts) {
+            var id = opts.id,
+                qty = +opts.qty,
+                item = Item.get(id);
 
-            var orderId = opts.orderId,
-                quantity = opts.quantity,
-                storage = Storage.get(),
-                corp = Corporation.get(),
-                order = MarketOrderCollection.findOne(orderId),
-                item = Item.get(order.itemId),
-                cashDelta = order.quantity * order.price;
+            if (Town.get().treasury < item.sellPrice * qty)
+                throw new Meteor.Error("Not enough money in treasury");
 
+            Meteor.call("TreasurySpend", {
+                desc: "Bought "+ qty + " of " + item.name + " for " + (item.sellPrice * qty),
+                amount: item.sellPrice * qty
+            });
 
-            if (order.buyOrder) {
-                if (Storage.count(order.itemId) < order.quantity)
-                    throw new Meteor.Error(413, "Not enough items");
+            Meteor.call("StorageAdd", { id: id, qty: qty });
 
-                Meteor.call("removeItems", {
-                    item: order.itemId,
-                    amount: order.quantity
-                });
-
-                Wallet.spend({
-                    description: "Sold "+item.name,
-                    time: new Date(),
-                    receiver: { name: Corporation.get().name, id: Corporation.get()._id },
-                    sender: order.owner,
-                    amount: cashDelta,
-                    itemId: order.itemId,
-                    quantity: order.quantity,
-                    type: "market"
-                });
-
-                // TODO Remove money from owner, add to corp
-            } else {
-
-                // TODO check if have money, pay
-
-                if (corp.cash >= cashDelta) {
-
-                    Meteor.call("addItems", {
-                        item: order.itemId,
-                        amount: order.quantity
-                    });
-
-                } else {
-                    console.log("Have "+corp.cash+" need "+cashDelta);
-                    throw new Meteor.Error(413, "Not enough cash");
-                }
-
-                Wallet.spend({
-                    description: "Bought "+item.name,
-                    sender: { name: Corporation.get().name, id: Corporation.get()._id },
-                    receiver: order.owner,
-                    amount: -cashDelta,
-                    itemId: order.itemId,
-                    quantity: order.quantity,
-                    type: "market"
-                });
-            }
-
-            MarketOrderCollection.update(order._id,
-                { $set: {
-                    "status": 2,
-                    "acceptedBy": { name: Corporation.get().name, id: Corporation.get()._id },
-                    "acceptedTime": new Date()
-                }});
-
-            Deps.flush();
+            Event.addEvent("Bought "+ qty + " of " + item.name + " for " + (item.sellPrice * qty))
         },
 
+        TradeVendorSell: function (opts) {
+            var id = opts.id,
+                qty = +opts.qty,
+                item = Item.get(id);
 
+            if (!Storage.hasItem(id, qty))
+                throw new Meteor.Error("Not enough "+item.name);
 
-        createOrder: function (opts) {
-            console.log("Creating order..");
-            var itemId = opts.itemId,
-                quantity = opts.quantity,
-                price = opts.price,
-                type = opts.type,
-                buyOrder = type === "buy",
-                storage = Storage.get(),
-                corp = Corporation.get(),
-                item = Item.get(opts.itemId),
-                totalPrice = quantity * price;
+            Meteor.call("StorageSpendMultiple", [{ id: id, qty: qty }]);
+            
+            Meteor.call("TreasuryEarn", {
+                desc: "Sold "+ qty + " of " + item.name + " for " + (item.buyPrice * qty),
+                amount: item.buyPrice * qty
+            });
 
-
-            if (buyOrder) {
-
-                // TODO Escrow
-                if (corp.cash < totalPrice)
-                    throw new Meteor.Error(413, "Not enough cash");
-
-            } else {
-
-                if (storage[itemId].amount < quantity)
-                    throw new Meteor.Error(413, "Not enough items to sell");
-
-                Meteor.call("removeItems", { item: itemId, amount: quantity });
-            }
-
-            var order = {
-                owner: { name: corp.name, id: corp._id },
-                itemId: itemId,
-                price: price,
-                quantity: quantity,
-                buyOrder: buyOrder,
-                status: 1
-            };
-
-            MarketOrderCollection.insert(order);
+            Event.addEvent("Sold "+ qty + " of " + item.name + " for " + (item.buyPrice * qty))
         },
-
-
 
         transactionData: function (opts) {
             var itemId = opts.itemId;
