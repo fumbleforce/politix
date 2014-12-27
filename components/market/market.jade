@@ -18,31 +18,40 @@ template(name="Trade")
             .tab-content
                 #trade-materials.tab-pane.active
                     each items.material
-                        .item(itemid=id)
-                            span: b= name
-                            div Buying for $ #{buyPrice}
-                            div Selling for $ #{sellPrice}
-                            input.amount(placeholder="Amount")
-                            .btn.buy Buy
-                            .btn.sell Sell
+                        .item
+                            .box(itemid=id)
+                                span: b!= el
+                                .flow
+                                    div Buying for $ #{buyPrice}
+                                    div Selling for $ #{sellPrice}
+                                input.amount(placeholder="Amount")
+                                div
+                                    .btn.buy Buy
+                                    .btn.sell Sell
                 #trade-food.tab-pane
                     each items.food
-                        .item(itemid=id)
-                            span: b= name
-                            div Buying for $ #{buyPrice}
-                            div Selling for $ #{sellPrice}
-                            input.amount(placeholder="Amount")
-                            .btn.buy Buy
-                            .btn.sell Sell
+                        .item
+                            .box(itemid=id)
+                                span: b!= el
+                                .flow
+                                    div Buying for $ #{buyPrice}
+                                    div Selling for $ #{sellPrice}
+                                input.amount(placeholder="Amount")
+                                div
+                                    .btn.buy Buy
+                                    .btn.sell Sell
                 #trade-luxury.tab-pane
                     each items.luxury
-                        .item(itemid=id)
-                            span: b= name
-                            div Buying for $ #{buyPrice}
-                            div Selling for $ #{sellPrice}
-                            input.amount(placeholder="Amount")
-                            .btn.buy Buy
-                            .btn.sell Sell
+                        .item
+                            .box(itemid=id)
+                                span: b!= el
+                                .flow
+                                    div Buying for $ #{buyPrice}
+                                    div Selling for $ #{sellPrice}
+                                input.amount(placeholder="Amount")
+                                div
+                                    .btn.buy Buy
+                                    .btn.sell Sell
 
 
 

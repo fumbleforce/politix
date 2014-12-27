@@ -103,7 +103,7 @@ Template.Town.helpers({
 
             // Populate full item name
             for (var i = 0; i < building.upgradeCost.length; i++) {
-                building.upgradeCost[i].name = Item.get(building.upgradeCost[i].id).name;
+                building.upgradeCost[i].el = Item.get(building.upgradeCost[i].id).el;
             }
             fullBuildings.push(building);
         }
@@ -119,7 +119,7 @@ Template.Town.helpers({
                 building.upgradeCost = building.upgrade[0];
                 // Populate full item name
                 for (var i = 0; i < building.upgradeCost.length; i++) {
-                    building.upgradeCost[i].name = Item.get(building.upgradeCost[i].id).name;
+                    building.upgradeCost[i].el = Item.get(building.upgradeCost[i].id).el;
                 }
                 unbuilt.push(building);
             }

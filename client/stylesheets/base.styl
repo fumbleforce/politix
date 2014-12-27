@@ -170,9 +170,7 @@ body
     font-weight: 700;
     outline: none;
     position: relative;
-    -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
-    transition: all 0.3s;
+    transition: all 0.2s;
     border: 1px solid darkslategray;
     background: darkslategray
     overflow: hidden;
@@ -182,8 +180,6 @@ body
     content: '';
     position: absolute;
     z-index: -1;
-    -webkit-transition: all 0.3s;
-    -moz-transition: all 0.3s;
     transition: all 0.3s;
     width: 101%;
     height: 0;
@@ -191,9 +187,6 @@ body
     left: 50%;
     background: #fff;
     opacity: 0;
-    -webkit-transform: translateX(-50%) translateY(-50%);
-    -moz-transform: translateX(-50%) translateY(-50%);
-    -ms-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%);
 
 
@@ -209,10 +202,14 @@ body
     position: relative;
     -webkit-font-smoothing: antialiased;
 
-.btn:hover,
-.btn:active
+.btn:hover
     color: darkslategray !important
     background: white
+
+.btn:active
+    transition: all 0s;
+    color: slategray !important
+    background: whitesmoke
 
 .btn:hover:after
     height: 75%;
@@ -224,7 +221,8 @@ body
     opacity: 1;
 
 
-
+.flow
+    overflow:hidden
 
 
 .panel

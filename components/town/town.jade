@@ -20,44 +20,55 @@ template(name="Town")
             .pull-left Town
 
         .panel-body
-            #town-hall.town-hall
+            #town-hall.town-hall.box
                 with town
                     .general-info
                         .inner
                             h4= name
-                            p Treasury: $ #{treasury}
-                            p Mayor: #{currentUser.mayor}
-                            p Population: #{settlers.total}
-
+                            div
+                                i Town level 
+                                span #{level}
+                            .prop
+                                b Treasury: $
+                                span #{treasury}
+                            .prop
+                                b Mayor:
+                                span #{currentUser.mayor}
+                            .prop 
+                                b Population:
+                                span #{settlers.total}
+                            .prop
+                                b Population cap:
+                                span #{popCap}
+                            .prop
+                                b Building cap:
+                                span #{buildCap}
                     .upgrade-info
-                        .current-level
-                            h4 Current
-                            p: i Town level #{level}
-                            div Population cap: #{popCap}
-                            div Building cap: #{buildCap}
-                        hr
                         unless maxLevel
-                            .next-level
-                                h4 Next
-                                p: i Town level #{nextLevel}
-                                div Population cap: #{nextPopCap}
-                                div Building cap: #{nextBuildCap}
-                                
+                            .pull-left
                                 .upgrade-cost
                                     each upgradeCosts
                                         div #{name} x#{qty}
                                 .btn.upgrade-town Upgrade
+                            .next-level.pull-right
+                                p: i Town level #{nextLevel}
+                                div Population cap: #{nextPopCap}
+                                div Building cap: #{nextBuildCap}
+                                
 
             hr
 
-            h3 Your town
+            h3.headline Your town
 
             .buildings
                 each buildings
                     .building
-                        .inner
+                        .inner.box
+                            .butns
+                                
+
+                            h4= name
                             .info
-                                h4= name
                                 p:i Level #{level}
                                 p= desc
                                 p Workers: #{activeWorkers} / #{maxWorkers}
@@ -67,27 +78,28 @@ template(name="Town")
                                         span(generation=id) 0
                                         span #{resource} generated.
                                     .btn.release-resources(buildingid=id) Collect
-                            .upgrade-info
-                                unless maxLevel
-                                    p
-                                        each upgradeCost
-                                            span #{name} x#{qty}
-                                            br
-                                    .btn.upgrade-building(buildingid=id) Upgrade
+                            unless maxLevel
+                                .upgrade-info
+                                    each upgradeCost
+                                        span!= el 
+                                        span x#{qty}
+
+                                        .btn.upgrade-building.pull-right(buildingid=id) Upgrade
+                                    
             
             hr
 
-            h3 Build
+            h3.headline Build
             .unbuilt
                 each unbuilt
                     .building
-                        .inner
+                        .inner.box
                             .info
                                 h4= name
                                 p= desc
-                            .upgrade-info
-                                p
-                                    each upgradeCost
-                                        span #{name} x#{qty}
-                                        br
-                                .btn.build-building(buildingid=id) Build
+
+                            .build-info
+                                each upgradeCost
+                                    span!= el
+                                    span x#{qty}
+                                .btn.build-building.pull-right(buildingid=id) Build

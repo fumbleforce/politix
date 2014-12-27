@@ -1,5 +1,27 @@
 Item = {};
 
+/*
+Item quality:
+
+0 - gray - Junk
+1 - white - Material
+2 - blue - Consumable
+3 - lightbrown - Weak
+4 - yellow - Sturdy
+5 - red - Terrific
+6 - purple - Exemplary
+*/
+
+Item.quality = [
+    "junk",
+    "material",
+    "consumable",
+    "weak",
+    "sturdy",
+    "terrific",
+    "exemplary"
+]
+
 Item.items = [
     // Raw metals used for producing things
     {
@@ -10,6 +32,7 @@ Item.items = [
         name: "Steel",
         buyPrice: 50,
         sellPrice: 100,
+        quality: 1,
         props: {
             weight: 1.0
         }
@@ -20,6 +43,7 @@ Item.items = [
         type:"metal",
         key: 7,
         name: "Iron",
+        quality: 1,
         buyPrice: 25,
         sellPrice: 50,
         props: {
@@ -34,6 +58,7 @@ Item.items = [
         type:"wood",
         key: 2,
         name: "Plank",
+        quality: 1,
         buyPrice: 5,
         sellPrice: 10,
         props: {
@@ -46,6 +71,7 @@ Item.items = [
         type:"wood",
         key: 2,
         name: "Logs",
+        quality: 1,
         buyPrice: 2,
         sellPrice: 5,
         props: {
@@ -56,6 +82,7 @@ Item.items = [
     {
         id: "fish",
         category: "food",
+        quality: 1,
         buyPrice: 3,
         sellPrice: 6,
         name: "Barrel of fish",
@@ -65,6 +92,7 @@ Item.items = [
     {
         id: "stone",
         category: "material",
+        quality: 1,
         buyPrice: 3,
         sellPrice: 6,
         name: "Stack of stones"
@@ -73,12 +101,27 @@ Item.items = [
     {
         id: "grain",
         category:"food",
+        quality: 1,
         buyPrice: 3,
         sellPrice: 6,
         name: "Bundle of grains"
-    }
+    },
+
+    {
+        id: "club",
+        category:"weapon",
+        quality: 1,
+        buyPrice: 50,
+        sellPrice: 150,
+        name: "Crude club"
+    },
 
 ];
+
+Item.items = _.map(Item.items, function (i) {
+    i.el = "<span class='itemlink "+Item.quality[i.quality]+"'>"+i.name+"</span>";
+    return i
+});
 
 Item.workers = [
     {
@@ -114,5 +157,6 @@ Item.sortedItems = _.sortBy(Item.items, function(item) {
 });
 
 Item.get = function (id) {
-    return Item.items[Item.itemDict[id]];
+    var i = Item.items[Item.itemDict[id]];
+    return i;
 };
