@@ -23,6 +23,8 @@ function updateGenerated() {
     for (var b in Town.get().buildings) {
         var building = Building.expand(b, Town.get().buildings[b]);
 
+        if (building.resource == undefined) return;
+
         if (building.lastRelease == undefined) {
             building.lastRelease = new Date();
         }
@@ -293,6 +295,8 @@ Meteor.methods({
     TownReleaseRec: function (buildingId) {
         console.log("\n_________TownReleaseRec_____________")
         var stock = Building.get(buildingId);
+
+        if (stock.resource == undefined) return;
 
         if (stock == undefined)
             throw new Meteor.Error("Building does not exist.");

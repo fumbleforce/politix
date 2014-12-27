@@ -130,6 +130,19 @@ body
         -webkit-transform: scale(5);
         -webkit-transform-origin: top left;
         -webkit-filter: blur(1px);
+        
+    &.bg-img-exploration:before
+        background: url(img/explorebg.jpg)
+        content: "";
+        position: fixed;
+        height: 20%; width: 20%;
+        background-size: cover;
+        z-index: -1; /* Keep the background behind the content */
+        
+        /* don't forget to use the prefixes you need */
+        -webkit-transform: scale(5);
+        -webkit-transform-origin: top left;
+        -webkit-filter: blur(1px);
 
 
 #bg-blur:before

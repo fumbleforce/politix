@@ -138,13 +138,13 @@ if (Meteor.isClient) {
                 throw new Meteor.Error("Not enough money in treasury");
 
             Meteor.call("TreasurySpend", {
-                desc: "Bought "+ qty + " of " + item.name + " for " + (item.sellPrice * qty),
+                desc: "Bought "+ qty + " of " + item.name + " for $" + (item.sellPrice * qty),
                 amount: item.sellPrice * qty
             });
 
             Meteor.call("StorageAdd", { id: id, qty: qty });
 
-            Event.addEvent("Bought "+ qty + " of " + item.name + " for " + (item.sellPrice * qty))
+            Event.addEvent("Bought "+ qty + " of " + item.name + " for $" + (item.sellPrice * qty))
         },
 
         TradeVendorSell: function (opts) {

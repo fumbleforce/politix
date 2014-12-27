@@ -14,26 +14,51 @@ template(name="Exploration")
                 with exploration
                     h3 Party
 
-                    div #{explorers} explorers
+                    div #{explorers} free explorers
+                    div #{explorersBusy} busy explorers
                     div #{experience} experience
 
                 p Equipment
                 .equipments
                     each equipment
                         .equipment
-                            b=name
+                            if name
+                                b=name
+                            else
+                                b [___]
 
             .quests
                 each quests
                     .quest
                         .inner
-                            p.pull-left= title
+                            .pull-left
+                                p: b= title
+                                div: i Danger level #{danger}
+                                div: i #{time} sec
+                            .pull-right.qstatus(questid=id)
+                                if active
+                                    .btn.countdown.complete-quest(questid=id)
+                                else
+                                    .btn.start-quest(questid=id) Start
 
-                            if started
-                                p Completed: #{completed}
-                            else
-                                .pull-right
-                                    .btn Start
+                    .hiddenend(questid=id)= end
+            script.
+                var ends = $(".hiddenend[questid]");
 
+                ends.each(function () {
+                    var id = $(this).attr("questid");
+                    var end = +$(".hiddenend[questid='"+id+"']").text();
 
-                
+                    switch (end) {
+                        case 0: return;
+                    }
+                    end = new Date(end);
+
+                    var myCounter = new Countdown({  
+                        end: end,
+                        onUpdateStatus: function (sec) { $(".countdown[questid='"+id+"']").html(sec); }, // callback for each second
+                        onCounterEnd: function () { $(".countdown[questid='"+id+"']").html("Completed"); } // final action
+                    });
+
+                    myCounter.start();
+                });

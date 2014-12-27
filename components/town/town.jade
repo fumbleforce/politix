@@ -62,10 +62,11 @@ template(name="Town")
                                 p= desc
                                 p Workers: #{activeWorkers} / #{maxWorkers}
                                 
-                                p
-                                    span(generation=id) 0
-                                    span #{resource} generated.
-                                .btn.release-resources(buildingid=id) Collect
+                                if resource
+                                    p
+                                        span(generation=id) 0
+                                        span #{resource} generated.
+                                    .btn.release-resources(buildingid=id) Collect
                             .upgrade-info
                                 unless maxLevel
                                     p

@@ -14,8 +14,11 @@ if (Meteor.isClient) {
 
         workers: function () {
             return _.map(Building.workerList, function (w) {
+                var num = Meteor.user().settlers[w.id] || 0;
+                if (w.id == "explorer")
+                    num += Meteor.user().settlers["explorerBusy"] || 0;
                 return {
-                    number: Meteor.user().settlers[w.id] || 0,
+                    number: num,
                     name: w.name,
                     id: w.id
                 }
@@ -40,9 +43,22 @@ if (Meteor.isClient) {
     Meteor.methods({
 
         SettlerAdd: function (id) {
-            var settlers = Town.get().settlers;
+            var settlers = Town.get().settlers,
+                building = Building.getWorkerBuilding(id);
+
+            if (!(building in Town.get().buildings))
+                throw new Meteor.Error("You do not have a "+Building.get(building).name);
+
+            var maxWorkers = Building.get(building).maxWorkers[Town.get().buildings[building].level];
 
             if (settlers.unemployed) {
+                var active = settlers[id] || 0;
+                if (id === "explorer")
+                    active += settlers["explorerBusy"];
+
+                if (active + 1 > maxWorkers)
+                    throw new Meteor.Error("Already at max workers");
+
                 settlers.unemployed--;
                 settlers.employed++;
                 if (settlers[id] == undefined) settlers[id] = 0;
@@ -50,7 +66,7 @@ if (Meteor.isClient) {
             } else {
                 throw new Meteor.Error("No unemployed settlers");
             }
-            Meteor.call("TownReleaseRec", Building.getWorkerBuilding(id))
+            Meteor.call("TownReleaseRec", building)
             User.update({ $set: { "settlers": settlers } });
             console.log("Added a "+id);
         },

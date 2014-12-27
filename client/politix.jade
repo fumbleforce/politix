@@ -52,6 +52,7 @@ template(name="Layout")
     .bg-blur.bg-img-treasury
     .bg-blur.bg-img-relations
     .bg-blur.bg-img-storage
+    .bg-blur.bg-img-exploration
     
 
     .page-wrapper
@@ -60,10 +61,13 @@ template(name="Layout")
                 +TownStatus
                 +NavList
                 //+Chat
-                +EventList
 
         .main-window
             +Main
+
+        .side-bar-right
+            if gameActive
+                +EventList
 
 
 

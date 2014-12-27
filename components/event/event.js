@@ -5,6 +5,8 @@ Event = {};
 Event.addEvent = function (msg) {
     if (Meteor.isClient) {
 
+        msg = msg.replace("[", "").replace("]", "");
+
         var events = Session.get("events");
         events.push({ message: msg });
         if (events.length > 5)

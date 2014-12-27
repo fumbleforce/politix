@@ -46,3 +46,37 @@ NonEmptyString = Match.Where(function (x) {
     return x.length !== 0;
 });
 
+Countdown = function (options) {
+  var timer,
+  instance = this,
+  seconds = options.seconds || 10,
+  end = options.end,
+  updateStatus = options.onUpdateStatus || function () {},
+  counterEnd = options.onCounterEnd || function () {};
+
+  if (end != undefined) {
+    var now = new Date();
+    options.seconds = end.getTime() - now.getTime();
+    options.seconds = options.seconds / 1000;
+  }
+
+  function decrementCounter() {
+    updateStatus(Math.floor(seconds));
+    if (seconds <= 0) {
+      counterEnd();
+      instance.stop();
+    }
+    seconds--;
+  }
+
+  this.start = function () {
+    clearInterval(timer);
+    timer = 0;
+    seconds = options.seconds;
+    timer = setInterval(decrementCounter, 1000);
+  };
+
+  this.stop = function () {
+    clearInterval(timer);
+  };
+}
