@@ -55,23 +55,24 @@ template(name="Town")
             .buildings
                 each buildings
                     .building
-                        .info
-                            h4= name
-                            p:i Level #{level}
-                            p= desc
-                            p Workers: #{activeWorkers} / #{maxWorkers}
-                            
-                            p
-                                span(generation=id) 0
-                                span #{resource} generated.
-                            .btn.release-resources(buildingid=id) Collect
-                        .upgrade-info
-                            unless maxLevel
+                        .inner
+                            .info
+                                h4= name
+                                p:i Level #{level}
+                                p= desc
+                                p Workers: #{activeWorkers} / #{maxWorkers}
+                                
                                 p
-                                    each upgradeCost
-                                        span #{name} x#{qty}
-                                        br
-                                .btn.upgrade-building(buildingid=id) Upgrade
+                                    span(generation=id) 0
+                                    span #{resource} generated.
+                                .btn.release-resources(buildingid=id) Collect
+                            .upgrade-info
+                                unless maxLevel
+                                    p
+                                        each upgradeCost
+                                            span #{name} x#{qty}
+                                            br
+                                    .btn.upgrade-building(buildingid=id) Upgrade
             
             hr
 

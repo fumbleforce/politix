@@ -23,20 +23,29 @@
         overflow:hidden
         
         .building
-            width: 100%
-            border-bottom: 1px solid darkslategray
-            color: darkslategray
+            float:left
+            width: 50%;
             margin-bottom: 10px
-            padding: 5px
-            overflow:hidden
             
-            .info
-                float:left
-                width: 50%
+            .inner
+                border-bottom: 1px solid darkslategray
+                color: darkslategray
+                padding: 5px
+                margin: 5px
+                overflow:hidden
+                background: whitesmoke;
+                margin-bottom: 10px;
+                border-radius: 6px;
+                border: 2px solid rgba(0,0,0,0.1);
+                height: 300px
                 
-            .upgrade-info
-                float:left
-                width: 50%
+                .info
+                    float:left
+                    width: 50%
+                    
+                .upgrade-info
+                    float:left
+                    width: 50%
     .unbuilt
         
         .building

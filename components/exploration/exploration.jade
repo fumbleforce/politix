@@ -1,0 +1,39 @@
+template(name="Exploration")
+    //-
+        The corporation's workforce
+        Hire new settlers, fire, manage them
+
+    .exploration.panel.component(style="display:none")
+
+        .panel-heading
+            .pull-left Exploration
+
+        .panel-body
+
+            .party
+                with exploration
+                    h3 Party
+
+                    div #{explorers} explorers
+                    div #{experience} experience
+
+                p Equipment
+                .equipments
+                    each equipment
+                        .equipment
+                            b=name
+
+            .quests
+                each quests
+                    .quest
+                        .inner
+                            p.pull-left= title
+
+                            if started
+                                p Completed: #{completed}
+                            else
+                                .pull-right
+                                    .btn Start
+
+
+                

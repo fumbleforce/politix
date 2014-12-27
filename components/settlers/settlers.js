@@ -12,6 +12,16 @@ if (Meteor.isClient) {
             return Meteor.user().settlers;
         },
 
+        workers: function () {
+            return _.map(Building.workerList, function (w) {
+                return {
+                    number: Meteor.user().settlers[w.id] || 0,
+                    name: w.name,
+                    id: w.id
+                }
+            })
+        }
+
     });
 
     Template.Settlers.events({

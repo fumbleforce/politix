@@ -130,7 +130,36 @@ Building.buildings = {
             ],
         ]
     },
+
+    "explorerslodge": {
+        name: "Explorer's lodge",
+        desc: "The place to be for any seasoned explorer of the new world. Allows for expeditions into the wilderness for hidden treasures.",
+        worker: "explorer",
+        maxWorkers: [1, 2, 3, 4, 5],
+        upgrade: [
+            [   // Level 1
+                { id: "plank", qty: 50 },
+            ],
+            [   // Level 2
+                { id: "plank", qty: 150 },
+            ],
+            [   // Level 3
+                { id: "plank", qty: 300 },
+            ],
+        ]
+    },
 };
+
+Building.workers = {};
+Building.workerList = [];
+
+_.each(Building.buildings, function (b) {
+    Building.workers[b.worker] = {
+        id: b.worker,
+        name: b.worker[0].toUpperCase() + b.worker.slice(1)
+    }
+    Building.workerList.push(Building.workers[b.worker]);
+});
 
 Building.get = function (key) {
     return Building.buildings[key];

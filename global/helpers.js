@@ -15,7 +15,7 @@ UI.registerHelper('asArray', asArray);
 
 Error.handler = function (err) {
     if (err) {
-        Dialog.informUser(err.message);
+        //Dialog.informUser(err.message);
         Event.addEvent(err.message);
     }
 };

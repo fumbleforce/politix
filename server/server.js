@@ -10,6 +10,7 @@ Meteor.publish( null, function() {
         settlers: 1,
         storage: 1,
         buildings: 1,
+        exploration: 1,
     }});
 });
 

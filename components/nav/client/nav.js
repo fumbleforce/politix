@@ -10,9 +10,9 @@ if (Meteor.isClient) {
     };
 
     Template.NavList.events({
-        'click a': function (event) {
+        'click a': function (e) {
             $(".panel.component").hide();
-            var page = event.target.hash.split("#")[1];
+            var page = $(e.target).parent().attr("href").split("#")[1];
             var $el = $("."+page);
 
             if (page != Session.get("currentPage")) {

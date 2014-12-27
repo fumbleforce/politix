@@ -18,6 +18,8 @@ Town.set = function (key, val) {
 if (Meteor.isClient) {
 
 function updateGenerated() {
+    if (Town.get() == null || Town.get() == undefined) return;
+
     for (var b in Town.get().buildings) {
         var building = Building.expand(b, Town.get().buildings[b]);
 
@@ -42,6 +44,10 @@ function updateGenerated() {
 Meteor.startup(function () {
     Meteor.setTimeout(updateGenerated, 1000);
     Meteor.setInterval(updateGenerated, 10000);
+
+    Meteor.setInterval(function () {
+        Meteor.call("TownPopGain");
+    }, 10000);
 })
 
 Template.TownStatus.helpers({
@@ -166,15 +172,23 @@ Meteor.methods({
             treasury: 10000.0,
             level: 1,
             mayor: options.mayor,
+            taxRate: 10,
             settlers: {
                 total: 10,
                 employed: 0,
                 unemployed: 10,
-
+                health: 100,
+                equality: 100,
+                loyalty: 100,
             },
             storage: [],
             buildings: {
                 "tradepost": { level: 1 }
+            },
+            exploration: {
+                active: [],
+                equipment: [],
+                experience: 0,
             }
         };
 
@@ -183,19 +197,19 @@ Meteor.methods({
                 t.buildings["farm"] = { level: 1 };
                 break;
             case "building":
-                t.buidlings["carpentry"] = { level: 1 };
+                t.buildings["carpentry"] = { level: 1 };
                 break;
             case "trading":
-                t.buidlings["tradepost"] = { level: 2 };
+                t.buildings["tradepost"] = { level: 2 };
                 break;
             case "mining":
-                t.buidlings["mine"] = { level: 1 };
+                t.buildings["mine"] = { level: 1 };
                 break;
             case "exploration":
                 t.storage.push({ id: "torch", qty: 3 });
                 break;
             case "warfare":
-                t.buidlings["barraks"] = { level: 1 };
+                t.buildings["barraks"] = { level: 1 };
                 break;
             
                 
@@ -312,7 +326,9 @@ Meteor.methods({
         setObj["buildings."+buildingId+".lastRelease"] = new Date();
         User.update({ $set: setObj });
         console.log("Released "+ releaseAmount + " of " + resource);
-    }
+    },
+
+    
 });
 
 

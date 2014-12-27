@@ -22,7 +22,7 @@ if (Meteor.isClient) {
                 item = $el.attr("itemid");
             console.log("qty:", qty);
             console.log("item", item);
-            Meteor.call("TradeVendorBuy", { id: item, qty: qty });
+            Meteor.call("TradeVendorBuy", { id: item, qty: qty }, Error.handler);
         },
 
         "click .sell": function (e) {
@@ -31,7 +31,7 @@ if (Meteor.isClient) {
                 item = $el.attr("itemid");
             console.log("qty:", qty);
             console.log("item", item);
-            Meteor.call("TradeVendorSell", { id: item, qty: qty });
+            Meteor.call("TradeVendorSell", { id: item, qty: qty }, Error.handler);
         }
     });
 

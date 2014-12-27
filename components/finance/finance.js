@@ -146,6 +146,7 @@ if (Meteor.isClient) {
 
             if (amount < 0.1) return;
             
+            opts.amount = -Math.abs(opts.amount);
             TransactionCollection.insert(opts);
 
             Meteor.users.update(Meteor.userId(),
