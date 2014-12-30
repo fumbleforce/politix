@@ -36,7 +36,7 @@ if (Meteor.isClient) {
             Meteor.setTimeout(function() { remMsgs(); $(".status").append("<p>*Chomp*</p>"); }, 2000);
             Meteor.setTimeout(function() {
                 remMsgs();
-                $(".status").append("<p>You got "+num+" logs</p>");
+                $(".status").append("<p>You got "+num+" "+Item.get("log").el+"</p>");
                 Meteor.call("GatheringLogs");
             }, 3000);
             Meteor.setTimeout(function() { Gathering.active = false; }, 4000);
@@ -55,7 +55,7 @@ if (Meteor.isClient) {
             Meteor.setTimeout(function() { remMsgs(); $(".status").append("<p>You carry them back to town.</p>"); }, 2000);
             Meteor.setTimeout(function() {
                 remMsgs();
-                $(".status").append("<p>You got "+num+" stones</p>");
+                $(".status").append("<p>You got "+num+" "+Item.get("stone").el+"</p>");
                 Meteor.call("GatheringStones");
             }, 3000);
             Meteor.setTimeout(function() { Gathering.active = false; }, 4000);
@@ -74,7 +74,7 @@ if (Meteor.isClient) {
             Meteor.setTimeout(function() { remMsgs(); $(".status").append("<p>You carry what you find back to town.</p>"); }, 2000);
             Meteor.setTimeout(function() {
                 remMsgs();
-                $(".status").append("<p>You got "+num+" iron</p>");
+                $(".status").append("<p>You got "+num+" "+Item.get("iron").el+"</p>");
                 Meteor.call("GatheringMetal");
             }, 3000);
             Meteor.setTimeout(function() { Gathering.active = false; }, 4000);
@@ -93,7 +93,7 @@ if (Meteor.isClient) {
             Meteor.setTimeout(function() { remMsgs(); $(".status").append("<p>You carry your catch back to town.</p>"); }, 2000);
             Meteor.setTimeout(function() {
                 remMsgs();
-                $(".status").append("<p>You got "+num+" fish</p>");
+                $(".status").append("<p>You got "+num+" "+Item.get("fish").el+"</p>");
                 Meteor.call("GatheringFish");
             }, 3000);
             Meteor.setTimeout(function() { Gathering.active = false; }, 4000);

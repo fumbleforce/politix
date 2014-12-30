@@ -32,7 +32,6 @@ if (Meteor.isClient) {
                 }
                 expanded.push(q);
             }
-            console.log(active)
             return expanded;
         },
 
@@ -96,7 +95,7 @@ if (Meteor.isClient) {
                 Meteor.call("QuestComplete", id, function (err, data) {
                     console.log("completed ", id);
                     Session.set("questCompleted", new Date());
-                    Event.addEvent("You received "+ data.reward + " and "+data.exp+" exp. for your efforts!");
+                    Event.addEvent("You received "+ Item.get(data.reward).el + " and "+data.exp+" exp. for your efforts!");
                     //$(".qstatus[questid='"+id+"']").empty().append("<div class='btn start-quest' questid='"+id+"'>Start</div>");
                 });
             }
@@ -162,10 +161,17 @@ if (Meteor.isClient) {
 
             User.update({ $set: upObj });
 
-            var reward = "log";
+            console.log("Danger: ", quest.danger);
+            var lootLevel = randLootLevel(quest.danger);
+            console.log("LootLevel", lootLevel);
+            if (lootLevel < 0) {
+                return { reward: "none", exp: exp }
+            }
+            var reward = Item.rand(lootLevel);
+            console.log("Reward", reward);
 
-            Meteor.call("StorageAdd", { id: reward, qty: 1 });
-            return { reward: reward, exp: exp }
+            Meteor.call("StorageAdd", { id: reward.id, qty: 1 });
+            return { reward: reward.id, exp: exp }
         }
     })
 }

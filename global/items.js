@@ -25,6 +25,16 @@ Item.quality = [
 Item.items = [
     // Raw metals used for producing things
     {
+        id: "dirt",
+        category: "trash",
+        type:"metal",
+        name: "Dirt",
+        desc: "A handful of dirt.",
+        buyPrice: 1,
+        sellPrice: 0,
+        quality: 0,
+    },
+    {
         id: "steel",
         category: "material",
         type:"metal",
@@ -58,6 +68,7 @@ Item.items = [
         type:"wood",
         key: 2,
         name: "Plank",
+        desc: "It is a plank! :O",
         quality: 1,
         buyPrice: 5,
         sellPrice: 10,
@@ -108,18 +119,45 @@ Item.items = [
     },
 
     {
-        id: "club",
+        id: "crudeclub",
         category:"weapon",
-        quality: 1,
+        quality: 3,
         buyPrice: 50,
         sellPrice: 150,
         name: "Crude club"
     },
 
+    {
+        id: "heavyclub",
+        category:"weapon",
+        quality: 4,
+        buyPrice: 150,
+        sellPrice: 250,
+        name: "Heavy club"
+    },
+
+    {
+        id: "greatclub",
+        category:"weapon",
+        quality: 5,
+        buyPrice: 350,
+        sellPrice: 850,
+        name: "Great club"
+    },
+
+    {
+        id: "bonebreaker",
+        category:"weapon",
+        quality: 6,
+        buyPrice: 1350,
+        sellPrice: 2850,
+        name: "Bone Breaker"
+    },
+
 ];
 
 Item.items = _.map(Item.items, function (i) {
-    i.el = "<span class='itemlink "+Item.quality[i.quality]+"'>"+i.name+"</span>";
+    i.el = "<span class='itemlink "+Item.quality[i.quality]+"' title='"+i.desc+"' data-toggle='tooltip'>"+i.name+"</span>";
     return i
 });
 
@@ -139,9 +177,11 @@ Item.workers = [
 
 Item.itemDict = {};
 Item.itemHierarchy = [];
+Item.byQuality = [[], [], [], [], [], [], []];
 
 _.each(Item.items, function (i, index) {
     Item.itemDict[i.id] = index;
+    Item.byQuality[i.quality].push(i);
 });
 
 Item.byCategory = {};
@@ -157,6 +197,17 @@ Item.sortedItems = _.sortBy(Item.items, function(item) {
 });
 
 Item.get = function (id) {
+    if (id === "none") {
+        return {
+            id: "none",
+            el: "nothing"
+        }
+    }
     var i = Item.items[Item.itemDict[id]];
     return i;
+};
+
+
+Item.rand = function (quality) {
+    return Item.byQuality[quality][Math.floor(Math.random()*(Item.byQuality[quality].length-1))];
 };

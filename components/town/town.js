@@ -23,7 +23,7 @@ function updateGenerated() {
     for (var b in Town.get().buildings) {
         var building = Building.expand(b, Town.get().buildings[b]);
 
-        if (building.resource == undefined) return;
+        if (building.resource == undefined) continue;
 
         if (building.lastRelease == undefined) {
             building.lastRelease = new Date();
@@ -49,7 +49,7 @@ Meteor.startup(function () {
 
     Meteor.setInterval(function () {
         Meteor.call("TownPopGain");
-    }, 10000);
+    }, 100000);
 })
 
 Template.TownStatus.helpers({
@@ -76,7 +76,7 @@ Template.Town.helpers({
         // Populate full item name
         if (!t.maxLevel) {
             for (var i = 0; i < t.upgradeCosts.length; i++) {
-                t.upgradeCosts[i].name = Item.get(t.upgradeCosts[i].id).name;
+                t.upgradeCosts[i].el = Item.get(t.upgradeCosts[i].id).el;
             }
         }
         return t;
@@ -191,6 +191,21 @@ Meteor.methods({
                 active: [],
                 equipment: [],
                 experience: 0,
+            },
+            army: {
+                size: 0,
+                health: 100,
+                maxHealth: 100,
+                morale: 100,
+                maxMorale: 100,
+                experience: 0,
+                equipment: [],
+                supplies: 100,
+                troops: {
+                    infantry: 0,
+                    cavalry: 0,
+                    artillery: 0,
+                }
             }
         };
 
@@ -332,6 +347,9 @@ Meteor.methods({
         console.log("Released "+ releaseAmount + " of " + resource);
     },
 
+    TownPopGain: function () {
+        User.update({ $inc: { "settlers.total": 1, "settlers.unemployed": 1 } });
+    }
     
 });
 

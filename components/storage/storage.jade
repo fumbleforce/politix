@@ -11,5 +11,6 @@ template(name="Storage")
             .storage-window
                 each storageList
                     .storage-item(data-context="item" quantity="#{qty}" itemId="#{id}")
-                        .placeholder-icon.pull-left
-                        .pull-left #{name} x#{qty}
+                        .pull-left
+                            span!= el
+                            span x#{qty}

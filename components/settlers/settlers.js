@@ -85,5 +85,25 @@ if (Meteor.isClient) {
             User.update({ $set: { "settlers": settlers } });
             console.log("Removed a "+id);
         },
+
+        SettlerRecruit: function () {
+            var settlers = Town.get().settlers,
+                army = Town.get().army,
+                unemployed = settlers.unemployed;
+
+            settlers.unemployed = 0;
+            settlers.total -= unemployed;
+            army.size += unemployed;
+            army.troops.infantry += unemployed;
+            army.experience -= unemployed * 10;
+            if (army.experience < 0)
+                army.experience = 0;
+
+            User.update({ $set: {
+                "settlers": settlers,
+                "army": army,
+            } });
+
+        }
     })
 }

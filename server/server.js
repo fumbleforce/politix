@@ -11,6 +11,7 @@ Meteor.publish( null, function() {
         storage: 1,
         buildings: 1,
         exploration: 1,
+        army:1,
     }});
 });
 

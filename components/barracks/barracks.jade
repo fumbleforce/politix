@@ -1,0 +1,76 @@
+
+template(name="Barracks")
+    //-
+        Manually gather resources
+    
+    .barracks.panel.component(style="display:none")
+        
+        .panel-heading
+            .pull-left Barracks
+
+        .panel-body
+            .alert.alert-info
+                .btn(onclick="$('.barracks-info').toggle()") Info
+                .barracks-info(style="display:none")
+                    div.
+                        In the barracks you manage your standing army. The army will gain experience as you fight other colonies or the natives, but will lose experience when new recruits join. The higher experience the army has, the more damage it will do.
+                    br
+                    div.
+                        Army effectiveness is modified by the army's morale. If the army is not provided for in terms of supplies, morale will suffer and the army will more easily break ranks and lose.
+                    br
+                    div.
+                        The health of the army will drop whenever it fights. It represents the percentage of healthy fighting men, so an army with 50% health will only fight at half effectiveness.
+
+            h4.headline Standing Army
+            .box
+                with army
+                    .flow
+                        .col-xs-6: b Army size:
+                        .col-xs-6: span= size
+                    .flow
+                        .col-xs-6: b Combat experience:
+                        .col-xs-6: span= experience
+                    .flow
+                        .col-xs-2: b Health:
+                        .col-xs-10
+                            .flow
+                                .progress-bar(role="progressbar", aria-valuenow=health, aria-valuemin="0", aria-valuemax="100", style="width:#{health}%")
+                                    span #{health}%
+                    .flow
+                        .col-xs-2: b Morale:
+                        .col-xs-10
+                            .progress-bar(role="progressbar", aria-valuenow=morale, aria-valuemin="0", aria-valuemax="100", style="width:#{morale}%")
+                                span #{morale}%
+
+
+
+            hr
+            h4.headline Troops
+            p
+                div #{volunteers} volunteers are ready to join the Army
+                .btn.recruit Recruit
+
+            .box
+                with troops
+                    div
+                        b Infantry:
+                        span= infantry
+                    div
+                        b Cavalry:
+                        span= cavalry
+                    div
+                        b Artillery:
+                        span= artillery
+
+            hr
+            h4.headline Management
+            div
+                label Supplies at #{supplies}%, costing $#{supplyCost}/day
+                input(
+
+                    type="range",
+                    min="0",
+                    max="100",
+                    step="1",
+                    value=supplies).supplies
+            hr

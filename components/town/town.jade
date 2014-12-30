@@ -48,7 +48,9 @@ template(name="Town")
                             .pull-left
                                 .upgrade-cost
                                     each upgradeCosts
-                                        div #{name} x#{qty}
+                                        div
+                                            span!= el
+                                            span x#{qty}
                                 .btn.upgrade-town Upgrade
                             .next-level.pull-right
                                 p: i Town level #{nextLevel}

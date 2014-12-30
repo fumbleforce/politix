@@ -12,7 +12,7 @@ if (Meteor.isClient) {
     Template.NavList.events({
         'click a': function (e) {
             $(".panel.component").hide();
-            var page = $(e.target).parent().attr("href").split("#")[1];
+            var page = $(e.target).closest("a").attr("href").split("#")[1];
             var $el = $("."+page);
 
             if (page != Session.get("currentPage")) {

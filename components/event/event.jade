@@ -12,7 +12,7 @@ template(name="EventList")
         .panel-body
             .event-list
                 each events
-                    .event-entry= message
+                    .event-entry!= message
 
     script.
         $(".events").height($(window).height()-$(".nav-list").height());
