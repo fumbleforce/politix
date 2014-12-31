@@ -4,7 +4,7 @@ template(name="TownStatus")
     .town-status
         with town
             h4 #{mayor} of #{name}
-            div: i Level #{level}
+            div: i Level #{buildings.towncenter.level}
             div $ #{treasury}
             div Pop: #{settlers.total}
 
@@ -20,14 +20,14 @@ template(name="Town")
             .pull-left Town
 
         .panel-body
-            #town-hall.town-hall.box
+            #town-hall.town-hall
                 with town
                     .general-info
                         .inner
                             h4= name
                             div
                                 i Town level 
-                                span #{level}
+                                span #{buildings.towncenter.level}
                             .prop
                                 b Treasury: $
                                 span #{treasury}

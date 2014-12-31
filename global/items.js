@@ -151,7 +151,10 @@ Item.items = [
         quality: 6,
         buyPrice: 1350,
         sellPrice: 2850,
-        name: "Bone Breaker"
+        name: "Bone Breaker",
+        props: {
+            
+        }
     },
 
 ];

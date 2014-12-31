@@ -4,8 +4,15 @@
 if (Meteor.isClient) {
 
     Meteor.startup(function () {
+        if (Town.get() == null || Town.get() == undefined) return;
+        
         if ((new Date() - Town.get().army.lastSupplyRun) / 1000 / 60 /60 / 24 > 1)
             Meteor.call("BarracksConsumeSupplies");
+
+        Meteor.call("BarracksUpdateMorale");
+        Meteor.setInterval(function () {
+            Meteor.call("BarracksUpdateMorale");
+        }, 1000 * 60 * 60);
     });
 
     Template.Barracks.helpers({
@@ -43,6 +50,7 @@ if (Meteor.isClient) {
             if (isNaN(+supplies))
                 throw new Meteor.Error(supplies + " is no a number");
 
+            Meteor.call("BarracksConsumeSupplies");
             User.update({ $set: { "army.supplies": +supplies } });
         },
 
@@ -59,6 +67,16 @@ if (Meteor.isClient) {
             User.update({
                 $set: { "army.lastSupplyRun": new Date() }
             });
+        },
+
+        BarracksUpdateMorale: function () {
+            var army = Town.get().army;
+
+            if (army.morale < army.supplies) {
+                User.update({ $inc: { "army.morale": 1 } });
+            } else if (army.morale > army.supplies) {
+                User.update({ $inc: { "army.morale": -1 } });
+            }
         }
     })
 }

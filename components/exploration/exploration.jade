@@ -10,23 +10,54 @@ template(name="Exploration")
 
         .panel-body
 
+            with exploration
+                div #{explorers} free explorers
+                div #{explorersBusy} busy explorers
+                div #{experience} experience
+
             .party
-                with exploration
-                    h3 Party
-
-                    div #{explorers} free explorers
-                    div #{explorersBusy} busy explorers
-                    div #{experience} experience
-
+                h3 Party
+                .flow
+                    .col-xs-6
+                        input(type="number", value="0" step="1", min="0" max=exploration.explorers).party-explorers
+                    .col-xs-6
+                        .btn.add-explorer +
+                        .btn.rem-explorer -
                 p Equipment
                 .equipments
-                    each equipment
-                        .equipment
-                            if name
-                                b=name
-                            else
-                                b [___]
-
+                    with equipment
+                        if weapon
+                            .equipment.taken(slot="weapon")
+                                span.equipment-icon.rpg-Icon6_98
+                                div!=weapon.el
+                        else
+                            .equipment(slot="weapon")
+                                span.rpg-Icon6_98
+                                div Weapon
+                        if armor
+                            .equipment.taken(slot="armor")
+                                span.equipment-icon.rpg-Icon2_67
+                                div!=armor.el
+                        else
+                            .equipment(slot="armor")
+                                span.rpg-Icon2_67
+                                div Armor
+                        if utility
+                            .equipment.taken(slot="utility")
+                                span.equipment-icon.rpg-Icon6_100
+                                div!=utility.el
+                        else
+                            .equipment(slot="utility")
+                                span.rpg-Icon6_100
+                                div Utility
+                        if rations
+                            .equipment.taken(slot="rations")
+                                span.equipment-icon.rpg-Icon2_15
+                                div!=rations.el
+                        else
+                            .equipment(slot="rations")
+                                span.rpg-Icon2_15
+                                div Rations
             .quests
                 each quests
                     .quest
@@ -62,3 +93,21 @@ template(name="Exploration")
 
                     myCounter.start();
                 });
+
+
+template(name="ExplorationEquipment")
+    //-
+        The corporation's workforce
+        Hire new settlers, fire, manage them
+
+    .exploration-equipment.panel.component(style="display:none")
+
+        .panel-heading
+            .pull-left Choose equipment
+
+        .panel-body
+            .btn.back Back
+            .equipment-list
+                each equipments
+                    .equipment-choice(itemid=id)
+                        span!= el

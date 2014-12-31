@@ -12,16 +12,6 @@ Quest.quests = [
         ]
     },
     {
-        id: "searchyard",
-        title: "Search the back yard",
-        danger: 0,
-        time: 1,
-        exp: 20,
-        rewards: [
-
-        ]
-    },
-    {
         id: "peekgates",
         title: "Peek outside city gates",
         danger: 1,

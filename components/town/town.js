@@ -172,7 +172,6 @@ Meteor.methods({
             createDate: new Date,
             name: options.name,
             treasury: 10000.0,
-            level: 1,
             mayor: options.mayor,
             taxRate: 10,
             settlers: {
@@ -185,11 +184,16 @@ Meteor.methods({
             },
             storage: [],
             buildings: {
-                "tradepost": { level: 1 }
+                "towncenter": { level: 1 }
             },
             exploration: {
                 active: [],
-                equipment: [],
+                equipment: {
+                    "weapon": null,
+                    "armor": null,
+                    "utility": null,
+                    "rations": null
+                },
                 experience: 0,
             },
             army: {
@@ -254,7 +258,7 @@ Meteor.methods({
         
         User.update({ 
             $inc: { 
-                "level": 1
+                "buildings.towncenter.level": 1
             }
         });
     },

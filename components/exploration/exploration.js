@@ -41,9 +41,12 @@ if (Meteor.isClient) {
 
         equipment: function () {
             var eqs = Town.get().exploration.equipment;
-            for (var i = 0; i < eqs.length; i++) {
-                eqs[i] = Item.get(eqs[i]);
+            for (var slot in eqs) {
+                if (eqs[slot] != null || eqs[slot] != undefined) {
+                    eqs[slot] = Item.get(eqs[slot]);
+                }
             }
+            console.log(eqs)
             return eqs;
         },
 
@@ -79,6 +82,20 @@ if (Meteor.isClient) {
             }
         },
 
+        "click .add-explorer": function () {
+            var val = +$("input.party-explorers").val();
+            console.log(val)
+            if (Town.get().settlers.explorer > val) {
+                $("input.party-explorers").val(val+1);
+            }
+        },
+        "click .rem-explorer": function () {
+            var val = +$("input.party-explorers").val();
+            if (val > 0) {
+                $("input.party-explorers").val(val-1);
+            }
+        },
+
         "click .complete-quest": function (e) {
             var id = $(e.target).attr("questid"),
                 active = Town.get().exploration.active;
@@ -99,8 +116,41 @@ if (Meteor.isClient) {
                     //$(".qstatus[questid='"+id+"']").empty().append("<div class='btn start-quest' questid='"+id+"'>Start</div>");
                 });
             }
+        },
+
+        "click .equipment": function (e) {
+            var slot = $(e.target).closest(".equipment").attr("slot");
+            console.log(slot)
+            Session.set("equipmentSlot", slot);
+
+            $(".exploration").hide();
+            $(".exploration-equipment").show();
         }
     });
+
+    Template.ExplorationEquipment.helpers({
+        equipments: function () {
+            return Storage.getCategory(Session.get("equipmentSlot"));
+        }
+    });
+
+    Template.ExplorationEquipment.events({
+        "click .equipment-choice": function (e) {
+            var id = $(e.target).closest(".equipment-choice").attr("itemid");
+            console.log("session:", Session.get("equipmentSlot"))
+            Meteor.call("ExplorationSetEquipment", {
+                "slot": Session.get("equipmentSlot"),
+                "id": id
+            });
+
+            $(".exploration").show();
+            $(".exploration-equipment").hide();
+        },
+        "click .back": function () {
+            $(".exploration").show();
+            $(".exploration-equipment").hide();
+        }
+    })
 
 
 } else {
@@ -172,6 +222,15 @@ if (Meteor.isClient) {
 
             Meteor.call("StorageAdd", { id: reward.id, qty: 1 });
             return { reward: reward.id, exp: exp }
+        },
+
+        ExplorationSetEquipment: function (opts) {
+            var id = opts.id,
+                slot = opts.slot,
+                setObj = {};
+            console.log(id, slot)
+            setObj["exploration.equipment."+slot] = id;
+            User.update({ $set: setObj });
         }
     })
 }

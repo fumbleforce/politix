@@ -8,7 +8,26 @@
     .equipment
         float:left
         margin: 5px
+        border: 1px solid rgba(0,0,0,0.5)
+        width: 75px
+        padding: 5px
+        text-align:center
+        color: gray
 
+        &:hover
+            background:white
+            cursor:pointer
+        
+        &.taken
+            .equipment-icon
+                color: black
+            .itemlink
+                font-size: 10px !important
+
+        span
+            font-size: 20px
+        div
+            font-size: 12px
 .quests
     .quest
         margin-bottom: 3px
@@ -19,3 +38,9 @@
             border-radius: 3px
             border: 2px solid rgba(0,0,0,0.2)
             overflow:hidden
+            
+
+.exploration-equipment
+    .equipment-choice:hover
+        background: rgba(0,0,0,0.1)
+        cursor: pointer

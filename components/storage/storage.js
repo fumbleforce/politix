@@ -5,6 +5,11 @@ Storage.get = function () {
     return Meteor.user().storage
 };
 
+Storage.getCategory = function (category) {
+    var expanded = _.map(Town.get().storage, function (i) { return Item.get(i.id); });
+    return _.filter(expanded, function (i) { return i.category === category });
+};
+
 Storage.getExpanded = function () {
     return _.map(Storage.get(), function (item) {
         if (item == undefined) return;
