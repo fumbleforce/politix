@@ -64,7 +64,7 @@ Template.Town.helpers({
     },
 
     town: function () {
-        var t = Town.get();
+        var t = Town.get().buildings.towncenter;
         var t = Building.expand("towncenter", t);
         t.nextLevel = t.level + 1;
         t.popCap = t.popCaps[t.level];
@@ -74,12 +74,20 @@ Template.Town.helpers({
         t.upgradeCosts = t.upgrade[t.level];
         t.maxLevel = t.level >= t.upgrade.length;
         // Populate full item name
+        t.treasury = Town.get().treasury;
+        t.administration = Town.get().administration;
+        console.log(t)
         if (!t.maxLevel) {
             for (var i = 0; i < t.upgradeCosts.length; i++) {
                 t.upgradeCosts[i].el = Item.get(t.upgradeCosts[i].id).el;
             }
         }
         return t;
+    },
+
+    taxIncome: function () {
+        var t = Town.get();
+        return Math.floor(t.settlers.total * t.administration.taxRate / 100);
     },
 
     settlers: function () {
@@ -173,7 +181,6 @@ Meteor.methods({
             name: options.name,
             treasury: 10000.0,
             mayor: options.mayor,
-            taxRate: 10,
             settlers: {
                 total: 10,
                 employed: 0,
@@ -195,6 +202,9 @@ Meteor.methods({
                     "rations": null
                 },
                 experience: 0,
+            },
+            administration: {
+                taxRate: 10,
             },
             army: {
                 size: 0,
@@ -352,7 +362,13 @@ Meteor.methods({
     },
 
     TownPopGain: function () {
-        User.update({ $inc: { "settlers.total": 1, "settlers.unemployed": 1 } });
+        var cap = Building.get("towncenter").popCaps[Town.get().buildings.towncenter.level];
+        
+        if (Town.get().settlers.total >= cap) return;
+
+        User.update({ $inc: {
+            "settlers.total": 1,
+            "settlers.unemployed": 1 } });
     }
     
 });

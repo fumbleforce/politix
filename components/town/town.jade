@@ -43,20 +43,40 @@ template(name="Town")
                             .prop
                                 b Building cap:
                                 span #{buildCap}
-                    .upgrade-info
-                        unless maxLevel
-                            .pull-left
-                                .upgrade-cost
-                                    each upgradeCosts
-                                        div
-                                            span!= el
-                                            span x#{qty}
-                                .btn.upgrade-town Upgrade
-                            .next-level.pull-right
-                                p: i Town level #{nextLevel}
-                                div Population cap: #{nextPopCap}
-                                div Building cap: #{nextBuildCap}
-                                
+                    .administration
+                        with town
+                            .flow
+                                .col-xs-2: b Taxes:
+                                .col-xs-4 #{administration.taxRate}%
+                                .col-xs-4 $#{taxIncome}/h
+                            .flow
+                                input(
+                                    type="range",
+                                    min="0",
+                                    max="100",
+                                    step="1",
+                                    value=taxRate).tax-rate
+                    .settler-info
+                        with settlers
+                            .flow
+                                .col-xs-2: b Health:
+                                .col-xs-10
+                                    .flow
+                                        .progress-bar(role="progressbar", aria-valuenow=health, aria-valuemin="0", aria-valuemax="100", style="width:#{health}%")
+                                        span #{health}%
+                            .flow
+                                .col-xs-2: b Loyalty:
+                                .col-xs-10
+                                    .flow
+                                        .progress-bar(role="progressbar", aria-valuenow=loyalty, aria-valuemin="0", aria-valuemax="100", style="width:#{loyalty}%")
+                                        span #{loyalty}%
+                            .flow
+                                .col-xs-2: b Equality:
+                                .col-xs-10
+                                    .flow
+                                        .progress-bar(role="progressbar", aria-valuenow=equality, aria-valuemin="0", aria-valuemax="100", style="width:#{equality}%")
+                                        span #{equality}%
+                                    
 
             hr
 

@@ -12,6 +12,7 @@ Meteor.publish( null, function() {
         buildings: 1,
         exploration: 1,
         army:1,
+        administration: 1,
     }});
 });
 

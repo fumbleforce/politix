@@ -118,6 +118,53 @@ Item.items = [
         name: "Bundle of grains"
     },
 
+
+    {
+        id: "torch",
+        name: "Rope",
+        category:"utility",
+        quality: 3,
+        buyPrice: 50,
+        sellPrice: 150,
+        desc: "A bright torch to light up the dark places of the world"
+    },
+
+    {
+        id: "rope",
+        name: "Rope",
+        category:"utility",
+        quality: 3,
+        buyPrice: 50,
+        sellPrice: 150,
+        desc: "Handy rope for climbing up and down things, or maybe to capture a boar."
+    },
+
+    {
+        id: "basicarmor",
+        category: "armor",
+        name: "Basic Armor",
+        quality: 3,
+        buyPrice: 300,
+        sellPrice: 500,
+        desc: "Cloth armor that offers little protection, but is better than nothing.",
+        props: {
+            defence: 20
+        }
+    },
+
+    {
+        id: "leatherarmor",
+        category: "armor",
+        quality: 3,
+        buyPrice: 300,
+        sellPrice: 500,
+        desc: "A basic set of leather armor that offers some protection from thorn bushes and paper cuts.",
+        props: {
+            defence: 20,
+        }
+    },
+
+
     {
         id: "crudeclub",
         category:"weapon",
