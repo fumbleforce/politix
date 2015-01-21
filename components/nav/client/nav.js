@@ -17,7 +17,7 @@ if (Meteor.isClient) {
 
             if (page != Session.get("currentPage")) {
                 $(".bg-img-"+page).css({ "z-index": -2, "opacity": 1 });
-                $(".bg-blur.active").animate({"opacity": 0}, 200).addClass("old").removeClass("active");
+                $(".bg-blur.active").stop().animate({"opacity": 0}, 200).addClass("old").removeClass("active");
                 $(".bg-img-"+page).addClass("active");
                 Meteor.setTimeout(function () {
                     $(".bg-img-"+page).css("z-index", -1);

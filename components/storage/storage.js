@@ -62,6 +62,21 @@ Storage.has = function (items) {
     return true;
 }
 
+Storage.hasCategory = function (cat, num) {
+    var storage = Storage.get(),
+        found = 0;
+
+    for (var i = 0; i < storage.length; i++) {
+        var item = storage[i].id,
+            quantity = storage[i].qty;
+
+        if (Item.get(id).category === cat) {
+            found += quantity;
+        }
+    }
+    return found >= num;
+};
+
 
 
 if (Meteor.isClient) {
@@ -100,6 +115,27 @@ if (Meteor.isClient) {
                 s[posqty[i].pos].qty -= posqty[i].qty;
                 if (s[posqty[i].pos].qty <= 0) {
                     s[posqty[i].pos] = undefined;
+                }
+            }
+            User.update({ $set: { storage: s } });
+        },
+
+        StorageSpendCategory: function (opts) {
+            var s = Meteor.user().storage,
+                cat = opts.category,
+                qty = opts.qty,
+                spent = 0;
+
+            for (var i = 0; i < s.length; i++) {
+                if (Item.get(s[i].id) === cat) {
+                    if (spent+s[i].qty > qty) {
+                        spent += s[i].qty - qty
+                        s[i] -= s[i].qty - qty;
+                        break;
+                    } else {
+                        spent += s[i].qty;
+                        s[i] = undefined;
+                    }
                 }
             }
             User.update({ $set: { storage: s } });

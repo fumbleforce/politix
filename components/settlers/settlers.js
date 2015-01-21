@@ -7,6 +7,12 @@ Settlers = {};
 
 if (Meteor.isClient) {
 
+    Meteor.startup(function () {
+        Meteor.setInterval(function () {
+            Meteor.call("SettlerEat");
+        }, 60*1000);
+    });
+
     Template.Settlers.helpers({
         settlers: function () {
             return Meteor.user().settlers;
@@ -103,6 +109,55 @@ if (Meteor.isClient) {
                 "settlers": settlers,
                 "army": army,
             } });
+
+        },
+
+        SettlerTaxReaction: function () {
+            var town = Town.get(),
+                loyalty = town.settlers.loyalty,
+                taxRate = town.administration.taxRate;
+
+            loyalty -= (taxRate - 20) / 10;
+            if (loyalty < 0) loyalty = 0;
+
+            User.update({
+                $set: {
+                    "settlers.loyalty": loyalty,
+                }
+            });
+        },
+
+        SettlerEat: function () {
+            var town = Town.get(),
+                health = town.settlers.health,
+                pop = town.settlers.total;
+
+            if (Storage.hasCategory("food", pop)) {
+                Meteor.call("StorageSpendCategory", {
+                    category: "food",
+                    qty: pop
+                });
+                if (health < 100) {
+                    health += 1;
+                }
+
+                User.update({
+                    $set: {
+                        "settlers.health": health,
+                    }
+                });
+            } else {
+                if (health > 0) {
+                    health -= 1;
+                }
+
+                User.update({
+                    $set: {
+                        "settlers.health": health,
+                    }
+                });
+            }
+
 
         }
     })

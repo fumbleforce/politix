@@ -51,6 +51,7 @@ template(name="Town")
                                 .col-xs-4 $#{taxIncome}/h
                             .flow
                                 input(
+                                    id="tax-rate"
                                     type="range",
                                     min="0",
                                     max="100",
@@ -63,19 +64,19 @@ template(name="Town")
                                 .col-xs-10
                                     .flow
                                         .progress-bar(role="progressbar", aria-valuenow=health, aria-valuemin="0", aria-valuemax="100", style="width:#{health}%")
-                                        span #{health}%
+                                            span #{health}%
                             .flow
                                 .col-xs-2: b Loyalty:
                                 .col-xs-10
                                     .flow
                                         .progress-bar(role="progressbar", aria-valuenow=loyalty, aria-valuemin="0", aria-valuemax="100", style="width:#{loyalty}%")
-                                        span #{loyalty}%
+                                            span #{loyalty}%
                             .flow
                                 .col-xs-2: b Equality:
                                 .col-xs-10
                                     .flow
                                         .progress-bar(role="progressbar", aria-valuenow=equality, aria-valuemin="0", aria-valuemax="100", style="width:#{equality}%")
-                                        span #{equality}%
+                                            span #{equality}%
                                     
 
             hr

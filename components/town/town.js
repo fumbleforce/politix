@@ -50,6 +50,9 @@ Meteor.startup(function () {
     Meteor.setInterval(function () {
         Meteor.call("TownPopGain");
     }, 100000);
+    Meteor.setInterval(function () {
+        Meteor.call("TownGetTax");
+    }, 60*1000);
 })
 
 Template.TownStatus.helpers({
@@ -155,12 +158,21 @@ Template.Town.events({
         Meteor.call("TownReleaseRec", b);
         $("[generation='"+b+"']").html(0);
     },
+
+    "change #tax-rate": function (e) {
+        var t = +$(e.target).val();
+        Meteor.call("TownChangeTax", t);
+    }
 });
 
 
 
 
 } else {
+
+Meteor.startup(function () {
+    
+})
 
 
 Meteor.methods({
@@ -369,6 +381,28 @@ Meteor.methods({
         User.update({ $inc: {
             "settlers.total": 1,
             "settlers.unemployed": 1 } });
+    },
+
+    TownChangeTax: function(rate) {
+        User.update({ $set: {
+            "administration.taxRate": rate
+            }
+        });
+    },
+
+    TownGetTax: function () {
+        var town = Town.get(),
+            rate = town.administration.taxRate,
+            pop = town.settlers.total,
+            taxes = rate * pop;
+
+        console.log(rate, pop, taxes);
+        Meteor.call("TreasuryEarn", {
+            desc: "Taxes",
+            amount: taxes
+        });
+
+        Meteor.call("SettlerTaxReaction");
     }
     
 });
