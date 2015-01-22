@@ -133,7 +133,7 @@ if (Meteor.isClient) {
             var id = opts.id,
                 qty = +opts.qty,
                 item = Item.get(id);
-
+            console.log(item)
             if (Town.get().treasury < item.sellPrice * qty)
                 throw new Meteor.Error("Not enough money in treasury");
 

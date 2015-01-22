@@ -18,8 +18,8 @@ template(name="Trade")
             .tab-content
                 #trade-materials.tab-pane.active
                     each items.material
-                        .item
-                            .box(itemid=id)
+                        .item(itemid=id)
+                            .box
                                 span: b!= el
                                 .flow
                                     div Buying for $ #{buyPrice}
@@ -30,8 +30,8 @@ template(name="Trade")
                                     .btn.sell Sell
                 #trade-food.tab-pane
                     each items.food
-                        .item
-                            .box(itemid=id)
+                        .item(itemid=id)
+                            .box
                                 span: b!= el
                                 .flow
                                     div Buying for $ #{buyPrice}
@@ -42,8 +42,8 @@ template(name="Trade")
                                     .btn.sell Sell
                 #trade-luxury.tab-pane
                     each items.luxury
-                        .item
-                            .box(itemid=id)
+                        .item(itemid=id)
+                            .box
                                 span: b!= el
                                 .flow
                                     div Buying for $ #{buyPrice}

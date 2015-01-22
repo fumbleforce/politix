@@ -48,11 +48,11 @@ Meteor.startup(function () {
     Meteor.setInterval(updateGenerated, 10000);
 
     Meteor.setInterval(function () {
-        Meteor.call("TownPopGain");
+        Meteor.call("TownPopGain", Error.hadler);
     }, 100000);
     Meteor.setInterval(function () {
-        Meteor.call("TownGetTax");
-    }, 60*1000);
+        Meteor.call("TownGetTax", Error.handler);
+    }, 60*60*1000);
 })
 
 Template.TownStatus.helpers({
@@ -79,7 +79,6 @@ Template.Town.helpers({
         // Populate full item name
         t.treasury = Town.get().treasury;
         t.administration = Town.get().administration;
-        console.log(t)
         if (!t.maxLevel) {
             for (var i = 0; i < t.upgradeCosts.length; i++) {
                 t.upgradeCosts[i].el = Item.get(t.upgradeCosts[i].id).el;
@@ -374,6 +373,8 @@ Meteor.methods({
     },
 
     TownPopGain: function () {
+        console.log("Gaining population");
+
         var cap = Building.get("towncenter").popCaps[Town.get().buildings.towncenter.level];
         
         if (Town.get().settlers.total >= cap) return;
@@ -384,6 +385,8 @@ Meteor.methods({
     },
 
     TownChangeTax: function(rate) {
+        console.log("Changing tax rate to ", rate);
+
         User.update({ $set: {
             "administration.taxRate": rate
             }
@@ -391,6 +394,8 @@ Meteor.methods({
     },
 
     TownGetTax: function () {
+        console.log("Collecting taxes");
+
         var town = Town.get(),
             rate = town.administration.taxRate,
             pop = town.settlers.total,

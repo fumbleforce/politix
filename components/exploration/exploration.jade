@@ -16,13 +16,20 @@ template(name="Exploration")
                 div #{experience} experience
 
             .party
-                h3 Party
+                h3 Preparation
                 .flow
                     .col-xs-6
                         input(type="number", value="0" step="1", min="0" max=exploration.explorers).party-explorers
                     .col-xs-6
                         .btn.add-explorer +
                         .btn.rem-explorer -
+                p Party
+                .flow
+                    .btn.invite Invite player
+                .flow
+                    each party
+                        .player
+                            span=name
                 p Equipment
                 .equipments
                     with equipment
@@ -111,3 +118,24 @@ template(name="ExplorationEquipment")
                 each equipments
                     .equipment-choice(itemid=id)
                         span!= el
+
+
+template(name="ExplorationInvite")
+    //-
+        The corporation's workforce
+        Hire new settlers, fire, manage them
+
+    .exploration-invite.panel.component(style="display:none")
+
+        .panel-heading
+            .pull-left Invite player
+
+        .panel-body
+            .btn.back Back
+            
+            input(id="search-player" type="text", placeholder="player name")
+            
+            each results
+                .result-player
+                    span #{mayor} of #{name}
+                    .btn.send-invite Send invitation

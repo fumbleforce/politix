@@ -4,6 +4,7 @@ if (Meteor.isClient) {
 
     Meteor.startup(function () {
         Session.set("questCompleted", new Date());
+        Session.set("invitationSearchTerm", "");
     })
 
     Template.Exploration.helpers({
@@ -46,12 +47,15 @@ if (Meteor.isClient) {
                     eqs[slot] = Item.get(eqs[slot]);
                 }
             }
-            console.log(eqs)
             return eqs;
         },
 
         freeSlot: function () {
             return Town.get().exploration.equipment.length < 5;
+        },
+
+        party: function () {
+            return Town.get().exploration.party;
         },
 
 
@@ -125,6 +129,11 @@ if (Meteor.isClient) {
 
             $(".exploration").hide();
             $(".exploration-equipment").show();
+        },
+
+        "click .invite": function (e) {
+            $(".exploration").hide();
+            $(".exploration-invite").show();
         }
     });
 
@@ -150,7 +159,39 @@ if (Meteor.isClient) {
             $(".exploration").show();
             $(".exploration-equipment").hide();
         }
-    })
+    });
+
+    var invSearchDep = new Tracker.Dependency();
+
+    Template.ExplorationInvite.helpers({
+        results: function () {
+            var term = Session.get("invitationSearchTerm");
+            console.log("new term")
+            if (term.length < 3) return [];
+            console.log("Updated results")
+            return Meteor.users.find({
+                $or: [
+                    { $where: "this.mayor.indexOf('"+
+                        term+"') != -1" },
+                    { $where: "this.name.indexOf('"+
+                        term+"') != -1" },
+                ]
+            });
+        }
+    });
+
+    Template.ExplorationInvite.events({
+        "change #search-player": function (e) {
+            var term = $(e.target).val();
+            Session.set("invitationSearchTerm", term);
+            console.log("term set to ", term);
+            invSearchDep.changed();
+        },
+        "click .back": function () {
+            $(".exploration").show();
+            $(".exploration-invite").hide();
+        }
+    });
 
 
 } else {

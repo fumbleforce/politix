@@ -10,7 +10,7 @@ if (Meteor.isClient) {
     Meteor.startup(function () {
         Meteor.setInterval(function () {
             Meteor.call("SettlerEat");
-        }, 60*1000);
+        }, 60*60*1000);
     });
 
     Template.Settlers.helpers({
@@ -128,11 +128,14 @@ if (Meteor.isClient) {
         },
 
         SettlerEat: function () {
+            console.log("Eating");
+
             var town = Town.get(),
                 health = town.settlers.health,
                 pop = town.settlers.total;
 
             if (Storage.hasCategory("food", pop)) {
+                console.log("Has enough food")
                 Meteor.call("StorageSpendCategory", {
                     category: "food",
                     qty: pop
@@ -147,6 +150,8 @@ if (Meteor.isClient) {
                     }
                 });
             } else {
+                console.log("No food");
+
                 if (health > 0) {
                     health -= 1;
                 }
@@ -156,6 +161,8 @@ if (Meteor.isClient) {
                         "settlers.health": health,
                     }
                 });
+
+                throw new Meteor.Error("The town is out of food!");
             }
 
 

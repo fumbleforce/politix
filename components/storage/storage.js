@@ -70,7 +70,7 @@ Storage.hasCategory = function (cat, num) {
         var item = storage[i].id,
             quantity = storage[i].qty;
 
-        if (Item.get(id).category === cat) {
+        if (Item.get(item).category === cat) {
             found += quantity;
         }
     }
@@ -125,12 +125,15 @@ if (Meteor.isClient) {
                 cat = opts.category,
                 qty = opts.qty,
                 spent = 0;
-
             for (var i = 0; i < s.length; i++) {
-                if (Item.get(s[i].id) === cat) {
-                    if (spent+s[i].qty > qty) {
-                        spent += s[i].qty - qty
-                        s[i] -= s[i].qty - qty;
+                if (spent >= qty) {
+                    break;
+                }
+                if (Item.get(s[i].id).category === cat) {
+                    if (spent + s[i].qty > qty) {
+                        console.log("reducing quantity by", qty - spent)
+                        s[i].qty -= qty - spent;
+                        spent += qty - spent;
                         break;
                     } else {
                         spent += s[i].qty;
