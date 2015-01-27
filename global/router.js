@@ -1,15 +1,75 @@
+var requireLogin = function () {
+    if (Meteor.loggingIn()) {
+        this.next();
+    }
+
+    if (!Meteor.user() ) {
+        console.log("User not logged in,")
+        Router.go("/user");
+    } else if (!Meteor.user().name) {
+        Router.go("/setup");
+    } else {
+        this.next();
+    }
+};
+
 Router.configure({
-	loadingTemplate: 'Loading',
-	layoutTemplate: 'Layout',
-	before: function () {
-		$('meta[name^="description"]').remove();
-	}
+    loadingTemplate: 'Loading',
+    layoutTemplate: 'Layout',
+    //onBeforeAction: requireLogin
 });
 
-Router.route('/', function () { this.render("Main"); });
 
-Router.route('/dashboard', function () { this.render("Dashboard"); });
-  
+//Router.route('/', function () { this.render("Main"); });
+
+Router.route('/dashboard', function () { Router.go("Town"); });
+Router.route('/logout', function () {
+    AccountsTemplates.logout();
+    Router.go("/user");
+});
+
+Router.route('/user', function () {
+    if (!Meteor.user()) {
+        console.log("Rendering user")
+        this.layout('WhiteLayout');
+        this.render('User');
+    } else if (Meteor.user() && !Meteor.user().name) {
+        console.log("Redirect to setup");
+        Router.go("/setup");
+    } else {
+        console.log("Redirect to town")
+        Router.go("Town");
+    }
+});
+
+Router.map(function () {
+    this.route('home', {
+        path: '/',
+        template: 'Town',
+        onBeforeAction: requireLogin
+    });
+    this.route('setup', {
+        path: '/setup',
+        template: 'StartGame',
+        layoutTemplate: 'WhiteLayout',
+        onBeforeAction: undefined
+    });
+    this.route('Town');
+    this.route('Storage');
+    this.route('Barracks');
+    this.route('Market');
+    this.route('Gathering');
+    this.route('Treasury');
+    this.route('Exploration');
+    this.route('Settings');
+    this.route('Settlers');
+    this.route('Relations');
+    /*this.route('User', {
+        path: '/user',
+        template: 'User',
+        layoutTemplate: 'WhiteLayout'
+    });*/
+});
 
 
 //Routes

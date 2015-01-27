@@ -45,7 +45,7 @@ template(name="Layout")
     //-
         .top-bar
             +Nav
-
+    h1 Default layout
     .bg-blur.bg-img-town.active(style="z-index:-1")
     .bg-blur.bg-img-market
     .bg-blur.bg-img-gathering
@@ -65,47 +65,35 @@ template(name="Layout")
                 //+Chat
 
         .main-window
-            +Main
+            +yield
 
         .side-bar-right
             if gameActive
                 +EventList
 
-
-
-template(name="Dashboard")
+template(name="WhiteLayout")
     //- 
-        Contains the view where all components are available
+        Places the components in their proper place.
+        Displayed if company and owner is set
+    
+    //-
+        .top-bar
+            +Nav
+    h1 White layout
+    .bg-blur.bg-img-town.active(style="z-index:-1")
+    .bg-blur.bg-img-market
+    .bg-blur.bg-img-gathering
+    .bg-blur.bg-img-settlers
+    .bg-blur.bg-img-treasury
+    .bg-blur.bg-img-relations
+    .bg-blur.bg-img-storage
+    .bg-blur.bg-img-exploration
+    .bg-blur.bg-img-barracks
+    
 
-    //-canvas#spaceCanvas
-    //-#map-container
-
-    // Standard on
-    +Town
-    +Settlers
-    +Treasury
-    +Trade
-    //+Politics
-    //+Production
-    +Relations
-    +Storage
-    //+Mining
-    +Gathering
-    +Exploration
-    +ExplorationEquipment
-    +ExplorationInvite
-    +Barracks
-
-    // Dialogs
-    +DialogConfirm
-    +DialogAlert
-    +MarketDialog
-    +MarketCreateOrder
-
-    #context-menu.context-menu(style="display:none")
-        ul
-            li.btn-btn-default Close
-
+    .page-wrapper
+        .main-white-window(style="margin:10px auto; width:50%")
+            +yield
 
     script.
         $(function () {
@@ -126,6 +114,9 @@ template(name="Home")
                 | Such a sexy boody
 
 
+template(name="User")
+    h1 User
+    +atForm
 
 template(name="Loading")
     //-

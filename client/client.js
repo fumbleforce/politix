@@ -4,48 +4,7 @@ Template.registerHelper("gameActive", function () {
 
 
 
-Template.Main.helpers({
 
-    hasTown: function () { return (Meteor.user() && Meteor.user().created) },
-
-    noTown: function() {
-        return !(Meteor.user() && Meteor.user().created);
-    },
-
-});
-
-
-Template.Dashboard.helpers({
-
-    rendered: function () {
-
-        $(".main").height($(window).height());
-
-    }
-});
-
-
-Template.Dashboard.events({
-    "click .close-btn": function (e) {
-        var frame = $(e.target).attr("view");
-        $("."+frame).hide();
-    },
-    "click .min-btn": function (e) {
-        var $btn = $(e.target),
-            view = $btn.attr("view"),
-            minimized = $btn.attr("min") === "true",
-            $view = $("."+view);
-
-        if (minimized) {
-            $view.css("height", $view)
-            .find(".panel-body").show();
-            $btn.attr("min", "false");
-        } else {
-            $view.find(".panel-body").hide();
-            $btn.attr("min", "true");
-        }
-    }
-});
 
 
 displayView = function (selector) {

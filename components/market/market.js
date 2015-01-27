@@ -3,7 +3,7 @@ if (Meteor.isClient) {
 
     // Market
 
-    Template.Trade.helpers({
+    Template.Market.helpers({
         items: function () {
             return Item.byCategory;
         },
@@ -15,7 +15,7 @@ if (Meteor.isClient) {
     });
 
 
-    Template.Trade.events({
+    Template.Market.events({
         "click .buy": function (e) {
             var $el = $(e.target).closest(".item"),
                 qty = +$el.find(".amount").val(),

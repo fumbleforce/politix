@@ -4,7 +4,7 @@
 if (Meteor.isClient) {
 
     Meteor.startup(function () {
-        if (Town.get() == null || Town.get() == undefined) return;
+        if (!User.exists()) return;
         
         if ((new Date() - Town.get().army.lastSupplyRun) / 1000 / 60 /60 / 24 > 1)
             Meteor.call("BarracksConsumeSupplies");

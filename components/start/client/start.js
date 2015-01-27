@@ -10,7 +10,6 @@ Template.StartGame.events({
         var townName = template.find(".townName").value,
             mayor = template.find(".mayor").value
             focus = template.find(".focus :selected").value;
-        console.log("Focus: ", focus)
         if (!townName.length)
             Session.set("createError", "The town needs a name");
         else if (!mayor.length)
@@ -18,6 +17,7 @@ Template.StartGame.events({
         else {
             Meteor.call("createTown", { name: townName, focus:focus, mayor: mayor });
         }
+        Router.go("/town");
     }
 
 });

@@ -18,7 +18,7 @@ Town.set = function (key, val) {
 if (Meteor.isClient) {
 
 function updateGenerated() {
-    if (Town.get() == null || Town.get() == undefined) return;
+    
 
     for (var b in Town.get().buildings) {
         var building = Building.expand(b, Town.get().buildings[b]);
@@ -44,6 +44,8 @@ function updateGenerated() {
 }
 
 Meteor.startup(function () {
+    if (!User.exists()) return;
+
     Meteor.setTimeout(updateGenerated, 1000);
     Meteor.setInterval(updateGenerated, 10000);
 
@@ -62,9 +64,6 @@ Template.TownStatus.helpers({
 })
 
 Template.Town.helpers({
-    rendered: function () {
-        updateGenerated();
-    },
 
     town: function () {
         var t = Town.get().buildings.towncenter;

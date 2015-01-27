@@ -8,6 +8,8 @@ Settlers = {};
 if (Meteor.isClient) {
 
     Meteor.startup(function () {
+        if (!User.exists()) return;
+        
         Meteor.setInterval(function () {
             Meteor.call("SettlerEat");
         }, 60*60*1000);
