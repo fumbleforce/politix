@@ -28,6 +28,11 @@ Router.route('/logout', function () {
     Router.go("/user");
 });
 
+Router.route('/splash', function () {
+    this.layout('CleanLayout');
+    this.render('Splash');
+});
+
 Router.route('/user', function () {
     if (!Meteor.user()) {
         console.log("Rendering user")
