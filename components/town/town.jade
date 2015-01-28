@@ -56,7 +56,7 @@ template(name="Town")
                                     min="0",
                                     max="100",
                                     step="1",
-                                    value=taxRate).tax-rate
+                                    value="#{administration.taxRate}").tax-rate
                     .settler-info
                         with settlers
                             .flow
@@ -90,10 +90,9 @@ template(name="Town")
                             .butns
                                 
 
-                            h4= name
+                            .building-title(title=desc data-toggle='tooltip')= name
                             .info
                                 p:i Level #{level}
-                                p= desc
                                 p Workers: #{activeWorkers} / #{maxWorkers}
                                 
                                 if resource
@@ -107,7 +106,7 @@ template(name="Town")
                                         span!= el 
                                         span x#{qty}
 
-                                        .btn.upgrade-building.pull-right(buildingid=id) Upgrade
+                                    .btn.upgrade-building.pull-right(buildingid=id) Upgrade
                                     
             
             hr
@@ -118,11 +117,16 @@ template(name="Town")
                     .building
                         .inner.box
                             .info
-                                h4= name
-                                p= desc
+                                .building-title(title=desc data-toggle='tooltip')= name
 
                             .build-info
                                 each upgradeCost
                                     span!= el
                                     span x#{qty}
                                 .btn.build-building.pull-right(buildingid=id) Build
+
+
+    script.
+        $(function () {
+            $('[data-toggle="tooltip"]').tooltip({ animation:false });
+        });

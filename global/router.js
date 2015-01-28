@@ -66,6 +66,8 @@ Router.map(function () {
     this.route('Gathering');
     this.route('Treasury');
     this.route('Exploration');
+    this.route('ExplorationEquipment');
+    this.route('ExplorationInvite');
     this.route('Settings');
     this.route('Settlers');
     this.route('Relations');

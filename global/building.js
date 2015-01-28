@@ -11,21 +11,23 @@ Building.buildings = {
         upgrade: [
             [   // Level 1
                 { id: "plank", qty: 50 },
+                { id: "stone", qty: 50 },
             ],
             [   // Level 2
-                { id: "plank", qty: 50 },
+                { id: "plank", qty: 75 },
+                { id: "stone", qty: 75 },
             ],
             [   // Level 3
-                { id: "plank", qty: 50 },
+                { id: "plank", qty: 100 },
             ],
             [   // Level 4
-                { id: "plank", qty: 50 },
+                { id: "plank", qty: 150 },
             ],
             [   // Level 5
-                { id: "plank", qty: 50 },
+                { id: "plank", qty: 200 },
             ],
             [   // Level 6
-                { id: "plank", qty: 50 },
+                { id: "plank", qty: 300 },
             ],
         ]
     },

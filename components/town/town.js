@@ -83,6 +83,7 @@ Template.Town.helpers({
                 t.upgradeCosts[i].el = Item.get(t.upgradeCosts[i].id).el;
             }
         }
+
         return t;
     },
 
@@ -204,7 +205,7 @@ Meteor.methods({
                 "towncenter": { level: 1 }
             },
             exploration: {
-                active: [],
+                active: {},
                 equipment: {
                     "weapon": null,
                     "armor": null,

@@ -124,16 +124,13 @@ if (Meteor.isClient) {
 
         "click .equipment": function (e) {
             var slot = $(e.target).closest(".equipment").attr("slot");
-            console.log(slot)
             Session.set("equipmentSlot", slot);
 
-            $(".exploration").hide();
-            $(".exploration-equipment").show();
+            Router.go("ExplorationEquipment");
         },
 
         "click .invite": function (e) {
-            $(".exploration").hide();
-            $(".exploration-invite").show();
+            Router.go("ExplorationInvite");
         }
     });
 
@@ -152,12 +149,10 @@ if (Meteor.isClient) {
                 "id": id
             });
 
-            $(".exploration").show();
-            $(".exploration-equipment").hide();
+            Router.go("Exploration");
         },
         "click .back": function () {
-            $(".exploration").show();
-            $(".exploration-equipment").hide();
+            Router.go("Exploration");
         }
     });
 
@@ -188,8 +183,7 @@ if (Meteor.isClient) {
             invSearchDep.changed();
         },
         "click .back": function () {
-            $(".exploration").show();
-            $(".exploration-invite").hide();
+            Router.go("Exploration");
         }
     });
 
